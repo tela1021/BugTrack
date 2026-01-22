@@ -1,0 +1,241 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+enum Priority {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum IssueStatusType {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  DONE
+  CANCELED
+}
+
+model User {
+  id            String       @id @default(uuid())
+  email         String       @unique
+  name          String?
+  password      String?
+  role          UserRole     @default(MEMBER)
+  avatarUrl     String?
+  
+  createdIssues    Issue[]      @relation("Reporter")
+  assignedIssues   Issue[]      @relation("Assignee")
+  comments         Comment[]
+  teams            TeamMember[]
+  history          IssueHistory[]
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("users")
+}
+
+model Team {
+  id          String       @id @default(cuid())
+  key         String       @unique // Prefix for issues (e.g. "BACK")
+  name        String
+  description String?
+  
+  members     TeamMember[]
+  issues      Issue[]
+  cycles      Cycle[]
+  labels      Label[]
+  statuses    WorkflowStatus[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id      String   @id @default(cuid())
+  userId  String
+  teamId  String
+  role    UserRole @default(MEMBER)
+  
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team    Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+  @@map("team_members")
+}
+
+model WorkflowStatus {
+  id        String          @id @default(cuid())
+  name      String          // Name (e.g. "Code Review")
+  type      IssueStatusType // Category (for grouping)
+  position  Int             // Dragon-drop order
+  teamId    String?
+  
+  team      Team?           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  issues    Issue[]
+
+  @@map("workflow_statuses")
+}
+
+model Issue {
+  id          Int      @id @default(autoincrement())
+  readableId  String   @unique // Human readable ID (e.g. "BACK-123")
+  title       String
+  description String?  @db.Text
+  priority    Priority @default(NONE)
+  
+  statusId    String
+  status      WorkflowStatus @relation(fields: [statusId], references: [id])
+  
+  teamId      String
+  team        Team           @relation(fields: [teamId], references: [id])
+  
+  reporterId  String
+  reporter    User           @relation("Reporter", fields: [reporterId], references: [id])
+  
+  assigneeId  String?
+  assignee    User?          @relation("Assignee", fields: [assigneeId], references: [id])
+  
+  cycleId     String?
+  cycle       Cycle?         @relation(fields: [cycleId], references: [id])
+  
+  projectId   String?
+  project     Project?       @relation(fields: [projectId], references: [id])
+  
+  parentId    Int?
+  parent      Issue?         @relation("ParentChild", fields: [parentId], references: [id])
+  children    Issue[]        @relation("ParentChild")
+
+  comments    Comment[]
+  labels      LabelOnIssue[]
+  history     IssueHistory[]
+  attachments Attachment[]
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([teamId, statusId])
+  @@index([assigneeId])
+  @@index([cycleId])
+  @@map("issues")
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  startDate   DateTime?
+  targetDate  DateTime?
+  
+  issues      Issue[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("projects")
+}
+
+model Cycle {
+  id        String   @id @default(cuid())
+  name      String   // e.g. "Sprint 24"
+  startsAt  DateTime
+  endsAt    DateTime
+  teamId    String
+  
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  issues    Issue[]
+
+  createdAt DateTime @default(now())
+
+  @@index([teamId, startsAt])
+  @@map("cycles")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  issueId   Int
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  attachments Attachment[]
+
+  @@map("comments")
+}
+
+model Label {
+  id      String         @id @default(cuid())
+  name    String
+  color   String         // Hex code
+  teamId  String
+  
+  team    Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  issues  LabelOnIssue[]
+
+  @@unique([teamId, name])
+  @@map("labels")
+}
+
+model LabelOnIssue {
+  issueId Int
+  labelId String
+  
+  issue   Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  label   Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([issueId, labelId])
+  @@map("_LabelToIssue")
+}
+
+model IssueHistory {
+  id        String   @id @default(cuid())
+  issueId   Int
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  actorId   String
+  actor     User     @relation(fields: [actorId], references: [id])
+  field     String   // e.g. "status", "priority"
+  oldValue  String?
+  newValue  String?
+
+  createdAt DateTime @default(now())
+
+  @@map("issue_history")
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  issueId   Int
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  name      String
+  url       String   // Supabase Storage URL
+  mimeType  String
+  size      Int
+  
+  createdAt DateTime @default(now())
+
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: SetNull)
+
+  @@map("attachments")
+}

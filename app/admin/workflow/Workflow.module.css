@@ -1,0 +1,173 @@
+.backLink {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted-foreground);
+    font-size: 14px;
+    text-decoration: none;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+}
+
+.backLink:hover {
+    color: var(--foreground);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+}
+
+.teamSelector {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.teamSelector label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted-foreground);
+}
+
+.select {
+    padding: 8px 12px;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 200px;
+}
+
+.loading {
+    padding: 48px;
+    text-align: center;
+    color: var(--muted-foreground);
+    font-style: italic;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    color: var(--muted-foreground);
+    font-size: 14px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 40px;
+}
+
+.statusList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.statusItem {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 12px;
+    transition: border-color 0.2s;
+}
+
+.statusItem:hover {
+    border-color: var(--ring);
+}
+
+.dragHandle {
+    color: var(--muted-foreground);
+    cursor: grab;
+}
+
+.statusIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statusInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.statusName {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.statusType {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted-foreground);
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.actionBtn,
+.deleteBtn {
+    background: none;
+    border: none;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.actionBtn:hover {
+    background: var(--accent);
+    color: var(--foreground);
+}
+
+.deleteBtn:hover {
+    background: var(--destructive);
+    color: #fff;
+}
+
+.addForm {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 16px;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+}
+
+.addInputWrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.plusIcon {
+    color: var(--muted-foreground);
+}
+
+.addInputWrapper input {
+    background: none;
+    border: none;
+    color: var(--foreground);
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+}

@@ -1,0 +1,115 @@
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+}
+
+/* ... existing Layout ... */
+
+.sidebarHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    margin-bottom: 20px;
+}
+
+.workspaceLogo {
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.workspaceName {
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebarNav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: var(--muted-foreground);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    width: 100%;
+    text-align: left;
+}
+
+.navItem:hover {
+    background: var(--surface-hover);
+    color: var(--foreground);
+}
+
+.navItem.active {
+    background: var(--accent);
+    color: var(--foreground);
+}
+
+
+.navLabel {
+    flex: 1;
+}
+
+.shortcut {
+    font-size: 10px;
+    background: var(--muted);
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: var(--muted-foreground);
+}
+
+.badge {
+    font-size: 10px;
+    background: var(--muted);
+    color: var(--foreground);
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.sidebarSection {
+    margin-top: 24px;
+}
+
+.sectionTitle {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    padding: 8px;
+    letter-spacing: 0.05em;
+}
+
+.projectDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.sidebarFooter {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
