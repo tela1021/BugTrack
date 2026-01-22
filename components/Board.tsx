@@ -37,18 +37,44 @@ interface BoardProps {
 
 export default function Board({ initialColumns, onStatusChange, onCreateIssue }: BoardProps) {
     const [columns, setColumns] = useState(initialColumns);
+    const [activeIssueId, setActiveIssueId] = useState<number | null>(null);
 
     // Sync state with props when filters change
     useEffect(() => {
         setColumns(initialColumns);
     }, [initialColumns]);
 
-    // Simplified drag-and-drop simulation (real drag-and-drop would use dnd-kit)
-    const handleMove = (issueId: number, fromColId: string, toColId: string) => {
+    const handleDragStart = (e: React.DragEvent, issueId: number) => {
+        e.dataTransfer.setData('issueId', issueId.toString());
+        setActiveIssueId(issueId);
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault(); // Required for drop
+    };
+
+    const handleDrop = async (e: React.DragEvent, toStatusId: string) => {
+        e.preventDefault();
+        const issueIdStr = e.dataTransfer.getData('issueId');
+        const issueId = parseInt(issueIdStr);
+        setActiveIssueId(null);
+
+        if (isNaN(issueId)) return;
+
+        // Find where the issue currently is
+        let fromColId = '';
+        columns.forEach(col => {
+            if (col.issues.find(i => i.id === issueId.toString())) {
+                fromColId = col.id;
+            }
+        });
+
+        if (fromColId === toStatusId) return;
+
         // Optimistic UI update
         const newCols = [...columns];
         const fromCol = newCols.find(c => c.id === fromColId);
-        const toCol = newCols.find(c => c.id === toColId);
+        const toCol = newCols.find(c => c.id === toStatusId);
 
         if (fromCol && toCol) {
             const issueIndex = fromCol.issues.findIndex((i: any) => i.id === issueId.toString());
@@ -57,7 +83,7 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
                 issue.status = toCol.name;
                 toCol.issues.push(issue);
                 setColumns(newCols);
-                onStatusChange(issueId, toColId);
+                onStatusChange(issueId, toStatusId);
             }
         }
     };
@@ -65,7 +91,12 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
     return (
         <div className={styles.board}>
             {columns.map((column: Column) => (
-                <div key={column.id} className={styles.column}>
+                <div
+                    key={column.id}
+                    className={styles.column}
+                    onDragOver={handleDragOver}
+                    onDrop={(e) => handleDrop(e, column.id)}
+                >
                     <header className={styles.columnHeader}>
                         <div className={styles.columnInfo}>
                             <div className={styles.columnIcon}>
@@ -84,8 +115,15 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
 
                     <div className={styles.issueList}>
                         {column.issues.map((issue: any) => (
-                            <div key={issue.id} className={styles.draggableWrapper}>
-                                <IssueCard {...issue} hideStatus />
+                            <div
+                                key={issue.id}
+                                className={`${styles.draggableWrapper} ${activeIssueId === parseInt(issue.id) ? styles.dragging : ''}`}
+                            >
+                                <IssueCard
+                                    {...issue}
+                                    hideStatus
+                                    onDragStart={(e) => handleDragStart(e, parseInt(issue.id))}
+                                />
                             </div>
                         ))}
                     </div>

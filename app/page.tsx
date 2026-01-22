@@ -7,7 +7,7 @@ import Board from "@/components/Board";
 import FiltersBar from "@/components/FiltersBar";
 import { List, Layout } from "lucide-react";
 import { getIssues } from "@/actions/issues";
-import { getStatuses } from "@/actions/issue-details";
+import { getStatuses, updateIssue } from "@/actions/issue-details";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +16,8 @@ export default function Home() {
     status: 'All',
     assignee: 'All',
     sort: 'newest',
-    team: 'All'
+    team: 'All',
+    search: ''
   });
   const [issues, setIssues] = useState<any[]>([]);
   const [statuses, setStatuses] = useState<any[]>([]);
@@ -36,6 +37,12 @@ export default function Home() {
   useEffect(() => {
     fetchIssues();
   }, [filters]);
+
+  const handleStatusChange = async (issueId: number, statusId: string) => {
+    await updateIssue(issueId, { statusId });
+    // Refetch to ensure state is in sync
+    fetchIssues();
+  };
 
   // Create columns based on fetched statuses
   const displayStatuses = [...statuses];
@@ -70,7 +77,7 @@ export default function Home() {
   }
 
   return (
-    <div className="container" style={{ padding: '40px 32px' }}>
+    <div className="container">
       <header style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>{view === 'list' ? 'Inbox' : 'Board'}</h1>
@@ -129,7 +136,7 @@ export default function Home() {
       ) : (
         <Board
           initialColumns={boardColumns}
-          onStatusChange={(id, status) => console.log('Status change:', id, status)}
+          onStatusChange={handleStatusChange}
           onCreateIssue={() => setIsModalOpen(true)}
         />
       )}

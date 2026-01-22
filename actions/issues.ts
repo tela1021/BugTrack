@@ -5,8 +5,16 @@ import { revalidatePath } from 'next/cache';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
-export async function getIssues(filters?: { status?: string; assignee?: string; sort?: string; team?: string }) {
+export async function getIssues(filters?: { status?: string; assignee?: string; sort?: string; team?: string; search?: string }) {
     const where: any = {};
+
+    if (filters?.search) {
+        where.OR = [
+            { title: { contains: filters.search, mode: 'insensitive' } },
+            { readableId: { contains: filters.search, mode: 'insensitive' } },
+            { description: { contains: filters.search, mode: 'insensitive' } },
+        ];
+    }
 
     if (filters?.status && filters.status !== 'All') {
         const status = await prisma.workflowStatus.findFirst({

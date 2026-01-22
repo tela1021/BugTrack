@@ -87,6 +87,16 @@
     gap: 12px;
     flex: 1;
     min-height: 200px;
+    transition: background 0.2s;
+}
+
+.column[onDrop]:hover .issueList {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.dragging {
+    opacity: 0.4;
+    cursor: grabbing;
 }
 
 .draggableWrapper {

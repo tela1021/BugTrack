@@ -1,6 +1,6 @@
 'use client';
 
-import { Filter, User, ArrowDownUp, Folder } from 'lucide-react';
+import { Filter, User, ArrowDownUp, Folder, Search } from 'lucide-react';
 import styles from './FiltersBar.module.css';
 import { useEffect, useState } from 'react';
 import { getIssueFormData } from '@/actions/form-data';
@@ -12,6 +12,7 @@ interface FiltersBarProps {
         assignee: string;
         sort: string;
         team?: string;
+        search?: string;
     };
     statuses?: any[];
 }
@@ -33,6 +34,19 @@ export default function FiltersBar({ onFilterChange, activeFilters, statuses = [
 
     return (
         <div className={styles.container}>
+            <div className={styles.filterItem}>
+                <Search size={14} className={styles.icon} />
+                <input
+                    type="text"
+                    className={styles.searchInput}
+                    placeholder="Search issues..."
+                    value={activeFilters.search || ''}
+                    onChange={(e) => handleChange('search', e.target.value)}
+                />
+            </div>
+
+            <div className={styles.separator} />
+
             <div className={styles.filterItem}>
                 <Folder size={14} className={styles.icon} />
                 <select

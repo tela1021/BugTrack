@@ -12,6 +12,7 @@ interface IssueCardProps {
     commentCount?: number;
     attachmentCount?: number;
     hideStatus?: boolean;
+    onDragStart?: (e: React.DragEvent) => void;
 }
 
 export default function IssueCard({
@@ -23,7 +24,8 @@ export default function IssueCard({
     priority,
     commentCount = 0,
     attachmentCount = 0,
-    hideStatus = false
+    hideStatus = false,
+    onDragStart
 }: IssueCardProps) {
     const getPriorityColor = (p: string) => {
         switch (p.toUpperCase()) {
@@ -39,7 +41,11 @@ export default function IssueCard({
 
     return (
         <Link href={`/issues/${readableId}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-            <div className={styles.card}>
+            <div
+                className={styles.card}
+                draggable={!!onDragStart}
+                onDragStart={onDragStart}
+            >
                 <div className={styles.header}>
                     <span className={styles.issueId}>{projectKey}-{number}</span>
                     {!hideStatus && <span className={styles.status}>{status}</span>}
