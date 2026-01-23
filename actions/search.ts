@@ -8,9 +8,9 @@ export async function searchIssues(query: string) {
     return await prisma.issue.findMany({
         where: {
             OR: [
-                { title: { contains: query, mode: 'insensitive' } },
-                { readableId: { contains: query, mode: 'insensitive' } },
-                { description: { contains: query, mode: 'insensitive' } },
+                { title: { contains: query } },
+                { readableId: { contains: query } },
+                { description: { contains: query } },
             ]
         },
         select: {

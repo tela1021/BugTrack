@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { auth } from '@/lib/auth';
 
 export async function createNotification(data: {
     userId: string;
@@ -31,12 +32,11 @@ export async function createNotification(data: {
 }
 
 export async function getNotifications() {
-    // Default to admin for now
-    const user = await prisma.user.findUnique({ where: { email: 'admin@bugzero.io' } });
-    if (!user) return [];
+    const session = await auth();
+    if (!session?.user?.id) return [];
 
     return await (prisma as any).notification.findMany({
-        where: { userId: user.id },
+        where: { userId: session.user.id },
         include: {
             actor: true,
             issue: true,
@@ -60,10 +60,10 @@ export async function markAsRead(id: string) {
 }
 
 export async function getUnreadCount() {
-    const user = await prisma.user.findUnique({ where: { email: 'admin@bugzero.io' } });
-    if (!user) return 0;
+    const session = await auth();
+    if (!session?.user?.id) return 0;
 
     return await (prisma as any).notification.count({
-        where: { userId: user.id, read: false }
+        where: { userId: session.user.id, read: false }
     });
 }

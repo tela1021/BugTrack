@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { createNotification } from './notifications';
+import { auth } from '@/lib/auth';
 
 async function saveFiles(issueId: number, files: File[], commentId?: string) {
     const uploadDir = join(process.cwd(), 'public', 'uploads');
@@ -42,15 +43,14 @@ export async function addComment(issueId: number, formData: FormData) {
         const content = formData.get('content') as string;
         const files = formData.getAll('files') as File[];
 
-        // For now, default to the admin user since we don't have full auth session
-        const author = await prisma.user.findUnique({ where: { email: 'admin@bugzero.io' } });
-        if (!author) throw new Error('User not found');
+        const session = await auth();
+        if (!session?.user?.id) throw new Error('Not authenticated');
 
         const comment = await prisma.comment.create({
             data: {
                 content,
                 issueId,
-                authorId: author.id
+                authorId: session.user.id
             }
         });
 
@@ -65,11 +65,11 @@ export async function addComment(issueId: number, formData: FormData) {
         });
 
         if (issueData) {
-            const recipients = new Set([issueData.assigneeId, issueData.reporterId].filter(id => id && id !== author.id)) as Set<string>;
+            const recipients = new Set([issueData.assigneeId, issueData.reporterId].filter(id => id && id !== session.user?.id)) as Set<string>;
             for (const userId of recipients) {
                 await createNotification({
                     userId,
-                    actorId: author.id,
+                    actorId: session.user.id,
                     issueId,
                     commentId: comment.id,
                     type: 'COMMENT'
@@ -143,9 +143,8 @@ export async function getIssueByReadableId(readableId: string) {
 
 export async function updateIssue(id: number, data: any) {
     try {
-        // Default actor to admin for now
-        const actor = await prisma.user.findUnique({ where: { email: 'admin@bugzero.io' } });
-        if (!actor) throw new Error('Actor not found');
+        const session = await auth();
+        if (!session?.user?.id) throw new Error('Not authenticated');
 
         const oldIssue = await prisma.issue.findUnique({ where: { id } });
         if (!oldIssue) throw new Error('Issue not found');
@@ -164,7 +163,7 @@ export async function updateIssue(id: number, data: any) {
 
             historyEntries.push({
                 issueId: id,
-                actorId: actor.id,
+                actorId: session.user.id,
                 field: 'status',
                 oldValue: oldStatus?.name || 'Unknown',
                 newValue: newStatus?.name || 'Unknown'
@@ -178,7 +177,7 @@ export async function updateIssue(id: number, data: any) {
 
             historyEntries.push({
                 issueId: id,
-                actorId: actor.id,
+                actorId: session.user.id,
                 field: 'assignee',
                 oldValue: oldUser?.name || 'Unassigned',
                 newValue: newUser?.name || 'Unassigned'
@@ -187,7 +186,7 @@ export async function updateIssue(id: number, data: any) {
             if (data.assigneeId) {
                 await createNotification({
                     userId: data.assigneeId,
-                    actorId: actor.id,
+                    actorId: session.user.id,
                     issueId: id,
                     type: 'ASSIGNED'
                 });
@@ -196,11 +195,11 @@ export async function updateIssue(id: number, data: any) {
 
         // Notify status change
         if (data.statusId && data.statusId !== oldIssue.statusId) {
-            const recipients = new Set([oldIssue.assigneeId, oldIssue.reporterId].filter(uid => uid && uid !== actor.id)) as Set<string>;
+            const recipients = new Set([oldIssue.assigneeId, oldIssue.reporterId].filter(uid => uid && uid !== session.user?.id)) as Set<string>;
             for (const userId of recipients) {
                 await createNotification({
                     userId,
-                    actorId: actor.id,
+                    actorId: session.user.id,
                     issueId: id,
                     type: 'STATUS_CHANGE'
                 });

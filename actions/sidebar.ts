@@ -1,28 +1,29 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { auth } from '@/lib/auth';
 
 export async function getSidebarData() {
-    const admin = await prisma.user.findUnique({ where: { email: 'admin@bugzero.io' } });
+    const session = await auth();
+    const userId = session?.user?.id;
 
     const [inboxCount, teams, notificationCount] = await Promise.all([
-        // Inbox = Issues assigned to the default admin user for now or all unassigned if we want "Inbox" behavior
-        // Let's assume Inbox "Assigned to Me" + "Unassigned" for broad visibility
-        prisma.issue.count({
+        // Inbox = Issues assigned to the current user or unassigned
+        userId ? prisma.issue.count({
             where: {
                 OR: [
-                    { assignee: { email: 'admin@bugzero.io' } },
+                    { assigneeId: userId },
                     { assigneeId: null }
                 ],
-                status: { type: { not: 'DONE' } } // Don't count done issues in inbox
+                status: { type: { not: 'DONE' } }
             }
-        }),
+        }) : Promise.resolve(0),
         prisma.team.findMany({
             orderBy: { name: 'asc' },
             take: 10
         }),
-        (prisma as any).notification ? (prisma as any).notification.count({
-            where: { userId: admin?.id, read: false }
+        userId && (prisma as any).notification ? (prisma as any).notification.count({
+            where: { userId, read: false }
         }) : Promise.resolve(0)
     ]);
 

@@ -4,15 +4,16 @@ import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
+import { auth } from '@/lib/auth';
 
 export async function getIssues(filters?: { status?: string; assignee?: string; sort?: string; team?: string; search?: string }) {
     const where: any = {};
 
     if (filters?.search) {
         where.OR = [
-            { title: { contains: filters.search, mode: 'insensitive' } },
-            { readableId: { contains: filters.search, mode: 'insensitive' } },
-            { description: { contains: filters.search, mode: 'insensitive' } },
+            { title: { contains: filters.search } },
+            { readableId: { contains: filters.search } },
+            { description: { contains: filters.search } },
         ];
     }
 
@@ -29,8 +30,8 @@ export async function getIssues(filters?: { status?: string; assignee?: string; 
         if (filters.assignee === 'Unassigned') {
             where.assigneeId = null;
         } else if (filters.assignee === 'Me') {
-            const admin = await prisma.user.findUnique({ where: { email: 'admin@bugzero.io' } });
-            if (admin) where.assigneeId = admin.id;
+            const session = await auth();
+            if (session?.user?.id) where.assigneeId = session.user.id;
         } else {
             // Assume it's a specific user ID
             where.assigneeId = filters.assignee;
@@ -90,8 +91,8 @@ export async function createIssue(formData: FormData) {
         const team = await prisma.team.findUnique({ where: { key: teamKey } });
         if (!team) throw new Error('Project not found');
 
-        const user = await prisma.user.findUnique({ where: { email: 'admin@bugzero.io' } });
-        if (!user) throw new Error('User not found');
+        const session = await auth();
+        if (!session?.user?.id) throw new Error('Not authenticated');
 
         // 2. Get status ID (with self-healing)
         let status = await prisma.workflowStatus.findFirst({
@@ -131,7 +132,7 @@ export async function createIssue(formData: FormData) {
                 readableId,
                 statusId: status.id,
                 teamId: team.id,
-                reporterId: user.id,
+                reporterId: session.user.id,
                 assigneeId: assigneeId || null
             }
         });
