@@ -41,6 +41,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session: {
         strategy: "jwt"
     },
+    cookies: {
+        sessionToken: {
+            name: process.env.NEXTAUTH_URL?.startsWith("https://")
+                ? "__Secure-bugtrack-session-token"
+                : "bugtrack-session-token",
+            options: {
+                httpOnly: true,
+                sameSite: "lax",
+                path: "/",
+                secure: process.env.NEXTAUTH_URL?.startsWith("https://"),
+            },
+        },
+    },
     pages: {
         signIn: "/login",
     },
