@@ -1,25 +1,28 @@
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
     console.log('Seeding database...');
 
+    const hashedPassword = await bcrypt.hash('admin123', 10);
+
     // 1. Create default users
     const usersData = [
-        { email: 'admin@bugzero.io', name: 'Admin Developer', role: 'ADMIN' },
-        { email: 'sarah@bugzero.io', name: 'Sarah Engineer', role: 'MEMBER' },
-        { email: 'mike@bugzero.io', name: 'Mike Designer', role: 'MEMBER' },
-        { email: 'alex@bugzero.io', name: 'Alex Manager', role: 'ADMIN' },
+        { email: 'admin@bugzero.io', name: 'Admin Developer', role: 'ADMIN', hashedPassword },
+        { email: 'sarah@bugzero.io', name: 'Sarah Engineer', role: 'MEMBER', hashedPassword },
     ];
 
     const users = [];
     for (const u of usersData) {
         const user = await prisma.user.upsert({
             where: { email: u.email },
-            update: {},
+            update: { hashedPassword: u.hashedPassword },
             create: {
                 email: u.email,
                 name: u.name,
+                hashedPassword: u.hashedPassword,
+                role: u.role
             }
         });
         users.push(user);

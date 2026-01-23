@@ -122,10 +122,6 @@ export default function LoginPage() {
                         {loading ? <Loader2 className="animate-spin" size={20} /> : "Sign In"}
                     </button>
                 </form>
-
-                <p style={{ textAlign: "center", fontSize: "14px", color: "var(--muted-foreground)" }}>
-                    Don't have an account? <Link href="/auth/register" style={{ color: "var(--foreground)", fontWeight: 600 }}>Create one</Link>
-                </p>
             </div>
         </div>
     );

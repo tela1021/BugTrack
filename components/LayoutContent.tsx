@@ -1,10 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Sidebar from "@/components/Sidebar";
-import CommandPalette from "@/components/CommandPalette";
 
-export default function LayoutContent({ children }: { children: React.ReactNode }) {
+interface LayoutContentProps {
+    children: React.ReactNode;
+    sidebar: React.ReactNode;
+    commandPalette: React.ReactNode;
+}
+
+export default function LayoutContent({ children, sidebar, commandPalette }: LayoutContentProps) {
     const pathname = usePathname();
     const isAuthPage = pathname?.startsWith("/auth");
 
@@ -14,12 +18,11 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
 
     return (
         <div style={{ display: 'flex' }}>
-            {/* @ts-ignore */}
-            <Sidebar />
+            {sidebar}
             <main style={{ flex: 1, height: "100vh", overflowY: "auto" }}>
                 {children}
             </main>
-            <CommandPalette />
+            {commandPalette}
         </div>
     );
 }

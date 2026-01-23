@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import bcrypt from 'bcryptjs';
 
 export async function getUsers() {
     return await prisma.user.findMany({
@@ -24,12 +25,13 @@ export async function updateUser(userId: string, data: { name?: string; role?: '
 
 export async function createUser(data: { name: string; email: string; role: 'ADMIN' | 'MEMBER'; password?: string }) {
     try {
+        const hashedPassword = await bcrypt.hash(data.password || '123456', 10);
         const user = await prisma.user.create({
             data: {
                 name: data.name,
                 email: data.email,
                 role: data.role,
-                password: data.password || '123456' // Default logic if not provided
+                hashedPassword: hashedPassword
             }
         });
         revalidatePath('/admin/users');
@@ -41,9 +43,10 @@ export async function createUser(data: { name: string; email: string; role: 'ADM
 
 export async function resetPassword(userId: string, password: string) {
     try {
+        const hashedPassword = await bcrypt.hash(password, 10);
         await prisma.user.update({
             where: { id: userId },
-            data: { password }
+            data: { hashedPassword: hashedPassword }
         });
         return { success: true };
     } catch (error: any) {

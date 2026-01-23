@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import AuthProvider from "@/components/AuthProvider";
 import LayoutContent from "@/components/LayoutContent";
+import Sidebar from "@/components/Sidebar";
+import CommandPalette from "@/components/CommandPalette";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,7 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
-          <LayoutContent>
+          <LayoutContent
+            sidebar={<Sidebar />}
+            commandPalette={<CommandPalette />}
+          >
             {children}
           </LayoutContent>
         </AuthProvider>
