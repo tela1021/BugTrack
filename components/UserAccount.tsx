@@ -40,7 +40,7 @@ export default function UserAccount() {
             </Link>
 
             <button
-                onClick={() => signOut({ callbackUrl: "/auth/login" })}
+                onClick={() => signOut({ callbackUrl: "/login" })}
                 className={styles.navItem}
                 style={{ marginTop: "4px", color: "var(--destructive)" }}
             >

@@ -3,8 +3,10 @@ import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "./prisma";
 import bcrypt from "bcryptjs";
+import { authConfig } from "./auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+    ...authConfig,
     adapter: PrismaAdapter(prisma),
     providers: [
         Credentials({
@@ -41,24 +43,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session: {
         strategy: "jwt"
     },
-    cookies: {
-        sessionToken: {
-            name: process.env.NEXTAUTH_URL?.startsWith("https://")
-                ? "__Secure-bugtrack-session-token"
-                : "bugtrack-session-token",
-            options: {
-                httpOnly: true,
-                sameSite: "lax",
-                path: "/",
-                secure: process.env.NEXTAUTH_URL?.startsWith("https://"),
-            },
-        },
-    },
-    pages: {
-        signIn: "/login",
-    },
     callbacks: {
+        ...authConfig.callbacks,
         async jwt({ token, user }) {
+            // console.log('[DEBUG] JWT Callback', { token, user });
             if (user) {
                 token.role = (user as any).role;
                 token.id = user.id;
@@ -66,6 +54,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return token;
         },
         async session({ session, token }) {
+            console.log('[DEBUG] Session Callback', { sessionUser: session.user, tokenId: token.id });
             if (session.user) {
                 (session.user as any).role = token.role;
                 (session.user as any).id = token.id;

@@ -92,7 +92,12 @@ export async function createIssue(formData: FormData) {
         if (!team) throw new Error('Project not found');
 
         const session = await auth();
-        if (!session?.user?.id) throw new Error('Not authenticated');
+        console.log('[DEBUG] createIssue session:', JSON.stringify(session, null, 2));
+
+        if (!session?.user?.id) {
+            console.error('[DEBUG] Session missing user ID:', session);
+            throw new Error('Not authenticated');
+        }
 
         // 2. Get status ID (with self-healing)
         let status = await prisma.workflowStatus.findFirst({

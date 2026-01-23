@@ -29,6 +29,7 @@ export async function createStatus(data: { name: string; type: string; teamId?: 
         revalidatePath('/admin/workflow');
         return { success: true, data: status };
     } catch (error: any) {
+        console.error('[createStatus] Error:', error);
         return { success: false, error: error.message };
     }
 }
@@ -85,6 +86,7 @@ export async function deleteStatus(id: string) {
         revalidatePath('/');
         return { success: true };
     } catch (error: any) {
+        console.error('[deleteStatus] Error:', error);
         return { success: false, error: error.message };
     }
 }

@@ -51,6 +51,9 @@ export default function WorkflowAdmin() {
         if (result.success) {
             setStatuses([...statuses, result.data]);
             setNewStatusName('');
+        } else {
+            console.error(result.error);
+            alert(`Failed to add status: ${result.error}`);
         }
     };
 
@@ -60,7 +63,8 @@ export default function WorkflowAdmin() {
             if (result.success) {
                 setStatuses(statuses.filter(s => s.id !== id));
             } else {
-                alert(`Error: ${result.error}`);
+                console.error(result.error);
+                alert(`Failed to delete status: ${result.error}`);
             }
         }
     };
