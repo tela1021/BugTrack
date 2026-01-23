@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma';
 export async function getSidebarData() {
     const admin = await prisma.user.findUnique({ where: { email: 'admin@bugzero.io' } });
 
-    const [inboxCount, notificationCount, projects] = await Promise.all([
+    const [inboxCount, teams, notificationCount] = await Promise.all([
         // Inbox = Issues assigned to the default admin user for now or all unassigned if we want "Inbox" behavior
         // Let's assume Inbox "Assigned to Me" + "Unassigned" for broad visibility
         prisma.issue.count({
@@ -29,7 +29,7 @@ export async function getSidebarData() {
     return {
         inboxCount,
         notificationCount,
-        projects: projects.map((p: any) => ({
+        projects: teams.map((p: any) => ({
             label: p.name,
             key: p.key,
             color: '#3b82f6', // Default blue for now
