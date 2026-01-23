@@ -34,7 +34,7 @@ model User {
   id            String       @id @default(uuid())
   email         String       @unique
   name          String?
-  password      String?
+  hashedPassword String?
   role          UserRole     @default(MEMBER)
   avatarUrl     String?
   

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Sidebar from "@/components/Sidebar";
-import CommandPalette from "@/components/CommandPalette";
+import AuthProvider from "@/components/AuthProvider";
+import LayoutContent from "@/components/LayoutContent";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,13 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div style={{ display: 'flex' }}>
-          <Sidebar />
-          <main style={{ flex: 1, height: '100vh', overflowY: 'auto' }}>
+        <AuthProvider>
+          <LayoutContent>
             {children}
-          </main>
-        </div>
-        <CommandPalette />
+          </LayoutContent>
+        </AuthProvider>
       </body>
     </html>
   );

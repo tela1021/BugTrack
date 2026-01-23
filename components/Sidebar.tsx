@@ -2,21 +2,21 @@ import Link from 'next/link';
 import {
     Layout,
     List,
-    Settings,
-    Shield
+    Shield,
+    Settings
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
 import { getSidebarData } from '@/actions/sidebar';
+import UserAccount from './UserAccount';
 
 export default async function Sidebar() {
     const data = await getSidebarData();
 
     const menuItems = [
         { icon: List, label: 'Inbox', count: data.inboxCount, href: '/' },
-        // Added All Issues link for explicit "See all"
         { icon: Layout, label: 'All Issues', href: '/' },
-        { icon: Shield, label: 'Admin', href: '/admin' },
+        { icon: Settings, label: 'Settings', href: '/admin' },
     ];
 
     return (
@@ -48,11 +48,8 @@ export default async function Sidebar() {
                 })}
             </nav>
 
-            <div className={styles.sidebarFooter}>
-                <button className={styles.navItem}>
-                    <Settings size={18} />
-                    <span className={styles.navLabel}>Settings</span>
-                </button>
+            <div style={{ marginTop: 'auto' }}>
+                <UserAccount />
             </div>
         </aside>
     );
