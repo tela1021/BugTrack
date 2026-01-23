@@ -10,16 +10,22 @@ import styles from './Sidebar.module.css';
 
 import { getSidebarData } from '@/actions/sidebar';
 import UserAccount from './UserAccount';
+import { auth } from "@/lib/auth";
 
 export default async function Sidebar() {
     const data = await getSidebarData();
+    const session = await auth();
+    const isAdmin = (session?.user as any)?.role === "ADMIN";
 
     const menuItems = [
         { icon: List, label: 'Inbox', count: data.inboxCount, href: '/' },
         { icon: Bell, label: 'Notifications', count: data.notificationCount, href: '/notifications' },
         { icon: Layout, label: 'All Issues', href: '/' },
-        { icon: Settings, label: 'Settings', href: '/admin' },
     ];
+
+    if (isAdmin) {
+        menuItems.push({ icon: Shield, label: 'Admin Console', href: '/admin' });
+    }
 
     return (
         <aside className={styles.sidebar}>

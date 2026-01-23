@@ -1,8 +1,9 @@
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
-import { LogOut, User as UserIcon } from "lucide-react";
+import { LogOut, User as UserIcon, Settings } from "lucide-react";
 import styles from "./Sidebar.module.css";
+import Link from "next/link";
 
 export default function UserAccount() {
     const { data: session } = useSession();
@@ -28,10 +29,16 @@ export default function UserAccount() {
                         {session.user.name}
                     </span>
                     <span style={{ fontSize: "10px", color: "var(--muted-foreground)" }}>
-                        {session.user.role || "Member"}
+                        {(session.user as any).role || "Member"}
                     </span>
                 </div>
             </div>
+
+            <Link href="/settings" className={styles.navItem} style={{ textDecoration: "none", color: "inherit" }}>
+                <Settings size={16} />
+                <span className={styles.navLabel}>Settings</span>
+            </Link>
+
             <button
                 onClick={() => signOut({ callbackUrl: "/auth/login" })}
                 className={styles.navItem}

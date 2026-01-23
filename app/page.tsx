@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import IssueCard from "@/components/IssueCard";
-import CreateIssueModal from "@/components/CreateIssueModal";
+const CreateIssueModal = dynamic(() => import("@/components/CreateIssueModal"), { ssr: false });
 import Board from "@/components/Board";
 import FiltersBar from "@/components/FiltersBar";
 import { List, Layout } from "lucide-react";
