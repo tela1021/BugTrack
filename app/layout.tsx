@@ -10,15 +10,19 @@ export const metadata: Metadata = {
   description: "High-performance bug tracking system for modern engineering teams.",
 };
 
-export default function RootLayout({
+import { auth } from "@/lib/auth";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <AuthProvider>
+        <AuthProvider session={session}>
           <LayoutContent
             sidebar={<Sidebar />}
             commandPalette={<CommandPalette />}
