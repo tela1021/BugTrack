@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
+import { createNotification } from './notifications';
 
 async function saveFiles(issueId: number, files: File[], commentId?: string) {
     const uploadDir = join(process.cwd(), 'public', 'uploads');
@@ -55,6 +56,25 @@ export async function addComment(issueId: number, formData: FormData) {
 
         if (files.length > 0) {
             await saveFiles(issueId, files, comment.id);
+        }
+
+        // Notify issue assignee and reporter
+        const issueData = await prisma.issue.findUnique({
+            where: { id: issueId },
+            select: { assigneeId: true, reporterId: true }
+        });
+
+        if (issueData) {
+            const recipients = new Set([issueData.assigneeId, issueData.reporterId].filter(id => id && id !== author.id)) as Set<string>;
+            for (const userId of recipients) {
+                await createNotification({
+                    userId,
+                    actorId: author.id,
+                    issueId,
+                    commentId: comment.id,
+                    type: 'COMMENT'
+                });
+            }
         }
 
         revalidatePath(`/issues/${issueId}`);
@@ -163,6 +183,28 @@ export async function updateIssue(id: number, data: any) {
                 oldValue: oldUser?.name || 'Unassigned',
                 newValue: newUser?.name || 'Unassigned'
             });
+
+            if (data.assigneeId) {
+                await createNotification({
+                    userId: data.assigneeId,
+                    actorId: actor.id,
+                    issueId: id,
+                    type: 'ASSIGNED'
+                });
+            }
+        }
+
+        // Notify status change
+        if (data.statusId && data.statusId !== oldIssue.statusId) {
+            const recipients = new Set([oldIssue.assigneeId, oldIssue.reporterId].filter(uid => uid && uid !== actor.id)) as Set<string>;
+            for (const userId of recipients) {
+                await createNotification({
+                    userId,
+                    actorId: actor.id,
+                    issueId: id,
+                    type: 'STATUS_CHANGE'
+                });
+            }
         }
 
         if (historyEntries.length > 0) {

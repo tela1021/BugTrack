@@ -10,7 +10,7 @@ interface LayoutContentProps {
 
 export default function LayoutContent({ children, sidebar, commandPalette }: LayoutContentProps) {
     const pathname = usePathname();
-    const isAuthPage = pathname?.startsWith("/auth");
+    const isAuthPage = pathname?.startsWith("/auth") || pathname?.startsWith("/login");
 
     if (isAuthPage) {
         return <main style={{ width: "100%", height: "100vh" }}>{children}</main>;

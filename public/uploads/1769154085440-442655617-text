@@ -1,0 +1,48 @@
+Внимательно проверь, соответствует ли система этим требованиям?
+
+1.1 Multi-Currency Support
+Requirement:
+The system must support defining term deposit products across multiple currencies. EUR is
+required at launch; the architecture must allow future currencies based on internal roadmap
+without major structural changes.
+Acceptance Criteria:
+● System allows EUR product creation at launch.
+● Additional currencies can be enabled through configuration only.
+● All modules (accruals, capitalisation, postings, reporting) support multi-currency.
+UAT Test Cases:
+1. Create EUR product
+○ Steps: Log in as an admin user, navigate to the product setup section, create a
+product in EUR, and save the configuration.
+○ Expected: The product is successfully created, appears in the product catalogue,
+and can be used to create deposits in EUR; accrual / capitalisation / posting /
+reporting use the correct currency..
+2. Enable new currency via configuration
+○ Steps: Admin adds a new currency (e.g. AED) in configuration and create
+product using AED.
+○ Expected: System allows product creation; deposits can be opened in AED;
+accrual / capitalisation / posting / reporting use the correct currency.
+
+Если необходимо, сделай все необходимые изменения чтоб полностью соответствовало требованиям.
+После проверки создай файл с названием и номером пункта который проверялся
+проведи все указанные тесты и подготовь отчет
+для API используй ключ из testkey.cfg
+
+все файлы тестов сохраняй в папку test, отчеты в папку docs
+
+
+
+Есть проект deposite. Его мы и будем проверять. Ты работаешь В проекте deposite_tests. Все файлы делаешь там. Все что находится в папке deposite Не трогаешь вообще ни при каких условиях.
+страница логина http://localhost:3000/products
+login: admin
+pass: admin123
+
+UAT Test Cases:
+1. Deposit within range
+○ Steps: Configure min = 1,000; max = 10,000 → Create deposit for 5,000.
+○ Expected: Deposit is created successfully.
+2. Below minimum
+○ Steps: Using same product, attempt to create deposit for 500.
+○ Expected: Deposit is rejected with a “below minimum” error.
+3. Change limits and re-test
+○ Steps: Change max to 7,000 → Create deposit for 8,000.
+○ Expected: Deposit rejected based on new max; change applied immediately.

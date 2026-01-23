@@ -85,7 +85,7 @@ export default function UsersAdmin() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
                 <h1 style={{ fontSize: '1.5rem', fontWeight: 600 }}>Users & Roles</h1>
                 <button className="btn btn-primary" onClick={() => setIsCreateOpen(true)}>
-                    <UserPlus size={16} /> Invite User
+                    <UserPlus size={16} /> Create User
                 </button>
             </div>
 
@@ -195,7 +195,7 @@ export default function UsersAdmin() {
                 }} onClick={() => setIsCreateOpen(false)}>
                     <div className="glass" style={{ width: '400px', padding: '24px', background: 'var(--card)' }} onClick={e => e.stopPropagation()}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                            <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>Invite New User</h2>
+                            <h2 style={{ fontSize: '1.2rem', fontWeight: 600 }}>Create New User</h2>
                             <button onClick={() => setIsCreateOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><X size={18} /></button>
                         </div>
 

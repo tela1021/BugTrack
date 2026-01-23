@@ -3,7 +3,8 @@ import {
     Layout,
     List,
     Shield,
-    Settings
+    Settings,
+    Bell
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -15,6 +16,7 @@ export default async function Sidebar() {
 
     const menuItems = [
         { icon: List, label: 'Inbox', count: data.inboxCount, href: '/' },
+        { icon: Bell, label: 'Notifications', count: data.notificationCount, href: '/notifications' },
         { icon: Layout, label: 'All Issues', href: '/' },
         { icon: Settings, label: 'Settings', href: '/admin' },
     ];
