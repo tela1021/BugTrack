@@ -11,7 +11,7 @@ test("deployment script safely updates and starts the production app", async () 
   assert.match(script, /git pull --ff-only origin/);
   assert.match(script, /npm ci/);
   assert.match(script, /npx prisma generate/);
-  assert.match(script, /npx prisma migrate deploy/);
+  assert.match(script, /npx prisma db push/);
   assert.match(script, /npm run build/);
   assert.match(script, /pm2 (?:describe|reload|start)/);
   assert.match(script, /PM2_APP_NAME/);
