@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { Paperclip, X, Image as ImageIcon, FileText } from 'lucide-react';
+import { Paperclip, X, FileText } from 'lucide-react';
 import styles from './FileAttachment.module.css';
 
 interface FileAttachmentProps {
@@ -59,6 +59,8 @@ export default function FileAttachment({ onFilesSelected }: FileAttachmentProps)
                 {attachments.map((item) => (
                     <div key={item.id} className={styles.previewItem}>
                         {item.isImage ? (
+                            // Object URLs are generated from local file input and cannot use next/image.
+                            // eslint-disable-next-line @next/next/no-img-element
                             <img src={item.previewUrl} alt={item.file.name} className={styles.imagePreview} />
                         ) : (
                             <div className={styles.fileIcon}>

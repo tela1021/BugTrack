@@ -6,8 +6,44 @@ import { requireAuthenticatedUser, requireTeamRole } from '@/lib/authorization';
 import { createIssueSchema } from '@/lib/validation.mts';
 import { deleteAttachmentFile, saveAttachmentFile, validateAttachmentFiles } from '@/lib/attachment-storage';
 import type { Prisma } from '@prisma/client';
+import type { IssueListItem } from '@/types/view-models';
 
-export async function getIssues(filters?: { status?: string; assignee?: string; sort?: string; team?: string; projectId?: string; search?: string }) {
+export type IssueFilters = { status?: string; assignee?: string; sort?: string; team?: string; projectId?: string; search?: string };
+
+const issueListInclude = {
+    status: true,
+    assignee: true,
+    comments: true,
+    attachments: true,
+    team: true,
+    project: true,
+    labels: { include: { label: true } },
+} satisfies Prisma.IssueInclude;
+
+type IssueWithListData = Prisma.IssueGetPayload<{ include: typeof issueListInclude }>;
+
+function toIssueListItem(issue: IssueWithListData): IssueListItem {
+    return {
+        id: issue.id.toString(),
+        readableId: issue.readableId,
+        title: issue.title,
+        description: issue.description,
+        assigneeId: issue.assigneeId,
+        assigneeName: issue.assignee?.name || issue.assignee?.email || null,
+        projectKey: issue.team.key,
+        projectName: issue.project?.name || null,
+        labels: issue.labels.map(({ label }) => ({ id: label.id, name: label.name, color: label.color })),
+        number: Number.parseInt(issue.readableId.split('-')[1] || '0', 10),
+        status: issue.status.name,
+        priority: issue.priority,
+        commentCount: issue.comments.length,
+        attachmentCount: issue.attachments.length,
+        createdAt: issue.createdAt.toISOString(),
+        updatedAt: issue.updatedAt.toISOString(),
+    };
+}
+
+async function getIssueWhere(filters?: IssueFilters) {
     const userId = await requireAuthenticatedUser();
     const memberships = await prisma.teamMember.findMany({
         where: { userId },
@@ -38,7 +74,8 @@ export async function getIssues(filters?: { status?: string; assignee?: string; 
     if (filters?.team && filters.team !== 'All') {
         const team = await prisma.team.findUnique({ where: { key: filters.team } });
         if (!team || !accessibleTeamIds.includes(team.id)) {
-            return [];
+            where.id = -1;
+            return { where };
         }
         where.teamId = team.id;
     }
@@ -53,33 +90,56 @@ export async function getIssues(filters?: { status?: string; assignee?: string; 
         where.projectId = filters.projectId;
     }
 
-    const orderBy: Prisma.IssueOrderByWithRelationInput = {
-        createdAt: filters?.sort === 'oldest' ? 'asc' : 'desc',
-    };
+    return { where };
+}
 
+function getIssueOrderBy(sort?: string): Prisma.IssueOrderByWithRelationInput[] {
+    switch (sort) {
+        case 'title_asc': return [{ title: 'asc' }, { id: 'asc' }];
+        case 'title_desc': return [{ title: 'desc' }, { id: 'desc' }];
+        case 'priority_asc': return [{ priority: 'asc' }, { id: 'asc' }];
+        case 'priority_desc': return [{ priority: 'desc' }, { id: 'desc' }];
+        case 'updated_asc': return [{ updatedAt: 'asc' }, { id: 'asc' }];
+        case 'updated_desc': return [{ updatedAt: 'desc' }, { id: 'desc' }];
+        case 'oldest': return [{ createdAt: 'asc' }, { id: 'asc' }];
+        default: return [{ createdAt: 'desc' }, { id: 'desc' }];
+    }
+}
+
+export async function getIssues(filters?: IssueFilters) {
+    const { where } = await getIssueWhere(filters);
     const issues = await prisma.issue.findMany({
         where,
-        orderBy,
-        include: {
-            status: true,
-            assignee: true,
-            comments: true,
-            attachments: true,
-        }
+        orderBy: getIssueOrderBy(filters?.sort),
+        include: issueListInclude,
     });
 
-    return issues.map(issue => ({
-        id: issue.id.toString(),
-        readableId: issue.readableId,
-        title: issue.title,
-        projectKey: issue.readableId.split('-')[0],
-        number: parseInt(issue.readableId.split('-')[1]),
-        status: issue.status.name,
-        priority: issue.priority,
-        commentCount: issue.comments.length,
-        attachmentCount: issue.attachments.length,
-        createdAt: issue.createdAt.toISOString()
-    }));
+    return issues.map(toIssueListItem);
+}
+
+export async function getIssuesPage(filters?: IssueFilters, cursor?: string | null, pageSize = 25) {
+    const { where } = await getIssueWhere(filters);
+    const limit = Math.min(Math.max(pageSize, 1), 100);
+    const cursorId = cursor ? Number.parseInt(cursor, 10) : null;
+    if (cursor && (cursorId === null || !Number.isSafeInteger(cursorId) || cursorId < 1)) {
+        return { issues: [], nextCursor: null };
+    }
+
+    const rows = await prisma.issue.findMany({
+        where,
+        orderBy: getIssueOrderBy(filters?.sort),
+        include: issueListInclude,
+        cursor: cursorId !== null ? { id: cursorId } : undefined,
+        skip: cursorId !== null ? 1 : 0,
+        take: limit + 1,
+    });
+    const hasNextPage = rows.length > limit;
+    const pageRows = hasNextPage ? rows.slice(0, limit) : rows;
+
+    return {
+        issues: pageRows.map(toIssueListItem),
+        nextCursor: hasNextPage ? pageRows[pageRows.length - 1]?.id.toString() || null : null,
+    };
 }
 
 export async function createIssue(formData: FormData) {

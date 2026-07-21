@@ -9,4 +9,5 @@ test('P1 filters are restored from and synchronized to the URL with a reset acti
   assert.match(page, /router\.replace/);
   assert.match(page, /Сбросить фильтры/);
   assert.match(page, /URLSearchParams/);
+  assert.match(page, /params\.delete\(key\)/);
 });

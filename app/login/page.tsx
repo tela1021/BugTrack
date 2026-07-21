@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LogIn, Mail, Lock, Loader2, Terminal } from "lucide-react";
+import { Mail, Lock, Loader2, Terminal } from "lucide-react";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ export default function LoginPage() {
                 router.push("/");
                 router.refresh();
             }
-        } catch (err) {
+        } catch {
             setError("An unexpected error occurred");
         } finally {
             setLoading(false);

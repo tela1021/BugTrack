@@ -22,13 +22,17 @@ export async function searchIssues(query: string) {
                 { title: { contains: normalizedQuery } },
                 { readableId: { contains: normalizedQuery } },
                 { description: { contains: normalizedQuery } },
+                { team: { is: { OR: [{ name: { contains: normalizedQuery } }, { key: { contains: normalizedQuery } }] } } },
+                { project: { is: { name: { contains: normalizedQuery } } } },
             ]
         },
         select: {
             id: true,
             title: true,
             readableId: true,
+            team: { select: { key: true, name: true } },
+            project: { select: { name: true } },
         },
-        take: 8
+        take: 20
     });
 }

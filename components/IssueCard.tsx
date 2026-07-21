@@ -16,7 +16,6 @@ interface IssueCardProps {
 }
 
 export default function IssueCard({
-    id,
     title,
     projectKey,
     number,

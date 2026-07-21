@@ -1,17 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-import IssueCard from "@/components/IssueCard";
-const CreateIssueModal = dynamic(() => import("@/components/CreateIssueModal"), { ssr: false });
+import { useState, useEffect, useCallback } from 'react';
+import IssueTable from "@/components/IssueTable";
 import Board from "@/components/Board";
 import FiltersBar from "@/components/FiltersBar";
 import { List, Layout } from "lucide-react";
-import { getIssues } from "@/actions/issues";
+import { getIssues, getIssuesPage } from "@/actions/issues";
 import { getStatuses, updateIssue } from "@/actions/issue-details";
 import type { IssueListItem, WorkflowStatusOption } from '@/types/view-models';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
+import { CREATE_ISSUE_EVENT, ISSUE_CREATED_EVENT } from '@/lib/client-events';
 
 const defaultFilters = {
   status: 'All',
@@ -25,29 +24,37 @@ export default function Home() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useToast();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [view, setView] = useState<'list' | 'board'>('list');
   const [filters, setFilters] = useState(defaultFilters);
   const [issues, setIssues] = useState<IssueListItem[]>([]);
   const [statuses, setStatuses] = useState<WorkflowStatusOption[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentCursor, setCurrentCursor] = useState<string | null>(null);
+  const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
 
-  const fetchIssues = async () => {
+  const fetchIssues = useCallback(async () => {
     setLoading(true);
+    const issuesRequest = view === 'board'
+      ? getIssues(filters).then((items) => ({ issues: items, nextCursor: null }))
+      : getIssuesPage(filters, currentCursor);
     const [issuesData, statusesData] = await Promise.all([
-      getIssues(filters),
+      issuesRequest,
       getStatuses(filters.team)
     ]);
-    setIssues(issuesData);
+    setIssues(issuesData.issues);
+    setNextCursor(issuesData.nextCursor);
     setStatuses(statusesData);
     setLoading(false);
-  };
+  }, [currentCursor, filters, view]);
 
   useEffect(() => {
-    fetchIssues();
-  }, [filters]);
+    void fetchIssues();
+  }, [fetchIssues]);
 
   useEffect(() => {
+    setCurrentCursor(null);
+    setCursorHistory([]);
     setFilters({
       status: searchParams.get('status') || defaultFilters.status,
       assignee: searchParams.get('assignee') || defaultFilters.assignee,
@@ -57,16 +64,53 @@ export default function Home() {
     });
   }, [searchParams]);
 
+  useEffect(() => {
+    setView(searchParams.get('view') === 'board' ? 'board' : 'list');
+  }, [searchParams]);
+
+  useEffect(() => {
+    const refreshIssues = () => { void fetchIssues(); };
+    window.addEventListener(ISSUE_CREATED_EVENT, refreshIssues);
+    return () => window.removeEventListener(ISSUE_CREATED_EVENT, refreshIssues);
+  }, [fetchIssues]);
+
   const handleFilterChange = (nextFilters: typeof defaultFilters) => {
+    setCurrentCursor(null);
+    setCursorHistory([]);
     setFilters(nextFilters);
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     (Object.entries(nextFilters) as [keyof typeof defaultFilters, string][]).forEach(([key, value]) => {
       if (value && value !== defaultFilters[key]) params.set(key, value);
+      else params.delete(key);
     });
     router.replace(params.size > 0 ? `/?${params.toString()}` : '/', { scroll: false });
   };
 
+  const setViewInUrl = (nextView: 'list' | 'board') => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (nextView === 'board') params.set('view', 'board');
+    else params.delete('view');
+    router.replace(params.size > 0 ? `/?${params.toString()}` : '/', { scroll: false });
+  };
+
+  const openCreateIssue = () => window.dispatchEvent(new Event(CREATE_ISSUE_EVENT));
+
   const resetFilters = () => handleFilterChange(defaultFilters);
+
+  const handleSortChange = (sort: typeof defaultFilters.sort) => handleFilterChange({ ...filters, sort });
+
+  const goToNextPage = () => {
+    if (!nextCursor) return;
+    setCursorHistory((history) => [...history, currentCursor]);
+    setCurrentCursor(nextCursor);
+  };
+
+  const goToPreviousPage = () => {
+    if (cursorHistory.length === 0) return;
+    const previousCursor = cursorHistory[cursorHistory.length - 1];
+    setCursorHistory((history) => history.slice(0, -1));
+    setCurrentCursor(previousCursor);
+  };
 
   const handleStatusChange = async (issueId: number, statusId: string): Promise<boolean> => {
     const result = await updateIssue(issueId, { statusId });
@@ -123,7 +167,7 @@ export default function Home() {
             <button
               className={`btn ${view === 'list' ? 'btn-primary' : ''}`}
               style={{ padding: '4px 8px', fontSize: '12px' }}
-              onClick={() => setView('list')}
+              onClick={() => setViewInUrl('list')}
               aria-label="Список задач"
               title="Список задач"
             >
@@ -132,7 +176,7 @@ export default function Home() {
             <button
               className={`btn ${view === 'board' ? 'btn-primary' : ''}`}
               style={{ padding: '4px 8px', fontSize: '12px' }}
-              onClick={() => setView('board')}
+              onClick={() => setViewInUrl('board')}
               aria-label="Доска задач"
               title="Доска задач"
             >
@@ -142,7 +186,7 @@ export default function Home() {
           <button
             className="btn btn-primary"
             style={{ height: '36px', padding: '0 16px', borderRadius: '8px', boxShadow: 'var(--shadow-sm)' }}
-            onClick={() => setIsModalOpen(true)}
+            onClick={openCreateIssue}
           >
             + New Issue
           </button>
@@ -160,9 +204,16 @@ export default function Home() {
           {loading ? (
             <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted-foreground)' }}>Loading...</div>
           ) : issues.length > 0 ? (
-            issues.map(issue => (
-              <IssueCard key={issue.id} {...issue} />
-            ))
+            <IssueTable
+              issues={issues}
+              sort={filters.sort as Parameters<typeof IssueTable>[0]['sort']}
+              onSortChange={handleSortChange}
+              page={cursorHistory.length + 1}
+              hasPreviousPage={cursorHistory.length > 0}
+              hasNextPage={Boolean(nextCursor)}
+              onPreviousPage={goToPreviousPage}
+              onNextPage={goToNextPage}
+            />
           ) : (
             <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted-foreground)' }}>
               <p>Нет задач по выбранным фильтрам.</p>
@@ -174,18 +225,9 @@ export default function Home() {
         <Board
           initialColumns={boardColumns}
           onStatusChange={handleStatusChange}
-          onCreateIssue={() => setIsModalOpen(true)}
+          onCreateIssue={openCreateIssue}
         />
       )}
-
-      <CreateIssueModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSuccess={() => {
-          fetchIssues();
-          setIsModalOpen(false);
-        }}
-      />
     </div>
   );
 }

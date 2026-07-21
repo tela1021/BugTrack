@@ -1,0 +1,675 @@
+{
+  "communities": {
+    "0": [
+      "actions_notifications",
+      "actions_notifications_getnotifications",
+      "actions_notifications_getunreadcount",
+      "actions_notifications_markasread",
+      "actions_search",
+      "actions_search_searchissues",
+      "actions_settings",
+      "actions_settings_passwordactionstate",
+      "actions_settings_passwordschema",
+      "actions_settings_updatepassword",
+      "actions_sidebar",
+      "actions_sidebar_getsidebardata",
+      "admin_layout",
+      "admin_layout_adminlayout",
+      "components_commandpalette",
+      "components_commandpalette_commandpalette",
+      "components_commandpalette_searchresult",
+      "components_sidebar",
+      "components_sidebar_sidebar",
+      "components_useraccount",
+      "components_useraccount_useraccount",
+      "lib_auth",
+      "lib_auth_handlers_auth_signin_signout",
+      "lib_authorization",
+      "lib_authorization_authenticationerror",
+      "lib_authorization_authenticationerror_constructor",
+      "lib_authorization_authorizationerror",
+      "lib_authorization_authorizationerror_constructor",
+      "lib_authorization_authorizedteamaccess",
+      "lib_authorization_requireauthenticateduser",
+      "lib_authorization_resourcenotfounderror",
+      "lib_authorization_resourcenotfounderror_constructor",
+      "lib_prisma",
+      "lib_prisma_globalforprisma",
+      "lib_prisma_prismaclientsingleton",
+      "lib_runtime_config",
+      "lib_runtime_config_requiredenvironment",
+      "lib_runtime_config_validateruntimeconfig",
+      "nextauth_route",
+      "notifications_page",
+      "notifications_page_notificationitem",
+      "notifications_page_notificationspage",
+      "settings_page",
+      "settings_page_initialstate",
+      "settings_page_settingspage"
+    ],
+    "1": [
+      "actions_projects",
+      "actions_projects_createproject",
+      "actions_projects_getprojectbyid",
+      "actions_projects_getprojects",
+      "actions_projects_updateproject",
+      "actions_teams",
+      "actions_teams_createteam",
+      "actions_teams_getadminteams",
+      "actions_teams_getteammembers",
+      "actions_teams_removeteammember",
+      "actions_teams_saveteammember",
+      "actions_users",
+      "actions_users_createuser",
+      "actions_users_getusers",
+      "actions_users_resetpassword",
+      "actions_users_updateuser",
+      "actions_workflow",
+      "actions_workflow_createstatus",
+      "actions_workflow_deletestatus",
+      "actions_workflow_getworkflowstatuses",
+      "actions_workflow_updatestatus",
+      "app_page_home",
+      "components_toastprovider_usetoast",
+      "lib_authorization_requireglobaladmin",
+      "lib_authorization_requireteamadminorglobal",
+      "projects_page",
+      "projects_page_projectsadmin",
+      "readableid_page_issuedetailspage",
+      "teams_page",
+      "teams_page_teamsadmin",
+      "teams_page_teamsummary",
+      "types_view_models_projectsummary",
+      "users_page",
+      "users_page_manageduser",
+      "users_page_usersadmin",
+      "workflow_page",
+      "workflow_page_gettypeicon",
+      "workflow_page_teamoption",
+      "workflow_page_workflowadmin",
+      "workflow_page_workflowstatus"
+    ],
+    "2": [
+      "actions_form_data",
+      "actions_form_data_getissueformdata",
+      "actions_issues_getissues",
+      "actions_teams_getteambyid",
+      "app_page",
+      "app_page_createissuemodal",
+      "app_page_defaultfilters",
+      "app_projects_id_page_tsx_id_page",
+      "app_teams_id_page_tsx_id_page",
+      "components_board",
+      "components_board_board",
+      "components_board_boardprops",
+      "components_board_column",
+      "components_board_getstatusicon",
+      "components_createissuemodal",
+      "components_createissuemodal_createissuemodal",
+      "components_createissuemodal_createissuemodalprops",
+      "components_createissuemodal_teamformdata",
+      "components_filtersbar",
+      "components_filtersbar_filtersbar",
+      "components_filtersbar_filtersbarprops",
+      "components_filtersbar_issuefilters",
+      "components_issuecard",
+      "components_issuecard_issuecard",
+      "components_issuecard_issuecardprops",
+      "id_page_projectdata",
+      "id_page_projectpage",
+      "id_page_teamdata",
+      "id_page_teampage",
+      "types_view_models",
+      "types_view_models_issuelistitem",
+      "types_view_models_teamoption",
+      "types_view_models_useroption",
+      "types_view_models_workflowstatusoption"
+    ],
+    "3": [
+      "actions_issue_details",
+      "actions_issue_details_addcomment",
+      "actions_issue_details_addissueattachment",
+      "actions_issue_details_deleteissue",
+      "actions_issue_details_getissuebyreadableid",
+      "actions_issue_details_getstatuses",
+      "actions_issue_details_getusers",
+      "actions_issue_details_restoreissue",
+      "actions_issue_details_savefiles",
+      "actions_issue_details_updateissue",
+      "actions_issues",
+      "actions_issues_createissue",
+      "actions_labels",
+      "actions_labels_addlabeltoissue",
+      "actions_labels_getalllabels",
+      "actions_labels_removelabelfromissue",
+      "actions_labels_requireissuelabelaccess",
+      "actions_notifications_createnotification",
+      "id_route",
+      "id_route_get",
+      "lib_attachment_storage",
+      "lib_attachment_storage_allowedmimetypes",
+      "lib_attachment_storage_attachmentpath",
+      "lib_attachment_storage_deleteattachmentfile",
+      "lib_attachment_storage_readattachmentfile",
+      "lib_attachment_storage_saveattachmentfile",
+      "lib_attachment_storage_storagedirectory",
+      "lib_attachment_storage_validateattachmentfiles",
+      "lib_authorization_requireissueaccess",
+      "lib_authorization_requireteamrole",
+      "readableid_page",
+      "readableid_page_issuedetail",
+      "readableid_page_issuemember",
+      "readableid_page_issuestatus"
+    ],
+    "4": [
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_eslint",
+      "package_devdependencies_eslint_config_next",
+      "package_devdependencies_playwright_test",
+      "package_devdependencies_prisma",
+      "package_devdependencies_prisma_client",
+      "package_devdependencies_types_node",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_typescript",
+      "package_name",
+      "package_overrides",
+      "package_overrides_postcss",
+      "package_prisma",
+      "package_prisma_seed",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_db_migrate",
+      "package_scripts_db_migration_report",
+      "package_scripts_db_validate",
+      "package_scripts_dev",
+      "package_scripts_dev_bugtrack",
+      "package_scripts_lint",
+      "package_scripts_seed",
+      "package_scripts_start",
+      "package_scripts_test",
+      "package_scripts_test_e2e",
+      "package_scripts_typecheck",
+      "package_version"
+    ],
+    "5": [
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_allowimportingtsextensions",
+      "tsconfig_compileroptions_allowjs",
+      "tsconfig_compileroptions_esmoduleinterop",
+      "tsconfig_compileroptions_incremental",
+      "tsconfig_compileroptions_isolatedmodules",
+      "tsconfig_compileroptions_jsx",
+      "tsconfig_compileroptions_lib",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_noemit",
+      "tsconfig_compileroptions_paths",
+      "tsconfig_compileroptions_plugins",
+      "tsconfig_compileroptions_resolvejsonmodule",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_compileroptions_target",
+      "tsconfig_exclude",
+      "tsconfig_include",
+      "tsconfig_paths"
+    ],
+    "6": [
+      "install",
+      "package_dependencies",
+      "package_dependencies_auth_prisma_adapter",
+      "package_dependencies_bcryptjs",
+      "package_dependencies_cmdk",
+      "package_dependencies_dnd_kit_core",
+      "package_dependencies_dnd_kit_sortable",
+      "package_dependencies_dnd_kit_utilities",
+      "package_dependencies_install",
+      "package_dependencies_lucide_react",
+      "package_dependencies_next",
+      "package_dependencies_next_auth",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_supabase_supabase_js",
+      "package_dependencies_types_bcryptjs",
+      "package_dependencies_zod",
+      "users_oleg_projects_bugtrack_install_sh__entry"
+    ],
+    "7": [
+      "app_layout",
+      "app_layout_metadata",
+      "app_layout_rootlayout",
+      "components_authprovider",
+      "components_authprovider_authprovider",
+      "components_layoutcontent",
+      "components_layoutcontent_layoutcontent",
+      "components_layoutcontent_layoutcontentprops",
+      "components_toastprovider",
+      "components_toastprovider_toast",
+      "components_toastprovider_toastapi",
+      "components_toastprovider_toastcontext",
+      "components_toastprovider_toastkind",
+      "components_toastprovider_toastprovider"
+    ],
+    "8": [
+      "scripts_sqlite_migration_report",
+      "scripts_sqlite_migration_report_analyzesqlitedatabase",
+      "scripts_sqlite_migration_report_gettablecount",
+      "scripts_sqlite_migration_report_run",
+      "scripts_sqlite_migration_report_sourcetables",
+      "scripts_sqlite_migration_report_tableexists",
+      "test_sqlite_migration_report_test"
+    ],
+    "9": [
+      "actions_admin",
+      "actions_admin_getsystemstats",
+      "admin_page",
+      "admin_page_admindashboard"
+    ],
+    "10": [
+      "components_fileattachment",
+      "components_fileattachment_attachmentitem",
+      "components_fileattachment_fileattachment",
+      "components_fileattachment_fileattachmentprops"
+    ],
+    "11": [
+      "lib_auth_config",
+      "lib_auth_config_authorized",
+      "proxy",
+      "proxy_config"
+    ],
+    "12": [
+      "prisma_seed",
+      "prisma_seed_main",
+      "prisma_seed_prisma",
+      "prisma_seed_statuses"
+    ],
+    "13": [
+      "types_next_auth_d",
+      "types_next_auth_d_jwt",
+      "types_next_auth_d_session",
+      "types_next_auth_d_user"
+    ],
+    "14": [
+      "components_imagepreviewer",
+      "components_imagepreviewer_imagepreviewer",
+      "components_imagepreviewer_imagepreviewerprops"
+    ],
+    "15": [
+      "next_config",
+      "next_config_nextconfig",
+      "next_config_projectroot"
+    ],
+    "16": [
+      "deploy",
+      "users_oleg_projects_bugtrack_deploy_sh__entry"
+    ],
+    "17": [
+      "eslint_config",
+      "eslint_config_eslintconfig"
+    ],
+    "18": [
+      "login_page",
+      "login_page_loginpage"
+    ],
+    "19": [
+      "register_page",
+      "register_page_registerforbidden"
+    ],
+    "20": [
+      "register_route",
+      "register_route_post"
+    ],
+    "21": [
+      "restart",
+      "users_oleg_projects_bugtrack_restart_sh__entry"
+    ],
+    "22": [
+      "setup_server",
+      "users_oleg_projects_bugtrack_setup_server_sh__entry"
+    ],
+    "23": [
+      "start",
+      "users_oleg_projects_bugtrack_start_sh__entry"
+    ],
+    "24": [
+      "stop",
+      "users_oleg_projects_bugtrack_stop_sh__entry"
+    ],
+    "25": [
+      "e2e_login_smoke_spec"
+    ],
+    "26": [
+      "nextauth_route_get_post"
+    ],
+    "27": [
+      "playwright_config"
+    ],
+    "28": [
+      "test_admin_actions_rbac_test"
+    ],
+    "29": [
+      "test_admin_dashboard_rendering_test"
+    ],
+    "30": [
+      "test_ci_e2e_contract_test"
+    ],
+    "31": [
+      "test_database_scripts_test"
+    ],
+    "32": [
+      "test_deploy_script_test"
+    ],
+    "33": [
+      "test_dev_port_test"
+    ],
+    "34": [
+      "test_initial_postgresql_migration_test"
+    ],
+    "35": [
+      "test_install_script_postgresql_test"
+    ],
+    "36": [
+      "test_issue_actions_rbac_test"
+    ],
+    "37": [
+      "test_issue_creation_integrity_test"
+    ],
+    "38": [
+      "test_issue_detail_options_scope_test"
+    ],
+    "39": [
+      "test_issue_form_scope_test"
+    ],
+    "40": [
+      "test_issue_scope_integrity_test"
+    ],
+    "41": [
+      "test_issue_soft_delete_test"
+    ],
+    "42": [
+      "test_issue_update_integrity_test"
+    ],
+    "43": [
+      "test_labels_rbac_test"
+    ],
+    "44": [
+      "test_legacy_debug_scripts_test"
+    ],
+    "45": [
+      "test_notifications_rbac_test"
+    ],
+    "46": [
+      "test_p1_filter_url_contract_test"
+    ],
+    "47": [
+      "test_p1_kanban_rollback_contract_test"
+    ],
+    "48": [
+      "test_p1_toast_contract_test"
+    ],
+    "49": [
+      "test_postgresql_runtime_contract_test"
+    ],
+    "50": [
+      "test_private_attachments_test"
+    ],
+    "51": [
+      "test_project_domain_test"
+    ],
+    "52": [
+      "test_proxy_convention_test"
+    ],
+    "53": [
+      "test_registration_security_test"
+    ],
+    "54": [
+      "test_remaining_actions_rbac_test"
+    ],
+    "55": [
+      "test_scope_pages_test"
+    ],
+    "56": [
+      "test_seed_and_windows_setup_test"
+    ],
+    "57": [
+      "test_team_access_test"
+    ],
+    "58": [
+      "test_team_admin_test"
+    ],
+    "59": [
+      "test_team_membership_management_test"
+    ],
+    "60": [
+      "test_team_role_test"
+    ],
+    "61": [
+      "test_team_workflow_actions_test"
+    ],
+    "62": [
+      "test_team_workflow_schema_test"
+    ],
+    "63": [
+      "test_user_actions_security_test"
+    ],
+    "64": [
+      "test_user_validation_test"
+    ]
+  },
+  "cohesion": {
+    "0": 0.0696969696969697,
+    "1": 0.09743589743589744,
+    "2": 0.11586452762923351,
+    "3": 0.1408199643493761,
+    "4": 0.06451612903225806,
+    "5": 0.09523809523809523,
+    "6": 0.1111111111111111,
+    "7": 0.16483516483516483,
+    "8": 0.42857142857142855,
+    "9": 0.8333333333333334,
+    "10": 0.5,
+    "11": 0.5,
+    "12": 0.5,
+    "13": 0.5,
+    "14": 0.6666666666666666,
+    "15": 0.6666666666666666,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0
+  },
+  "gods": [
+    {
+      "id": "lib_authorization_requireauthenticateduser",
+      "label": "requireAuthenticatedUser()",
+      "degree": 20
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 17
+    },
+    {
+      "id": "lib_authorization_requireteamrole",
+      "label": "requireTeamRole()",
+      "degree": 15
+    },
+    {
+      "id": "components_toastprovider_usetoast",
+      "label": "useToast()",
+      "degree": 13
+    },
+    {
+      "id": "lib_authorization_requireteamadminorglobal",
+      "label": "requireTeamAdminOrGlobal()",
+      "degree": 13
+    },
+    {
+      "id": "lib_authorization_requireissueaccess",
+      "label": "requireIssueAccess()",
+      "degree": 13
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 13
+    },
+    {
+      "id": "lib_authorization_requireglobaladmin",
+      "label": "requireGlobalAdmin()",
+      "degree": 12
+    },
+    {
+      "id": "types_view_models_issuelistitem",
+      "label": "IssueListItem",
+      "degree": 8
+    },
+    {
+      "id": "actions_issue_details_savefiles",
+      "label": "saveFiles()",
+      "degree": 6
+    }
+  ],
+  "surprises": [
+    {
+      "source": "getTeamMembers()",
+      "target": "requireTeamRole()",
+      "source_files": [
+        "actions/teams.ts",
+        "lib/authorization.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities; peripheral node `getTeamMembers()` unexpectedly reaches hub `requireTeamRole()`"
+    },
+    {
+      "source": "getIssueFormData()",
+      "target": "requireAuthenticatedUser()",
+      "source_files": [
+        "actions/form-data.ts",
+        "lib/authorization.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "getStatuses()",
+      "target": "requireAuthenticatedUser()",
+      "source_files": [
+        "actions/issue-details.ts",
+        "lib/authorization.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "deleteIssue()",
+      "target": "requireIssueAccess()",
+      "source_files": [
+        "actions/issue-details.ts",
+        "lib/authorization.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `deleteIssue()` unexpectedly reaches hub `requireIssueAccess()`"
+    },
+    {
+      "source": "restoreIssue()",
+      "target": "requireIssueAccess()",
+      "source_files": [
+        "actions/issue-details.ts",
+        "lib/authorization.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `restoreIssue()` unexpectedly reaches hub `requireIssueAccess()`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `requireAuthenticatedUser()` connect `Community 0` to `Community 1`, `Community 2`, `Community 3`?",
+      "why": "High betweenness centrality (0.031) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `useToast()` connect `Community 1` to `Community 2`, `Community 3`, `Community 7`?",
+      "why": "High betweenness centrality (0.016) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `dependencies` connect `Community 6` to `Community 4`?",
+      "why": "High betweenness centrality (0.012) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `passwordSchema`, `TeamSummary`, `ManagedUser` to the rest of the system?",
+      "why": "109 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.0696969696969697 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09743589743589744 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 2` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.11586452762923351 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

@@ -82,3 +82,10 @@
     border-radius: 4px;
     color: var(--muted-foreground);
 }
+
+.context {
+    display: block;
+    margin-top: 2px;
+    color: var(--muted-foreground);
+    font-size: 12px;
+}

@@ -10,7 +10,6 @@ import {
     History as HistoryIcon,
     Send,
     User as UserIcon,
-    Circle,
     ChevronDown
 } from 'lucide-react';
 import styles from './IssueDetails.module.css';

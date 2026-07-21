@@ -2,7 +2,6 @@ import {
     Users,
     Settings,
     Layout,
-    CreditCard,
     Globe,
     ShieldCheck,
     ArrowRight,

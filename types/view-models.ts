@@ -4,13 +4,17 @@ export type IssueListItem = {
   title: string;
   description?: string | null;
   assigneeId?: string | null;
+  assigneeName?: string | null;
   projectKey: string;
+  projectName?: string | null;
+  labels: { id: string; name: string; color: string }[];
   number: number;
   status: string;
   priority: string;
   commentCount: number;
   attachmentCount: number;
   createdAt: string;
+  updatedAt: string;
 };
 
 export type WorkflowStatusOption = { id: string; name: string; position: number; type?: string };

@@ -29,6 +29,8 @@ export default function ImagePreviewer({ url, name, isOpen, onClose }: ImagePrev
             </header>
 
             <div className={styles.content} onClick={onClose}>
+                {/* Attachment URLs are authorized runtime URLs and cannot use next/image. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                     src={url}
                     alt={name}

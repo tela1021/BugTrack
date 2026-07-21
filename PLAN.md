@@ -23,7 +23,8 @@
 - [x] **M1:** Анализ и ТЗ — verify: исходный код, SQLite, deployment scripts, тесты и история PostgreSQL проверены; ТЗ дополнено.
 - [x] **M2:** Подготовка первого P0-среза — verify: выбран собственный PostgreSQL-сервер; RED-тесты для runtime-контракта, install и initial migration подтверждены.
 - [x] **M3:** Первый P0-срез — verify: Prisma переведена на PostgreSQL, добавлены базовая миграция и `.env.example`, штатные scripts используют `migrate deploy`; 6 тестов, `prisma validate` и build с PostgreSQL URL проходят.
-- [~] **M4:** Миграция и стабилизация P0 — verify: локальные PostgreSQL `bugtrack_dev` и `bugtrack_test` созданы, получают одну Prisma migration; dry-run SQLite блокирует небезопасный перенос без TeamMember. Core issue-RBAC включён для чтения и ключевых мутаций. Остаются перенос данных с утверждённой membership-матрицей, RBAC остальных actions, доменная схема, storage и UI-моки.
+- [x] **M4:** Миграция и стабилизация P0 — verify: локальные PostgreSQL `bugtrack_dev` и `bugtrack_test` созданы, получают одну Prisma migration; тестовые SQLite-данные по решению владельца не переносятся. RBAC, доменная схема, private storage, audit history, soft delete, CI и error UX реализованы.
+- [~] **M5:** P1: рабочие сценарии — verify: фильтры списка синхронизированы с URL, а таблица задач использует server-side cursor pagination, отображает рабочие колонки и сортирует title/priority/updatedAt. Kanban откатывает неуспешное optimistic-перемещение, toast заменяет блокирующие alert. Командная палитра открывает создание задачи и навигацию, поддерживает `Cmd/Ctrl+K`, `c`, `/`, `g i/b/p`, `Esc`, поиск с debounce 200 мс и лимитом 20. Остаются настройка колонок и массовые операции, WIP Kanban, полная карточка задачи и responsive/design-system срезы.
 
 ## Scope boundaries
 

@@ -139,6 +139,52 @@
 
 Владелец продукта подтвердил, что SQLite-данные тестовые. Их перенос в PostgreSQL, membership backfill и cutover verification не требуются. PostgreSQL `bugtrack_dev` и `bugtrack_test` остаются чистыми базами, созданными через Prisma migrations.
 
+### 2026-07-21 — P1 / командная палитра и локальный E2E-контур
+
+**What happened:**
+
+Командная палитра получила рабочие действия: создание задачи, поиск, список, доску, проекты и настройки. Добавлены глобальные горячие клавиши `Cmd/Ctrl+K`, `c`, `/`, `g i`, `g b`, `g p` и `Esc`; одиночные shortcuts игнорируются в полях ввода. Поиск запускается с debounce 200 мс, ограничен 20 результатами и ищет также по команде и проекту. Создание задачи вынесено в единственный модал layout-уровня, поэтому одна команда работает на любом не-auth экране; список обновляется после успешного создания.
+
+Playwright переведён на изолированный порт `3009` и `npm run dev:bugtrack`, поэтому локальный E2E не конфликтует с соседним сервисом на `3008` и может переиспользовать уже запущенный dev-server.
+
+**Verification:**
+
+RED → GREEN: добавлены контракты командной палитры и E2E-порта. `npm test`: 52/52 passed; `npm run typecheck`, `npm run lint` без warnings/errors, `npm run build` и `npm run test:e2e`: passed. Встроенный браузер не смог перейти со старой страницы ошибки по собственной URL-политике; браузерный smoke-test выполнен Playwright.
+
+**Decision:**
+
+Для открытия модала используются именованные browser-события, а не URL-флаг: это позволяет не дублировать формы создания на страницах и не оставляет одноразовое состояние в shareable URL.
+
+### 2026-07-21 — P1 / таблица списка задач
+
+**What happened:**
+
+Список карточек на главном экране заменён на компактную таблицу с ID, названием, priority, статусом, исполнителем, метками, проектом и датой изменения. DTO списка обогащён relation-данными, а новый `getIssuesPage` использует Prisma cursor, стабильный вторичный order by `id` и `limit + 1` для определения следующей страницы. Полный `getIssues` сохранён для Kanban, поэтому доска не теряет задачи при переключении вида.
+
+**Verification:**
+
+RED → GREEN: добавлен контракт таблицы и cursor pagination. `npm test`: 53/53 passed; `npm run lint`, `npm run typecheck`, `npm run build`, `npm run test:e2e` и `git diff --check`: passed.
+
+### 2026-07-21 — регрессия клика по строке задачи
+
+**What happened:**
+
+После перехода к таблице только ID и название были ссылками, поэтому клик по остальным ячейкам не открывал задачу. Вся строка теперь открывает detail route; добавлены keyboard-equivalents `Enter` и `Space`, focus-ring и regression-assertion в контракте таблицы.
+
+**Verification:**
+
+`npm test`: 53/53 passed; `npm run lint`, `npm run typecheck`, `npm run build`, `npm run test:e2e` и `git diff --check`: passed.
+
+### 2026-07-21 — регрессия сброса фильтров
+
+**What happened:**
+
+При reset URL сохранял параметры, значения которых вернулись к default. Следующий effect считывал старые query-параметры и снова включал фильтры. Сброс теперь явно удаляет каждый default-параметр, сохраняя только независимый `view`.
+
+**Verification:**
+
+Регрессионный тест фильтров, `npm test` (53/53), lint, typecheck, build, E2E и `git diff --check`: passed.
+
 ## Deviations summary
 
 | Deviation | Reason | Plan updated? |

@@ -3,7 +3,6 @@ import {
     Layout,
     List,
     Shield,
-    Settings,
     Bell
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
