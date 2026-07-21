@@ -14,12 +14,18 @@ import {
     ChevronDown
 } from 'lucide-react';
 import styles from './IssueDetails.module.css';
+import { useToast } from '@/components/ToastProvider';
+
+type IssueDetail = NonNullable<Awaited<ReturnType<typeof getIssueByReadableId>>>;
+type IssueMember = Awaited<ReturnType<typeof getUsers>>[number];
+type IssueStatus = Awaited<ReturnType<typeof getStatuses>>[number];
 
 export default function IssueDetailsPage({ params }: { params: Promise<{ readableId: string }> }) {
+    const toast = useToast();
     const { readableId } = use(params);
-    const [issue, setIssue] = useState<any>(null);
-    const [users, setUsers] = useState<any[]>([]);
-    const [statuses, setStatuses] = useState<any[]>([]);
+    const [issue, setIssue] = useState<IssueDetail | null>(null);
+    const [users, setUsers] = useState<IssueMember[]>([]);
+    const [statuses, setStatuses] = useState<IssueStatus[]>([]);
     const [commentText, setCommentText] = useState('');
     const [commentFiles, setCommentFiles] = useState<File[]>([]);
     const [loading, setLoading] = useState(true);
@@ -27,14 +33,14 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
     const commentFileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        // Fetch users immediately
-        getUsers().then(setUsers);
-
-        // Fetch issue, then fetch statuses for that issue's team
         getIssueByReadableId(readableId).then(async (issueData) => {
             if (issueData) {
                 setIssue(issueData);
-                const statusesData = await getStatuses();
+                const [usersData, statusesData] = await Promise.all([
+                    getUsers(issueData.team.key),
+                    getStatuses(issueData.team.key),
+                ]);
+                setUsers(usersData);
                 setStatuses(statusesData);
             }
             setLoading(false);
@@ -69,7 +75,7 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
         if (res.success) {
             refreshIssue();
         } else {
-            alert('Upload failed: ' + res.error);
+            toast.error(res.error || 'Не удалось загрузить вложение');
         }
 
         // Reset input
@@ -79,13 +85,19 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
     const handleStatusChange = async (newStatusId: string) => {
         if (!issue) return;
         const res = await updateIssue(issue.id, { statusId: newStatusId });
-        if (res.success) refreshIssue();
+        if (res.success) {
+            toast.success('Статус обновлён');
+            refreshIssue();
+        } else toast.error(res.error || 'Не удалось обновить статус');
     };
 
     const handleAssigneeChange = async (newAssigneeId: string) => {
         if (!issue) return;
         const res = await updateIssue(issue.id, { assigneeId: newAssigneeId });
-        if (res.success) refreshIssue();
+        if (res.success) {
+            toast.success('Исполнитель обновлён');
+            refreshIssue();
+        } else toast.error(res.error || 'Не удалось обновить исполнителя');
     };
 
     const refreshIssue = async () => {
@@ -152,7 +164,7 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
                         </h3>
                         {issue.attachments.length > 0 ? (
                             <div className={styles.attachmentList} style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '12px' }}>
-                                {issue.attachments.map((file: any) => (
+                                {issue.attachments.map((file) => (
                                     <a
                                         key={file.id}
                                         href={file.url}
@@ -181,7 +193,7 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
                             <MessageSquare size={16} /> Comments ({issue.comments.length})
                         </h3>
                         <div className={styles.commentList}>
-                            {issue.comments.map((comment: any) => (
+                            {issue.comments.map((comment) => (
                                 <div key={comment.id} className={styles.comment}>
                                     <div className={styles.commentHeader}>
                                         <span className={styles.author}>{comment.author.name}</span>
@@ -191,7 +203,7 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
 
                                     {comment.attachments && comment.attachments.length > 0 && (
                                         <div className={styles.commentAttachments}>
-                                            {comment.attachments.map((file: any) => (
+                                            {comment.attachments.map((file) => (
                                                 <a key={file.id} href={file.url} target="_blank" rel="noopener noreferrer" className={styles.smallAttachment}>
                                                     <Paperclip size={12} />
                                                     <span>{file.name}</span>
@@ -284,7 +296,7 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
                             <HistoryIcon size={14} /> History
                         </h3>
                         <div className={styles.historyList}>
-                            {issue.history.map((h: any) => (
+                            {issue.history.map((h) => (
                                 <div key={h.id} className={styles.historyItem}>
                                     <p>
                                         <strong>{h.actor.name}</strong> changed <strong>{h.field}</strong> from <span>{h.oldValue}</span> to <span>{h.newValue}</span>

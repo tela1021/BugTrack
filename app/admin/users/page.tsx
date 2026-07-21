@@ -4,37 +4,42 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, UserPlus, MoreVertical, Loader2, X } from "lucide-react";
 import Link from "next/link";
 import { getUsers, updateUser, createUser, resetPassword } from '@/actions/users';
+import type { User } from '@prisma/client';
+import { useToast } from '@/components/ToastProvider';
+
+type ManagedUser = Pick<User, 'id' | 'name' | 'email' | 'role'>;
 
 export default function UsersAdmin() {
+    const toast = useToast();
     // ... (Keep existing state)
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<ManagedUser[]>([]);
     const [loading, setLoading] = useState(true);
 
     // Edit State
-    const [editingUser, setEditingUser] = useState<any>(null);
+    const [editingUser, setEditingUser] = useState<ManagedUser | null>(null);
     const [editName, setEditName] = useState('');
     const [editRole, setEditRole] = useState<'ADMIN' | 'MEMBER'>('MEMBER');
     const [newPassword, setNewPassword] = useState(''); // For reset
 
     // Create State
     const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const [createData, setCreateData] = useState({ name: '', email: '', password: '', role: 'MEMBER' });
+    const [createData, setCreateData] = useState<{ name: string; email: string; password: string; role: 'ADMIN' | 'MEMBER' }>({ name: '', email: '', password: '', role: 'MEMBER' });
+
+    async function loadUsers() {
+        setLoading(true);
+        const data = await getUsers();
+        setUsers(data);
+        setLoading(false);
+    }
 
     useEffect(() => {
         loadUsers();
     }, []);
 
-    const loadUsers = async () => {
-        setLoading(true);
-        const data = await getUsers();
-        setUsers(data);
-        setLoading(false);
-    };
-
-    const handleEditClick = (user: any) => {
+    const handleEditClick = (user: ManagedUser) => {
         setEditingUser(user);
         setEditName(user.name || '');
-        setEditRole(user.role);
+        setEditRole(user.role === 'ADMIN' ? 'ADMIN' : 'MEMBER');
         setNewPassword(''); // Reset
     };
 
@@ -53,8 +58,9 @@ export default function UsersAdmin() {
         if (res.success) {
             await loadUsers();
             setEditingUser(null);
+            toast.success('Пользователь обновлён');
         } else {
-            alert('Failed to update user: ' + res.error);
+            toast.error(res.error || 'Не удалось обновить пользователя');
         }
     };
 
@@ -64,15 +70,16 @@ export default function UsersAdmin() {
             name: createData.name,
             email: createData.email,
             password: createData.password,
-            role: createData.role as any
+            role: createData.role
         });
 
         if (res.success) {
             await loadUsers();
             setIsCreateOpen(false);
             setCreateData({ name: '', email: '', password: '', role: 'MEMBER' });
+            toast.success('Пользователь создан');
         } else {
-            alert('Failed to create user: ' + res.error);
+            toast.error(res.error || 'Не удалось создать пользователя');
         }
     };
 
@@ -160,7 +167,7 @@ export default function UsersAdmin() {
                                 <select
                                     className="input"
                                     value={editRole}
-                                    onChange={e => setEditRole(e.target.value as any)}
+                                    onChange={e => setEditRole(e.target.value as 'ADMIN' | 'MEMBER')}
                                 >
                                     <option value="MEMBER">Member</option>
                                     <option value="ADMIN">Admin</option>
@@ -234,7 +241,7 @@ export default function UsersAdmin() {
                                 <select
                                     className="input"
                                     value={createData.role}
-                                    onChange={e => setCreateData({ ...createData, role: e.target.value })}
+                                    onChange={e => setCreateData({ ...createData, role: e.target.value as 'ADMIN' | 'MEMBER' })}
                                 >
                                     <option value="MEMBER">Member</option>
                                     <option value="ADMIN">Admin</option>

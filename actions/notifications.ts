@@ -2,7 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@/lib/auth';
+import { requireAuthenticatedUser } from '@/lib/authorization';
 
 export async function createNotification(data: {
     userId: string;
@@ -15,7 +15,7 @@ export async function createNotification(data: {
     if (data.userId === data.actorId) return null;
 
     try {
-        const notification = await (prisma as any).notification.create({
+        const notification = await prisma.notification.create({
             data: {
                 userId: data.userId,
                 actorId: data.actorId,
@@ -32,11 +32,10 @@ export async function createNotification(data: {
 }
 
 export async function getNotifications() {
-    const session = await auth();
-    if (!session?.user?.id) return [];
+    const userId = await requireAuthenticatedUser();
 
-    return await (prisma as any).notification.findMany({
-        where: { userId: session.user.id },
+    return await prisma.notification.findMany({
+        where: { userId },
         include: {
             actor: true,
             issue: true,
@@ -48,10 +47,16 @@ export async function getNotifications() {
 
 export async function markAsRead(id: string) {
     try {
-        await (prisma as any).notification.update({
-            where: { id },
+        const userId = await requireAuthenticatedUser();
+        const result = await prisma.notification.updateMany({
+            where: { id, userId },
             data: { read: true }
         });
+
+        if (result.count === 0) {
+            return { success: false, error: 'Notification not found' };
+        }
+
         revalidatePath('/notifications');
         return { success: true };
     } catch (error) {
@@ -60,10 +65,9 @@ export async function markAsRead(id: string) {
 }
 
 export async function getUnreadCount() {
-    const session = await auth();
-    if (!session?.user?.id) return 0;
+    const userId = await requireAuthenticatedUser();
 
-    return await (prisma as any).notification.count({
-        where: { userId: session.user.id, read: false }
+    return await prisma.notification.count({
+        where: { userId, read: false }
     });
 }

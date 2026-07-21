@@ -1,0 +1,9 @@
+ALTER TABLE "issues"
+ADD COLUMN "deletedAt" TIMESTAMP(3),
+ADD COLUMN "deletedById" TEXT;
+
+ALTER TABLE "issues"
+ADD CONSTRAINT "issues_deletedById_fkey"
+FOREIGN KEY ("deletedById") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+CREATE INDEX "issues_deletedAt_idx" ON "issues"("deletedAt");

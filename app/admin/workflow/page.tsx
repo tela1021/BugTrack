@@ -13,8 +13,24 @@ import {
 import Link from 'next/link';
 import styles from './Workflow.module.css';
 import { useEffect, useState } from 'react';
-import { getIssueFormData } from '@/actions/form-data';
 import { getWorkflowStatuses, createStatus, deleteStatus } from '@/actions/workflow';
+import { getAdminTeams } from '@/actions/teams';
+import { useToast } from '@/components/ToastProvider';
+
+type TeamOption = {
+    id: string;
+    name: string;
+    key: string;
+};
+
+type WorkflowStatus = {
+    id: string;
+    name: string;
+    type: string;
+    position: number;
+    teamId: string | null;
+    color?: string | null;
+};
 
 const getTypeIcon = (type: string) => {
     switch (type) {
@@ -27,17 +43,33 @@ const getTypeIcon = (type: string) => {
 };
 
 export default function WorkflowAdmin() {
-    const [statuses, setStatuses] = useState<any[]>([]);
+    const toast = useToast();
+    const [teams, setTeams] = useState<TeamOption[]>([]);
+    const [selectedTeamId, setSelectedTeamId] = useState('');
+    const [statuses, setStatuses] = useState<WorkflowStatus[]>([]);
     const [loading, setLoading] = useState(true);
     const [newStatusName, setNewStatusName] = useState('');
 
     useEffect(() => {
+        getAdminTeams().then(data => {
+            setTeams(data);
+            setSelectedTeamId(data[0]?.id ?? '');
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!selectedTeamId) {
+            setStatuses([]);
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
-        getWorkflowStatuses().then(data => {
+        getWorkflowStatuses(selectedTeamId).then(data => {
             setStatuses(data);
             setLoading(false);
         });
-    }, []);
+    }, [selectedTeamId]);
 
     const handleAddStatus = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,15 +77,16 @@ export default function WorkflowAdmin() {
 
         const result = await createStatus({
             name: newStatusName,
-            type: 'TODO'
+            type: 'TODO',
+            teamId: selectedTeamId
         });
 
-        if (result.success) {
+        if (result.success && result.data) {
             setStatuses([...statuses, result.data]);
             setNewStatusName('');
+            toast.success('Статус добавлен');
         } else {
-            console.error(result.error);
-            alert(`Failed to add status: ${result.error}`);
+            toast.error(result.error || 'Не удалось добавить статус');
         }
     };
 
@@ -62,9 +95,9 @@ export default function WorkflowAdmin() {
             const result = await deleteStatus(id);
             if (result.success) {
                 setStatuses(statuses.filter(s => s.id !== id));
+                toast.success('Статус удалён');
             } else {
-                console.error(result.error);
-                alert(`Failed to delete status: ${result.error}`);
+                toast.error(result.error || 'Не удалось удалить статус');
             }
         }
     };
@@ -78,7 +111,25 @@ export default function WorkflowAdmin() {
             <div className={styles.header}>
                 <div>
                     <h1 className={styles.title}>Workflow Management</h1>
-                    <p className={styles.subtitle}>Define and order the lifecycle of your issues globally across all projects</p>
+                    <p className={styles.subtitle}>Define the lifecycle of issues for a selected team</p>
+                </div>
+                <div className={styles.teamSelector}>
+                    <label htmlFor="workflow-team">Team</label>
+                    <select
+                        id="workflow-team"
+                        className={styles.select}
+                        value={selectedTeamId}
+                        onChange={(event) => setSelectedTeamId(event.target.value)}
+                        disabled={teams.length === 0}
+                    >
+                        {teams.length === 0 ? (
+                            <option value="">No teams available</option>
+                        ) : teams.map((team) => (
+                            <option key={team.id} value={team.id}>
+                                {team.name} ({team.key})
+                            </option>
+                        ))}
+                    </select>
                 </div>
             </div>
 
@@ -120,7 +171,7 @@ export default function WorkflowAdmin() {
                                 onChange={(e) => setNewStatusName(e.target.value)}
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary">Add</button>
+                        <button type="submit" className="btn btn-primary" disabled={!selectedTeamId}>Add</button>
                     </form>
                 </div>
 

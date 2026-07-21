@@ -9,19 +9,27 @@ import FiltersBar from "@/components/FiltersBar";
 import { List, Layout } from "lucide-react";
 import { getIssues } from "@/actions/issues";
 import { getStatuses, updateIssue } from "@/actions/issue-details";
+import type { IssueListItem, WorkflowStatusOption } from '@/types/view-models';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useToast } from '@/components/ToastProvider';
+
+const defaultFilters = {
+  status: 'All',
+  assignee: 'All',
+  sort: 'newest',
+  team: 'All',
+  search: '',
+};
 
 export default function Home() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [view, setView] = useState<'list' | 'board'>('list');
-  const [filters, setFilters] = useState({
-    status: 'All',
-    assignee: 'All',
-    sort: 'newest',
-    team: 'All',
-    search: ''
-  });
-  const [issues, setIssues] = useState<any[]>([]);
-  const [statuses, setStatuses] = useState<any[]>([]);
+  const [filters, setFilters] = useState(defaultFilters);
+  const [issues, setIssues] = useState<IssueListItem[]>([]);
+  const [statuses, setStatuses] = useState<WorkflowStatusOption[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchIssues = async () => {
@@ -39,10 +47,36 @@ export default function Home() {
     fetchIssues();
   }, [filters]);
 
-  const handleStatusChange = async (issueId: number, statusId: string) => {
-    await updateIssue(issueId, { statusId });
-    // Refetch to ensure state is in sync
-    fetchIssues();
+  useEffect(() => {
+    setFilters({
+      status: searchParams.get('status') || defaultFilters.status,
+      assignee: searchParams.get('assignee') || defaultFilters.assignee,
+      sort: searchParams.get('sort') || defaultFilters.sort,
+      team: searchParams.get('team') || defaultFilters.team,
+      search: searchParams.get('search') || defaultFilters.search,
+    });
+  }, [searchParams]);
+
+  const handleFilterChange = (nextFilters: typeof defaultFilters) => {
+    setFilters(nextFilters);
+    const params = new URLSearchParams();
+    (Object.entries(nextFilters) as [keyof typeof defaultFilters, string][]).forEach(([key, value]) => {
+      if (value && value !== defaultFilters[key]) params.set(key, value);
+    });
+    router.replace(params.size > 0 ? `/?${params.toString()}` : '/', { scroll: false });
+  };
+
+  const resetFilters = () => handleFilterChange(defaultFilters);
+
+  const handleStatusChange = async (issueId: number, statusId: string): Promise<boolean> => {
+    const result = await updateIssue(issueId, { statusId });
+    if (result.success) {
+      toast.success('Статус задачи обновлён');
+      fetchIssues();
+      return true;
+    }
+    toast.error(result.error || 'Не удалось обновить статус задачи');
+    return false;
   };
 
   // Create columns based on fetched statuses
@@ -64,9 +98,6 @@ export default function Home() {
     name: status.name,
     issues: issues.filter(i => i.status?.toLowerCase() === status.name.toLowerCase())
   }));
-
-
-  // console.log('Board Columns:', boardColumns.map(c => ({ name: c.name, count: c.issues.length })));
 
   if (boardColumns.length === 0) {
     // Fallback if no statuses found
@@ -93,6 +124,8 @@ export default function Home() {
               className={`btn ${view === 'list' ? 'btn-primary' : ''}`}
               style={{ padding: '4px 8px', fontSize: '12px' }}
               onClick={() => setView('list')}
+              aria-label="Список задач"
+              title="Список задач"
             >
               <List size={14} />
             </button>
@@ -100,6 +133,8 @@ export default function Home() {
               className={`btn ${view === 'board' ? 'btn-primary' : ''}`}
               style={{ padding: '4px 8px', fontSize: '12px' }}
               onClick={() => setView('board')}
+              aria-label="Доска задач"
+              title="Доска задач"
             >
               <Layout size={14} />
             </button>
@@ -116,7 +151,7 @@ export default function Home() {
 
       <FiltersBar
         activeFilters={filters}
-        onFilterChange={setFilters}
+        onFilterChange={handleFilterChange}
         statuses={displayStatuses}
       />
 
@@ -130,7 +165,8 @@ export default function Home() {
             ))
           ) : (
             <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted-foreground)' }}>
-              No issues match your filters.
+              <p>Нет задач по выбранным фильтрам.</p>
+              <button type="button" className="btn glass" style={{ marginTop: '12px' }} onClick={resetFilters}>Сбросить фильтры</button>
             </div>
           )}
         </div>

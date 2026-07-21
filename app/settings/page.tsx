@@ -1,18 +1,14 @@
 "use client";
 
 import { useActionState } from "react";
-import { updatePassword } from "@/actions/settings";
+import { updatePassword, type PasswordActionState } from "@/actions/settings";
 import styles from "./Settings.module.css";
 import { KeyRound, ShieldCheck, AlertCircle } from "lucide-react";
 
-const initialState = {
-    error: undefined as string | undefined,
-    success: undefined as string | undefined,
-    fieldErrors: {} as Record<string, string[]> | undefined
-};
+const initialState: PasswordActionState = { fieldErrors: {} };
 
 export default function SettingsPage() {
-    const [state, formAction, isPending] = useActionState(updatePassword, initialState as any);
+    const [state, formAction, isPending] = useActionState(updatePassword, initialState);
 
     return (
         <div style={{ padding: '40px', maxWidth: '800px' }}>
@@ -72,7 +68,7 @@ export default function SettingsPage() {
                                 type="password"
                                 id="newPassword"
                                 name="newPassword"
-                                placeholder="Min. 6 characters"
+                                placeholder="Min. 12 characters"
                                 required
                             />
                         </div>

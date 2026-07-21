@@ -4,22 +4,25 @@ import { Filter, User, ArrowDownUp, Folder, Search } from 'lucide-react';
 import styles from './FiltersBar.module.css';
 import { useEffect, useState } from 'react';
 import { getIssueFormData } from '@/actions/form-data';
+import type { TeamOption, UserOption, WorkflowStatusOption } from '@/types/view-models';
+
+type IssueFilters = {
+    status: string;
+    assignee: string;
+    sort: string;
+    team: string;
+    search: string;
+};
 
 interface FiltersBarProps {
-    onFilterChange: (filters: any) => void;
-    activeFilters: {
-        status: string;
-        assignee: string;
-        sort: string;
-        team?: string;
-        search?: string;
-    };
-    statuses?: any[];
+    onFilterChange: (filters: IssueFilters) => void;
+    activeFilters: IssueFilters;
+    statuses?: WorkflowStatusOption[];
 }
 
 export default function FiltersBar({ onFilterChange, activeFilters, statuses = [] }: FiltersBarProps) {
-    const [teams, setTeams] = useState<any[]>([]);
-    const [users, setUsers] = useState<any[]>([]);
+    const [teams, setTeams] = useState<TeamOption[]>([]);
+    const [users, setUsers] = useState<UserOption[]>([]);
 
     useEffect(() => {
         getIssueFormData().then(({ teams, users }) => {

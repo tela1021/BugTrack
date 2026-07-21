@@ -1,26 +1,27 @@
 'use server';
 
-import { auth } from "@/lib/auth";
+import { requireAuthenticatedUser } from "@/lib/authorization";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
 const passwordSchema = z.object({
     currentPassword: z.string().min(1, "Current password is required"),
-    newPassword: z.string().min(6, "New password must be at least 6 characters"),
+    newPassword: z.string().min(12, "New password must be at least 12 characters"),
     confirmPassword: z.string().min(1, "Please confirm your new password")
 }).refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"]
 });
 
-export async function updatePassword(prevState: any, formData: FormData) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        return { error: "Not authenticated" };
-    }
+export type PasswordActionState = {
+    error?: string;
+    success?: string;
+    fieldErrors?: Record<string, string[] | undefined>;
+};
 
-    const userId = session.user.id;
+export async function updatePassword(_prevState: PasswordActionState, formData: FormData): Promise<PasswordActionState> {
+    const userId = await requireAuthenticatedUser();
     const validatedFields = passwordSchema.safeParse(
         Object.fromEntries(formData.entries())
     );
@@ -60,8 +61,7 @@ export async function updatePassword(prevState: any, formData: FormData) {
         });
 
         return { success: "Password updated successfully" };
-    } catch (error) {
-        console.error("Failed to update password:", error);
+    } catch {
         return { error: "Internal server error" };
     }
 }

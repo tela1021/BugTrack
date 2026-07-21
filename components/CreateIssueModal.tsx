@@ -7,49 +7,73 @@ import { X } from 'lucide-react';
 import { createIssue } from '@/actions/issues';
 import { updateIssue, addIssueAttachment } from '@/actions/issue-details';
 import { getIssueFormData } from '@/actions/form-data';
+import type { IssueListItem } from '@/types/view-models';
+import { useToast } from './ToastProvider';
 
 interface CreateIssueModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSuccess?: () => void; // New prop
-    initialData?: any;
+    initialData?: IssueListItem;
+    initialTeamKey?: string;
 }
 
-export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialData }: CreateIssueModalProps) {
-    if (!isOpen) return null;
+type TeamFormData = {
+    id: string;
+    key: string;
+    name: string;
+    statuses: { id: string; name: string; type: string }[];
+    members: { id: string; name: string | null; email: string }[];
+};
 
+export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialData, initialTeamKey }: CreateIssueModalProps) {
+    const toast = useToast();
     const isEditing = !!initialData;
     const [loading, setLoading] = useState(false);
-    const [users, setUsers] = useState<any[]>([]);
-    const [teams, setTeams] = useState<any[]>([]);
-    const [selectedTeam, setSelectedTeam] = useState(initialData?.projectKey || 'BUG');
+    const [teams, setTeams] = useState<TeamFormData[]>([]);
+    const [selectedTeam, setSelectedTeam] = useState(initialTeamKey || initialData?.projectKey || 'BUG');
+    const [selectedStatus, setSelectedStatus] = useState(initialData?.status || '');
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const selectedTeamData = teams.find((team) => team.key === selectedTeam);
 
     useEffect(() => {
-        getIssueFormData().then(({ users, teams }) => {
-            setUsers(users);
+        if (!isOpen) return;
+
+        getIssueFormData().then(({ teams }) => {
             setTeams(teams);
             if (teams.length > 0 && !initialData) {
-                const defaultTeam = teams.find(t => t.key === 'BUG') || teams[0];
+                const defaultTeam = teams.find((team) => team.key === 'BUG') || teams[0];
                 if (defaultTeam) setSelectedTeam(defaultTeam.key);
             }
         });
-    }, [initialData]);
+    }, [initialData, isOpen]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    useEffect(() => {
+        if (!selectedTeamData?.statuses.length) {
+            setSelectedStatus('');
+            return;
+        }
+
+        if (!selectedTeamData.statuses.some((status) => status.name === selectedStatus)) {
+            setSelectedStatus(selectedTeamData.statuses[0].name);
+        }
+    }, [selectedStatus, selectedTeamData]);
+
+    if (!isOpen) return null;
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
 
-        const form = e.target as any;
-        const title = form.title.value;
-        const description = form.description.value;
-        const status = form.status.value;
-        const priority = form.priority.value;
-        const assigneeId = form.assigneeId.value;
+        const form = new FormData(e.currentTarget);
+        const title = String(form.get('title') || '');
+        const description = String(form.get('description') || '');
+        const priority = String(form.get('priority') || 'NONE');
+        const assigneeId = String(form.get('assigneeId') || '');
 
         if (isEditing) {
             // Update logic
-            const updateData: any = {
+            const updateData = {
                 title,
                 description,
                 priority: priority.toUpperCase(),
@@ -77,11 +101,12 @@ export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialDa
 
             setLoading(false);
             if (res.success) {
+                toast.success('Задача обновлена');
                 if (onSuccess) onSuccess();
                 onClose();
                 setSelectedFiles([]);
             } else {
-                alert('Failed to update issue: ' + res.error);
+                toast.error(res.error || 'Не удалось обновить задачу');
             }
 
         } else {
@@ -89,7 +114,7 @@ export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialDa
             const formData = new FormData();
             formData.append('title', title);
             formData.append('description', description);
-            formData.append('status', status);
+            formData.append('status', selectedStatus);
             formData.append('priority', priority);
             formData.append('assigneeId', assigneeId);
             formData.append('teamKey', selectedTeam);
@@ -102,11 +127,12 @@ export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialDa
             setLoading(false);
 
             if (res.success) {
+                toast.success('Задача создана');
                 if (onSuccess) onSuccess();
                 onClose();
                 setSelectedFiles([]); // Reset files
             } else {
-                alert('Failed to create issue: ' + res.error);
+                toast.error(res.error || 'Не удалось создать задачу');
             }
         }
     };
@@ -136,7 +162,7 @@ export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialDa
                         className={styles.descriptionInput}
                         placeholder="Add description..."
                         rows={5}
-                        defaultValue={initialData?.description}
+                        defaultValue={initialData?.description ?? undefined}
                     />
 
                     <div className={styles.attachmentsSection}>
@@ -145,7 +171,7 @@ export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialDa
 
                     <div className={styles.metaGrid}>
                         <div className={styles.metaItem}>
-                            <label>Project</label>
+                            <label>Team</label>
                             <select
                                 className="input"
                                 value={selectedTeam}
@@ -159,10 +185,16 @@ export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialDa
                         </div>
                         <div className={styles.metaItem}>
                             <label>Status</label>
-                            <select name="status" className="input" defaultValue={initialData?.status}>
-                                <option>Todo</option>
-                                <option>In Progress</option>
-                                <option>Done</option>
+                            <select
+                                name="status"
+                                className="input"
+                                value={selectedStatus}
+                                onChange={(event) => setSelectedStatus(event.target.value)}
+                                disabled={!selectedTeamData?.statuses.length}
+                            >
+                                {selectedTeamData?.statuses.map((status) => (
+                                    <option key={status.id} value={status.name}>{status.name}</option>
+                                ))}
                             </select>
                         </div>
                         <div className={styles.metaItem}>
@@ -176,10 +208,10 @@ export default function CreateIssueModal({ isOpen, onClose, onSuccess, initialDa
                         </div>
                         <div className={styles.metaItem}>
                             <label>Assignee</label>
-                            <select name="assigneeId" className="input" defaultValue={initialData?.assigneeId || ""}>
+                            <select name="assigneeId" className="input" defaultValue={initialData?.assigneeId ?? undefined}>
                                 <option value="">Unassigned</option>
-                                {users.map(u => (
-                                    <option key={u.id} value={u.id}>{u.name}</option>
+                                {selectedTeamData?.members.map((member) => (
+                                    <option key={member.id} value={member.id}>{member.name || member.email}</option>
                                 ))}
                             </select>
                         </div>

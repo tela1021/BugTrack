@@ -38,7 +38,7 @@ npm ci
 
 echo "Preparing database client and schema..."
 npx prisma generate
-npx prisma db push
+npx prisma migrate deploy
 
 echo "Building application..."
 npm run build

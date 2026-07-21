@@ -2,12 +2,19 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
-import { auth } from '@/lib/auth';
+import { requireAuthenticatedUser, requireTeamRole } from '@/lib/authorization';
+import { createIssueSchema } from '@/lib/validation.mts';
+import { deleteAttachmentFile, saveAttachmentFile, validateAttachmentFiles } from '@/lib/attachment-storage';
+import type { Prisma } from '@prisma/client';
 
-export async function getIssues(filters?: { status?: string; assignee?: string; sort?: string; team?: string; search?: string }) {
-    const where: any = {};
+export async function getIssues(filters?: { status?: string; assignee?: string; sort?: string; team?: string; projectId?: string; search?: string }) {
+    const userId = await requireAuthenticatedUser();
+    const memberships = await prisma.teamMember.findMany({
+        where: { userId },
+        select: { teamId: true },
+    });
+    const accessibleTeamIds = memberships.map((membership) => membership.teamId);
+    const where: Prisma.IssueWhereInput = { teamId: { in: accessibleTeamIds }, deletedAt: null };
 
     if (filters?.search) {
         where.OR = [
@@ -17,21 +24,11 @@ export async function getIssues(filters?: { status?: string; assignee?: string; 
         ];
     }
 
-    if (filters?.status && filters.status !== 'All') {
-        const status = await prisma.workflowStatus.findFirst({
-            where: { name: filters.status }
-        });
-        if (status) {
-            where.statusId = status.id;
-        }
-    }
-
     if (filters?.assignee && filters.assignee !== 'All') {
         if (filters.assignee === 'Unassigned') {
             where.assigneeId = null;
         } else if (filters.assignee === 'Me') {
-            const session = await auth();
-            if (session?.user?.id) where.assigneeId = session.user.id;
+            where.assigneeId = userId;
         } else {
             // Assume it's a specific user ID
             where.assigneeId = filters.assignee;
@@ -40,17 +37,25 @@ export async function getIssues(filters?: { status?: string; assignee?: string; 
 
     if (filters?.team && filters.team !== 'All') {
         const team = await prisma.team.findUnique({ where: { key: filters.team } });
-        if (team) {
-            where.teamId = team.id;
+        if (!team || !accessibleTeamIds.includes(team.id)) {
+            return [];
         }
+        where.teamId = team.id;
     }
 
-    const orderBy: any = {};
-    if (filters?.sort === 'oldest') {
-        orderBy.createdAt = 'asc';
-    } else {
-        orderBy.createdAt = 'desc';
+    if (filters?.status && filters.status !== 'All') {
+        // Status names are unique only inside a team. Relation filtering keeps
+        // this query correct when several accessible teams use the same name.
+        where.status = { is: { name: filters.status } };
     }
+
+    if (filters?.projectId) {
+        where.projectId = filters.projectId;
+    }
+
+    const orderBy: Prisma.IssueOrderByWithRelationInput = {
+        createdAt: filters?.sort === 'oldest' ? 'asc' : 'desc',
+    };
 
     const issues = await prisma.issue.findMany({
         where,
@@ -79,92 +84,85 @@ export async function getIssues(filters?: { status?: string; assignee?: string; 
 
 export async function createIssue(formData: FormData) {
     try {
-        const title = formData.get('title') as string;
-        const description = formData.get('description') as string;
-        const priority = formData.get('priority') as string;
-        const statusName = formData.get('status') as string;
-        const teamKey = formData.get('teamKey') as string;
-        const assigneeId = formData.get('assigneeId') as string;
-        const files = formData.getAll('files') as File[];
+        const input = createIssueSchema.parse({
+            title: formData.get('title'),
+            description: formData.get('description') || undefined,
+            priority: formData.get('priority'),
+            status: formData.get('status'),
+            teamKey: formData.get('teamKey'),
+            assigneeId: formData.get('assigneeId') || undefined,
+        });
+        const files = formData.getAll('files').filter((value): value is File => value instanceof File);
 
-        // 1. Get team
-        const team = await prisma.team.findUnique({ where: { key: teamKey } });
+        const team = await prisma.team.findUnique({ where: { key: input.teamKey } });
         if (!team) throw new Error('Project not found');
 
-        const session = await auth();
-        console.log('[DEBUG] createIssue session:', JSON.stringify(session, null, 2));
+        const { userId } = await requireTeamRole(team.id, "MEMBER");
 
-        if (!session?.user?.id) {
-            console.error('[DEBUG] Session missing user ID:', session);
-            throw new Error('Not authenticated');
-        }
-
-        // 2. Get status ID (with self-healing)
-        let status = await prisma.workflowStatus.findFirst({
-            where: { name: statusName, teamId: team.id }
+        const status = await prisma.workflowStatus.findUnique({
+            where: { teamId_name: { teamId: team.id, name: input.status } }
         });
 
-        if (!status) {
-            const statusCount = await prisma.workflowStatus.count({ where: { teamId: team.id } });
-            if (statusCount === 0) {
-                await prisma.workflowStatus.createMany({
-                    data: [
-                        { name: 'Backlog', type: 'BACKLOG', position: 0, teamId: team.id },
-                        { name: 'Todo', type: 'TODO', position: 1, teamId: team.id },
-                        { name: 'In Progress', type: 'IN_PROGRESS', position: 2, teamId: team.id },
-                        { name: 'Done', type: 'DONE', position: 3, teamId: team.id },
-                        { name: 'Canceled', type: 'CANCELED', position: 4, teamId: team.id }
-                    ]
-                });
-                status = await prisma.workflowStatus.findFirst({
-                    where: { name: statusName, teamId: team.id }
-                });
-            }
+        if (!status) throw new Error(`Invalid status '${input.status}'`);
+
+        if (input.assigneeId) {
+            const membership = await prisma.teamMember.findUnique({
+                where: { userId_teamId: { userId: input.assigneeId, teamId: team.id } },
+                select: { userId: true },
+            });
+            if (!membership) throw new Error('Assignee must be a member of the selected team');
         }
 
-        if (!status) throw new Error(`Invalid status '${statusName}'`);
+        const issue = await prisma.$transaction(async (transaction) => {
+            const sequence = await transaction.team.update({
+                where: { id: team.id },
+                data: { issueSequence: { increment: 1 } },
+                select: { issueSequence: true },
+            });
 
-        // 3. Readable ID
-        const count = await prisma.issue.count({ where: { teamId: team.id } });
-        const readableId = `${team.key}-${count + 1}`;
-
-        // 4. Create Issue
-        const issue = await prisma.issue.create({
-            data: {
-                title,
-                description,
-                priority: priority.toUpperCase() as any,
-                readableId,
-                statusId: status.id,
-                teamId: team.id,
-                reporterId: session.user.id,
-                assigneeId: assigneeId || null
-            }
+            const readableId = `${team.key}-${sequence.issueSequence}`;
+            return transaction.issue.create({
+                data: {
+                    title: input.title,
+                    description: input.description,
+                    priority: input.priority,
+                    readableId,
+                    statusId: status.id,
+                    teamId: team.id,
+                    reporterId: userId,
+                    assigneeId: input.assigneeId || null
+                }
+            });
         });
 
-        // 5. Handle File Uploads
+        await prisma.issueHistory.create({
+            data: { issueId: issue.id, actorId: userId, field: 'created', newValue: issue.readableId },
+        });
+
         if (files && files.length > 0) {
-            const uploadDir = join(process.cwd(), 'public', 'uploads');
-            await mkdir(uploadDir, { recursive: true });
-
+            validateAttachmentFiles(files);
             for (const file of files) {
-                if (file.size > 0) {
-                    const buffer = Buffer.from(await file.arrayBuffer());
-                    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-                    const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-                    const fileName = `${uniqueSuffix}-${cleanName}`;
-
-                    await writeFile(join(uploadDir, fileName), buffer);
-
-                    await prisma.attachment.create({
-                        data: {
-                            issueId: issue.id,
-                            name: file.name,
-                            url: `/uploads/${fileName}`,
-                            mimeType: file.type,
-                            size: file.size
-                        }
+                const attachment = await prisma.attachment.create({
+                    data: {
+                        issueId: issue.id,
+                        name: file.name,
+                        url: '',
+                        mimeType: file.type,
+                        size: file.size,
+                    }
+                });
+                try {
+                    const stored = await saveAttachmentFile(attachment.id, file);
+                    await prisma.attachment.update({
+                        where: { id: attachment.id },
+                        data: { url: `/api/attachments/${attachment.id}`, checksum: stored.checksum, size: stored.size },
                     });
+                } catch (error) {
+                    await Promise.allSettled([
+                        deleteAttachmentFile(attachment.id),
+                        prisma.attachment.delete({ where: { id: attachment.id } }),
+                    ]);
+                    throw error;
                 }
             }
         }
@@ -172,8 +170,7 @@ export async function createIssue(formData: FormData) {
         revalidatePath('/');
         return { success: true, data: issue };
 
-    } catch (error: any) {
-        console.error('Create Issue Error:', error);
-        return { success: false, error: error.message };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unable to create issue' };
     }
 }

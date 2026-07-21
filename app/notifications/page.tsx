@@ -5,8 +5,10 @@ import { getNotifications, markAsRead } from '@/actions/notifications';
 import { Bell, Check, MessageSquare, History, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 
+type NotificationItem = Awaited<ReturnType<typeof getNotifications>>[number];
+
 export default function NotificationsPage() {
-    const [notifications, setNotifications] = useState<any[]>([]);
+    const [notifications, setNotifications] = useState<NotificationItem[]>([]);
     const [loading, setLoading] = useState(true);
 
     const fetchNotifications = async () => {
@@ -35,7 +37,7 @@ export default function NotificationsPage() {
         }
     };
 
-    const getMessage = (n: any) => {
+    const getMessage = (n: NotificationItem) => {
         const actorName = n.actor.name || 'Someone';
         const issueTitle = n.issue.title;
         switch (n.type) {

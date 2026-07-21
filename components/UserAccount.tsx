@@ -29,7 +29,7 @@ export default function UserAccount() {
                         {session.user.name}
                     </span>
                     <span style={{ fontSize: "10px", color: "var(--muted-foreground)" }}>
-                        {(session.user as any).role || "Member"}
+                        {session.user.role || "Member"}
                     </span>
                 </div>
             </div>

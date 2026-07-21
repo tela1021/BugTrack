@@ -1,0 +1,2 @@
+ALTER TABLE "teams"
+ADD COLUMN "issueSequence" INTEGER NOT NULL DEFAULT 0;

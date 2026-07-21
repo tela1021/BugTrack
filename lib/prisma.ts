@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client'
+import { validateRuntimeConfig } from './runtime-config'
 
 const prismaClientSingleton = () => {
+    validateRuntimeConfig()
     return new PrismaClient()
 }
 

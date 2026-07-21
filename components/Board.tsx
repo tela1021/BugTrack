@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import styles from './Board.module.css';
 import IssueCard from './IssueCard';
+import type { IssueListItem } from '@/types/view-models';
 import {
     Plus,
     Circle,
@@ -26,18 +27,19 @@ const getStatusIcon = (name: string) => {
 interface Column {
     id: string;
     name: string;
-    issues: any[];
+    issues: IssueListItem[];
 }
 
 interface BoardProps {
     initialColumns: Column[];
-    onStatusChange: (issueId: number, statusId: string) => void;
+    onStatusChange: (issueId: number, statusId: string) => Promise<boolean>;
     onCreateIssue: (statusId: string) => void;
 }
 
 export default function Board({ initialColumns, onStatusChange, onCreateIssue }: BoardProps) {
     const [columns, setColumns] = useState(initialColumns);
     const [activeIssueId, setActiveIssueId] = useState<number | null>(null);
+    const [pendingIssueId, setPendingIssueId] = useState<number | null>(null);
 
     // Sync state with props when filters change
     useEffect(() => {
@@ -45,6 +47,10 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
     }, [initialColumns]);
 
     const handleDragStart = (e: React.DragEvent, issueId: number) => {
+        if (pendingIssueId !== null) {
+            e.preventDefault();
+            return;
+        }
         e.dataTransfer.setData('issueId', issueId.toString());
         setActiveIssueId(issueId);
     };
@@ -71,19 +77,28 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
 
         if (fromColId === toStatusId) return;
 
-        // Optimistic UI update
-        const newCols = [...columns];
+        // Preserve an immutable snapshot for a deterministic rollback.
+        const previousColumns = columns.map((column) => ({ ...column, issues: [...column.issues] }));
+        const newCols = columns.map((column) => ({ ...column, issues: [...column.issues] }));
         const fromCol = newCols.find(c => c.id === fromColId);
         const toCol = newCols.find(c => c.id === toStatusId);
 
         if (fromCol && toCol) {
-            const issueIndex = fromCol.issues.findIndex((i: any) => i.id === issueId.toString());
+            const issueIndex = fromCol.issues.findIndex((issue) => issue.id === issueId.toString());
             if (issueIndex > -1) {
-                const [issue] = fromCol.issues.splice(issueIndex, 1);
-                issue.status = toCol.name;
+                const [movedIssue] = fromCol.issues.splice(issueIndex, 1);
+                const issue = { ...movedIssue, status: toCol.name };
                 toCol.issues.push(issue);
                 setColumns(newCols);
-                onStatusChange(issueId, toStatusId);
+                setPendingIssueId(issueId);
+                try {
+                    const saved = await onStatusChange(issueId, toStatusId);
+                    if (!saved) setColumns(previousColumns);
+                } catch {
+                    setColumns(previousColumns);
+                } finally {
+                    setPendingIssueId(null);
+                }
             }
         }
     };
@@ -108,16 +123,18 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
                         <button
                             className={styles.addBtn}
                             onClick={() => onCreateIssue(column.id)}
+                            aria-label={`Создать задачу в статусе ${column.name}`}
+                            title={`Создать задачу в статусе ${column.name}`}
                         >
                             <Plus size={16} />
                         </button>
                     </header>
 
                     <div className={styles.issueList}>
-                        {column.issues.map((issue: any) => (
+                        {column.issues.map((issue) => (
                             <div
                                 key={issue.id}
-                                className={`${styles.draggableWrapper} ${activeIssueId === parseInt(issue.id) ? styles.dragging : ''}`}
+                                className={`${styles.draggableWrapper} ${activeIssueId === parseInt(issue.id) || pendingIssueId === parseInt(issue.id) ? styles.dragging : ''}`}
                             >
                                 <IssueCard
                                     {...issue}

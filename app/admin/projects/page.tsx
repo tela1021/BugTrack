@@ -5,36 +5,42 @@ import { ArrowLeft, Plus, Folder, Calendar, MoreVertical, Loader2 } from 'lucide
 import Link from 'next/link';
 import styles from './Projects.module.css';
 import { getProjects, createProject, updateProject } from '@/actions/projects';
+import { getAdminTeams } from '@/actions/teams';
+import type { ProjectSummary } from '@/types/view-models';
+import { useToast } from '@/components/ToastProvider';
 
 export default function ProjectsAdmin() {
-    const [projects, setProjects] = useState<any[]>([]);
+    const toast = useToast();
+    const [projects, setProjects] = useState<ProjectSummary[]>([]);
+    const [teams, setTeams] = useState<{ id: string; name: string; key: string }[]>([]);
     const [loading, setLoading] = useState(true);
 
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingProject, setEditingProject] = useState<any>(null);
-    const [formData, setFormData] = useState({ name: '', description: '' });
+    const [editingProject, setEditingProject] = useState<ProjectSummary | null>(null);
+    const [formData, setFormData] = useState({ name: '', description: '', teamId: '' });
+
+    async function loadProjects() {
+        setLoading(true);
+        const [data, teamData] = await Promise.all([getProjects(), getAdminTeams()]);
+        setProjects(data);
+        setTeams(teamData);
+        setLoading(false);
+    }
 
     useEffect(() => {
         loadProjects();
     }, []);
 
-    const loadProjects = async () => {
-        setLoading(true);
-        const data = await getProjects();
-        setProjects(data);
-        setLoading(false);
-    };
-
     const openCreateModal = () => {
         setEditingProject(null);
-        setFormData({ name: '', description: '' });
+        setFormData({ name: '', description: '', teamId: teams[0]?.id || '' });
         setIsModalOpen(true);
     };
 
-    const openEditModal = (project: any) => {
+    const openEditModal = (project: ProjectSummary) => {
         setEditingProject(project);
-        setFormData({ name: project.name, description: '' }); // Description not fetched in list but okay for now
+        setFormData({ name: project.name, description: project.description || '', teamId: project.teamId });
         setIsModalOpen(true);
     };
 
@@ -44,16 +50,17 @@ export default function ProjectsAdmin() {
 
         let res;
         if (editingProject) {
-            res = await updateProject(editingProject.id, { name: formData.name, description: formData.description });
+            res = await updateProject(editingProject.id, formData);
         } else {
-            res = await createProject(formData.name, formData.description);
+            res = await createProject(formData);
         }
 
         if (res.success) {
             await loadProjects();
             setIsModalOpen(false);
+            toast.success(editingProject ? 'Проект обновлён' : 'Проект создан');
         } else {
-            alert('Failed to save project: ' + res.error);
+            toast.error(res.error || 'Не удалось сохранить проект');
         }
     };
 
@@ -66,7 +73,7 @@ export default function ProjectsAdmin() {
             <div className={styles.header}>
                 <div>
                     <h1 className={styles.title}>Projects</h1>
-                    <p className={styles.subtitle}>Manage your organization's projects</p>
+                    <p className={styles.subtitle}>Manage your organization&apos;s projects</p>
                 </div>
                 <button className="btn btn-primary" onClick={openCreateModal}>
                     <Plus size={16} /> New Project
@@ -95,7 +102,7 @@ export default function ProjectsAdmin() {
                             </div>
 
                             <h3 className={styles.projectName}>{project.name}</h3>
-                            <span className={styles.projectKey}>{project.key}</span>
+                            <span className={styles.projectKey}>{project.teamName} ({project.teamKey})</span>
 
                             <div className={styles.stats}>
                                 <div className={styles.statItem}>
@@ -122,6 +129,20 @@ export default function ProjectsAdmin() {
                             {editingProject ? 'Edit Project' : 'Create New Project'}
                         </h2>
                         <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <label style={{ fontSize: '12px', fontWeight: 600 }}>Team</label>
+                                <select
+                                    className="input"
+                                    value={formData.teamId}
+                                    onChange={e => setFormData({ ...formData, teamId: e.target.value })}
+                                    required
+                                >
+                                    <option value="" disabled>Select a team</option>
+                                    {teams.map((team) => (
+                                        <option key={team.id} value={team.id}>{team.name} ({team.key})</option>
+                                    ))}
+                                </select>
+                            </div>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <label style={{ fontSize: '12px', fontWeight: 600 }}>Project Name</label>
                                 <input

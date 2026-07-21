@@ -7,10 +7,12 @@ import styles from './CommandPalette.module.css';
 import { searchIssues } from '@/actions/search';
 import { useRouter } from 'next/navigation';
 
+type SearchResult = Awaited<ReturnType<typeof searchIssues>>[number];
+
 export default function CommandPalette() {
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<any[]>([]);
+    const [results, setResults] = useState<SearchResult[]>([]);
     const [isPending, startTransition] = useTransition();
     const router = useRouter();
 

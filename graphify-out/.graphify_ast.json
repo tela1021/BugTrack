@@ -1,0 +1,6225 @@
+{
+  "nodes": [
+    {
+      "id": "actions_admin",
+      "label": "admin.ts",
+      "file_type": "code",
+      "source_file": "actions/admin.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_admin_getsystemstats",
+      "label": "getSystemStats()",
+      "file_type": "code",
+      "source_file": "actions/admin.ts",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_form_data",
+      "label": "form-data.ts",
+      "file_type": "code",
+      "source_file": "actions/form-data.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_form_data_getissueformdata",
+      "label": "getIssueFormData()",
+      "file_type": "code",
+      "source_file": "actions/form-data.ts",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issue_details",
+      "label": "issue-details.ts",
+      "file_type": "code",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issue_details_savefiles",
+      "label": "saveFiles()",
+      "file_type": "code",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issue_details_addcomment",
+      "label": "addComment()",
+      "file_type": "code",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L41",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issue_details_getusers",
+      "label": "getUsers()",
+      "file_type": "code",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L91",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issue_details_getstatuses",
+      "label": "getStatuses()",
+      "file_type": "code",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L97",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issue_details_getissuebyreadableid",
+      "label": "getIssueByReadableId()",
+      "file_type": "code",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L118",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issue_details_updateissue",
+      "label": "updateIssue()",
+      "file_type": "code",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L144",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issue_details_addissueattachment",
+      "label": "addIssueAttachment()",
+      "file_type": "code",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L223",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issues",
+      "label": "issues.ts",
+      "file_type": "code",
+      "source_file": "actions/issues.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issues_getissues",
+      "label": "getIssues()",
+      "file_type": "code",
+      "source_file": "actions/issues.ts",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_issues_createissue",
+      "label": "createIssue()",
+      "file_type": "code",
+      "source_file": "actions/issues.ts",
+      "source_location": "L80",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_labels",
+      "label": "labels.ts",
+      "file_type": "code",
+      "source_file": "actions/labels.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_labels_addlabeltoissue",
+      "label": "addLabelToIssue()",
+      "file_type": "code",
+      "source_file": "actions/labels.ts",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_labels_removelabelfromissue",
+      "label": "removeLabelFromIssue()",
+      "file_type": "code",
+      "source_file": "actions/labels.ts",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_labels_getalllabels",
+      "label": "getAllLabels()",
+      "file_type": "code",
+      "source_file": "actions/labels.ts",
+      "source_location": "L40",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_notifications",
+      "label": "notifications.ts",
+      "file_type": "code",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_notifications_createnotification",
+      "label": "createNotification()",
+      "file_type": "code",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_notifications_getnotifications",
+      "label": "getNotifications()",
+      "file_type": "code",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_notifications_markasread",
+      "label": "markAsRead()",
+      "file_type": "code",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L49",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_notifications_getunreadcount",
+      "label": "getUnreadCount()",
+      "file_type": "code",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L62",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_projects",
+      "label": "projects.ts",
+      "file_type": "code",
+      "source_file": "actions/projects.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_projects_getprojects",
+      "label": "getProjects()",
+      "file_type": "code",
+      "source_file": "actions/projects.ts",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_projects_createproject",
+      "label": "createProject()",
+      "file_type": "code",
+      "source_file": "actions/projects.ts",
+      "source_location": "L27",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_projects_updateproject",
+      "label": "updateProject()",
+      "file_type": "code",
+      "source_file": "actions/projects.ts",
+      "source_location": "L63",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_search",
+      "label": "search.ts",
+      "file_type": "code",
+      "source_file": "actions/search.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_search_searchissues",
+      "label": "searchIssues()",
+      "file_type": "code",
+      "source_file": "actions/search.ts",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_settings",
+      "label": "settings.ts",
+      "file_type": "code",
+      "source_file": "actions/settings.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_settings_passwordschema",
+      "label": "passwordSchema",
+      "file_type": "code",
+      "source_file": "actions/settings.ts",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_settings_updatepassword",
+      "label": "updatePassword()",
+      "file_type": "code",
+      "source_file": "actions/settings.ts",
+      "source_location": "L17",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_sidebar",
+      "label": "sidebar.ts",
+      "file_type": "code",
+      "source_file": "actions/sidebar.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_sidebar_getsidebardata",
+      "label": "getSidebarData()",
+      "file_type": "code",
+      "source_file": "actions/sidebar.ts",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_users",
+      "label": "users.ts",
+      "file_type": "code",
+      "source_file": "actions/users.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_users_getusers",
+      "label": "getUsers()",
+      "file_type": "code",
+      "source_file": "actions/users.ts",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_users_updateuser",
+      "label": "updateUser()",
+      "file_type": "code",
+      "source_file": "actions/users.ts",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_users_createuser",
+      "label": "createUser()",
+      "file_type": "code",
+      "source_file": "actions/users.ts",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_users_resetpassword",
+      "label": "resetPassword()",
+      "file_type": "code",
+      "source_file": "actions/users.ts",
+      "source_location": "L44",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_workflow",
+      "label": "workflow.ts",
+      "file_type": "code",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_workflow_getworkflowstatuses",
+      "label": "getWorkflowStatuses()",
+      "file_type": "code",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_workflow_createstatus",
+      "label": "createStatus()",
+      "file_type": "code",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_workflow_updatestatus",
+      "label": "updateStatus()",
+      "file_type": "code",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L37",
+      "_origin": "ast"
+    },
+    {
+      "id": "actions_workflow_deletestatus",
+      "label": "deleteStatus()",
+      "file_type": "code",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L53",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_layout",
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/layout.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_layout_adminlayout",
+      "label": "AdminLayout()",
+      "file_type": "code",
+      "source_file": "app/admin/layout.tsx",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_page_admindashboard",
+      "label": "AdminDashboard()",
+      "file_type": "code",
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "projects_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "projects_page_projectsadmin",
+      "label": "ProjectsAdmin()",
+      "file_type": "code",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "teams_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/teams/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "teams_page_teamsadmin",
+      "label": "TeamsAdmin()",
+      "file_type": "code",
+      "source_file": "app/admin/teams/page.tsx",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "teams_page_styles",
+      "label": "styles",
+      "file_type": "code",
+      "source_file": "app/admin/teams/page.tsx",
+      "source_location": "L51",
+      "_origin": "ast"
+    },
+    {
+      "id": "users_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "users_page_usersadmin",
+      "label": "UsersAdmin()",
+      "file_type": "code",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "workflow_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "workflow_page_gettypeicon",
+      "label": "getTypeIcon()",
+      "file_type": "code",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "workflow_page_workflowadmin",
+      "label": "WorkflowAdmin()",
+      "file_type": "code",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L29",
+      "_origin": "ast"
+    },
+    {
+      "id": "nextauth_route",
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/auth/[...nextauth]/route.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "register_route",
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/auth/register/route.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "register_route_post",
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "app/api/auth/register/route.ts",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "register_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/auth/register/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "register_page_registerforbidden",
+      "label": "RegisterForbidden()",
+      "file_type": "code",
+      "source_file": "app/auth/register/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "readableid_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "readableid_page_issuedetailspage",
+      "label": "IssueDetailsPage()",
+      "file_type": "code",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_layout",
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_layout_metadata",
+      "label": "metadata",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_layout_rootlayout",
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "login_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/login/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "login_page_loginpage",
+      "label": "LoginPage()",
+      "file_type": "code",
+      "source_file": "app/login/page.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "notifications_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "notifications_page_notificationspage",
+      "label": "NotificationsPage()",
+      "file_type": "code",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_page_createissuemodal",
+      "label": "CreateIssueModal",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_page_home",
+      "label": "Home()",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_projects_id_page_tsx_id_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "id_page_projectpage",
+      "label": "ProjectPage()",
+      "file_type": "code",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "settings_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "settings_page_initialstate",
+      "label": "initialState",
+      "file_type": "code",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "settings_page_settingspage",
+      "label": "SettingsPage()",
+      "file_type": "code",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_teams_id_page_tsx_id_page",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "id_page_teampage",
+      "label": "TeamPage()",
+      "file_type": "code",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "cleanup_statuses",
+      "label": "cleanup_statuses.js",
+      "file_type": "code",
+      "source_file": "cleanup_statuses.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "cleanup_statuses_prismaclient",
+      "label": "{ PrismaClient }",
+      "file_type": "code",
+      "source_file": "cleanup_statuses.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "cleanup_statuses_prisma",
+      "label": "prisma",
+      "file_type": "code",
+      "source_file": "cleanup_statuses.js",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "cleanup_statuses_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "cleanup_statuses.js",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_authprovider",
+      "label": "AuthProvider.tsx",
+      "file_type": "code",
+      "source_file": "components/AuthProvider.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_authprovider_authprovider",
+      "label": "AuthProvider()",
+      "file_type": "code",
+      "source_file": "components/AuthProvider.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_board",
+      "label": "Board.tsx",
+      "file_type": "code",
+      "source_file": "components/Board.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_board_getstatusicon",
+      "label": "getStatusIcon()",
+      "file_type": "code",
+      "source_file": "components/Board.tsx",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_board_column",
+      "label": "Column",
+      "file_type": "code",
+      "source_file": "components/Board.tsx",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_board_boardprops",
+      "label": "BoardProps",
+      "file_type": "code",
+      "source_file": "components/Board.tsx",
+      "source_location": "L32",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_board_board",
+      "label": "Board()",
+      "file_type": "code",
+      "source_file": "components/Board.tsx",
+      "source_location": "L38",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_commandpalette",
+      "label": "CommandPalette.tsx",
+      "file_type": "code",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_commandpalette_commandpalette",
+      "label": "CommandPalette()",
+      "file_type": "code",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_createissuemodal",
+      "label": "CreateIssueModal.tsx",
+      "file_type": "code",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_createissuemodal_createissuemodalprops",
+      "label": "CreateIssueModalProps",
+      "file_type": "code",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_createissuemodal_createissuemodal",
+      "label": "CreateIssueModal()",
+      "file_type": "code",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_fileattachment",
+      "label": "FileAttachment.tsx",
+      "file_type": "code",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_fileattachment_fileattachmentprops",
+      "label": "FileAttachmentProps",
+      "file_type": "code",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_fileattachment_attachmentitem",
+      "label": "AttachmentItem",
+      "file_type": "code",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_fileattachment_fileattachment",
+      "label": "FileAttachment()",
+      "file_type": "code",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_filtersbar",
+      "label": "FiltersBar.tsx",
+      "file_type": "code",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_filtersbar_filtersbarprops",
+      "label": "FiltersBarProps",
+      "file_type": "code",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_filtersbar_filtersbar",
+      "label": "FiltersBar()",
+      "file_type": "code",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_imagepreviewer",
+      "label": "ImagePreviewer.tsx",
+      "file_type": "code",
+      "source_file": "components/ImagePreviewer.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_imagepreviewer_imagepreviewerprops",
+      "label": "ImagePreviewerProps",
+      "file_type": "code",
+      "source_file": "components/ImagePreviewer.tsx",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_imagepreviewer_imagepreviewer",
+      "label": "ImagePreviewer()",
+      "file_type": "code",
+      "source_file": "components/ImagePreviewer.tsx",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_issuecard",
+      "label": "IssueCard.tsx",
+      "file_type": "code",
+      "source_file": "components/IssueCard.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_issuecard_issuecardprops",
+      "label": "IssueCardProps",
+      "file_type": "code",
+      "source_file": "components/IssueCard.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_issuecard_issuecard",
+      "label": "IssueCard()",
+      "file_type": "code",
+      "source_file": "components/IssueCard.tsx",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_layoutcontent",
+      "label": "LayoutContent.tsx",
+      "file_type": "code",
+      "source_file": "components/LayoutContent.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_layoutcontent_layoutcontentprops",
+      "label": "LayoutContentProps",
+      "file_type": "code",
+      "source_file": "components/LayoutContent.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_layoutcontent_layoutcontent",
+      "label": "LayoutContent()",
+      "file_type": "code",
+      "source_file": "components/LayoutContent.tsx",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_sidebar",
+      "label": "Sidebar.tsx",
+      "file_type": "code",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_sidebar_sidebar",
+      "label": "Sidebar()",
+      "file_type": "code",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_useraccount",
+      "label": "UserAccount.tsx",
+      "file_type": "code",
+      "source_file": "components/UserAccount.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "components_useraccount_useraccount",
+      "label": "UserAccount()",
+      "file_type": "code",
+      "source_file": "components/UserAccount.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_bug11",
+      "label": "debug_bug11.js",
+      "file_type": "code",
+      "source_file": "debug_bug11.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_bug11_prismaclient",
+      "label": "{ PrismaClient }",
+      "file_type": "code",
+      "source_file": "debug_bug11.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_bug11_prisma",
+      "label": "prisma",
+      "file_type": "code",
+      "source_file": "debug_bug11.js",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_bug11_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "debug_bug11.js",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_get_statuses",
+      "label": "debug_get_statuses.js",
+      "file_type": "code",
+      "source_file": "debug_get_statuses.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_get_statuses_prismaclient",
+      "label": "{ PrismaClient }",
+      "file_type": "code",
+      "source_file": "debug_get_statuses.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_get_statuses_prisma",
+      "label": "prisma",
+      "file_type": "code",
+      "source_file": "debug_get_statuses.js",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_get_statuses_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "debug_get_statuses.js",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_statuses",
+      "label": "debug_statuses.js",
+      "file_type": "code",
+      "source_file": "debug_statuses.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_statuses_prismaclient",
+      "label": "{ PrismaClient }",
+      "file_type": "code",
+      "source_file": "debug_statuses.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_statuses_prisma",
+      "label": "prisma",
+      "file_type": "code",
+      "source_file": "debug_statuses.js",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "debug_statuses_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "debug_statuses.js",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "deploy",
+      "label": "deploy.sh",
+      "file_type": "code",
+      "source_file": "deploy.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "users_oleg_projects_bugtrack_deploy_sh__entry",
+      "label": "deploy.sh script",
+      "file_type": "code",
+      "source_file": "deploy.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "eslint_config",
+      "label": "eslint.config.mjs",
+      "file_type": "code",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "eslint_config_eslintconfig",
+      "label": "eslintConfig",
+      "file_type": "code",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "install",
+      "label": "install.sh",
+      "file_type": "code",
+      "source_file": "install.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "users_oleg_projects_bugtrack_install_sh__entry",
+      "label": "install.sh script",
+      "file_type": "code",
+      "source_file": "install.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "lib_auth_config",
+      "label": "auth.config.ts",
+      "file_type": "code",
+      "source_file": "lib/auth.config.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "lib_auth_config_authorized",
+      "label": "authorized()",
+      "file_type": "code",
+      "source_file": "lib/auth.config.ts",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "lib_auth",
+      "label": "auth.ts",
+      "file_type": "code",
+      "source_file": "lib/auth.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "lib_auth_handlers_auth_signin_signout",
+      "label": "{ handlers, auth, signIn, signOut }",
+      "file_type": "code",
+      "source_file": "lib/auth.ts",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "lib_prisma",
+      "label": "prisma.ts",
+      "file_type": "code",
+      "source_file": "lib/prisma.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "lib_prisma_prismaclientsingleton",
+      "label": "prismaClientSingleton()",
+      "file_type": "code",
+      "source_file": "lib/prisma.ts",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "lib_prisma_globalforprisma",
+      "label": "globalForPrisma",
+      "file_type": "code",
+      "source_file": "lib/prisma.ts",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "middleware",
+      "label": "middleware.ts",
+      "file_type": "code",
+      "source_file": "middleware.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "middleware_config",
+      "label": "config",
+      "file_type": "code",
+      "source_file": "middleware.ts",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "migrate_to_global_statuses",
+      "label": "migrate_to_global_statuses.js",
+      "file_type": "code",
+      "source_file": "migrate_to_global_statuses.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "migrate_to_global_statuses_prismaclient",
+      "label": "{ PrismaClient }",
+      "file_type": "code",
+      "source_file": "migrate_to_global_statuses.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "migrate_to_global_statuses_prisma",
+      "label": "prisma",
+      "file_type": "code",
+      "source_file": "migrate_to_global_statuses.js",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "migrate_to_global_statuses_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "migrate_to_global_statuses.js",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "next_config",
+      "label": "next.config.ts",
+      "file_type": "code",
+      "source_file": "next.config.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "next_config_nextconfig",
+      "label": "nextConfig",
+      "file_type": "code",
+      "source_file": "next.config.ts",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "package",
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_name",
+      "label": "name",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_version",
+      "label": "version",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_private",
+      "label": "private",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_dev",
+      "label": "dev",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_build",
+      "label": "build",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_start",
+      "label": "start",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_lint",
+      "label": "lint",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_seed",
+      "label": "seed",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_prisma",
+      "label": "prisma",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_prisma_seed",
+      "label": "seed",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies",
+      "label": "dependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_auth_prisma_adapter",
+      "label": "@auth/prisma-adapter",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_dnd_kit_core",
+      "label": "@dnd-kit/core",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_dnd_kit_sortable",
+      "label": "@dnd-kit/sortable",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_dnd_kit_utilities",
+      "label": "@dnd-kit/utilities",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_supabase_supabase_js",
+      "label": "@supabase/supabase-js",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_types_bcryptjs",
+      "label": "@types/bcryptjs",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_bcryptjs",
+      "label": "bcryptjs",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_cmdk",
+      "label": "cmdk",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_install",
+      "label": "install",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_lucide_react",
+      "label": "lucide-react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_next",
+      "label": "next",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_next_auth",
+      "label": "next-auth",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_react",
+      "label": "react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_react_dom",
+      "label": "react-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_zod",
+      "label": "zod",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies",
+      "label": "devDependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_prisma_client",
+      "label": "@prisma/client",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_types_node",
+      "label": "@types/node",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_types_react",
+      "label": "@types/react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_types_react_dom",
+      "label": "@types/react-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L36",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_eslint",
+      "label": "eslint",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_eslint_config_next",
+      "label": "eslint-config-next",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_prisma",
+      "label": "prisma",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_typescript",
+      "label": "typescript",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "_origin": "ast"
+    },
+    {
+      "id": "prisma_seed",
+      "label": "seed.js",
+      "file_type": "code",
+      "source_file": "prisma/seed.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "prisma_seed_prismaclient",
+      "label": "{ PrismaClient }",
+      "file_type": "code",
+      "source_file": "prisma/seed.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "prisma_seed_bcrypt",
+      "label": "bcrypt",
+      "file_type": "code",
+      "source_file": "prisma/seed.js",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "prisma_seed_prisma",
+      "label": "prisma",
+      "file_type": "code",
+      "source_file": "prisma/seed.js",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "prisma_seed_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "prisma/seed.js",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "restart",
+      "label": "restart.sh",
+      "file_type": "code",
+      "source_file": "restart.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "users_oleg_projects_bugtrack_restart_sh__entry",
+      "label": "restart.sh script",
+      "file_type": "code",
+      "source_file": "restart.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "setup_server",
+      "label": "setup_server.sh",
+      "file_type": "code",
+      "source_file": "setup_server.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "users_oleg_projects_bugtrack_setup_server_sh__entry",
+      "label": "setup_server.sh script",
+      "file_type": "code",
+      "source_file": "setup_server.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "start",
+      "label": "start.sh",
+      "file_type": "code",
+      "source_file": "start.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "users_oleg_projects_bugtrack_start_sh__entry",
+      "label": "start.sh script",
+      "file_type": "code",
+      "source_file": "start.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "stop",
+      "label": "stop.sh",
+      "file_type": "code",
+      "source_file": "stop.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "users_oleg_projects_bugtrack_stop_sh__entry",
+      "label": "stop.sh script",
+      "file_type": "code",
+      "source_file": "stop.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "test_deploy_script_test",
+      "label": "deploy-script.test.mjs",
+      "file_type": "code",
+      "source_file": "test/deploy-script.test.mjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "test_dev_port_test",
+      "label": "dev-port.test.mjs",
+      "file_type": "code",
+      "source_file": "test/dev-port.test.mjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "test_sqlite_deployment_test",
+      "label": "sqlite-deployment.test.mjs",
+      "file_type": "code",
+      "source_file": "test/sqlite-deployment.test.mjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig",
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_target",
+      "label": "target",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_lib",
+      "label": "lib",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_allowjs",
+      "label": "allowJs",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_skiplibcheck",
+      "label": "skipLibCheck",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_strict",
+      "label": "strict",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_noemit",
+      "label": "noEmit",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_esmoduleinterop",
+      "label": "esModuleInterop",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_module",
+      "label": "module",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_moduleresolution",
+      "label": "moduleResolution",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_resolvejsonmodule",
+      "label": "resolveJsonModule",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_isolatedmodules",
+      "label": "isolatedModules",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L17",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_jsx",
+      "label": "jsx",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_incremental",
+      "label": "incremental",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_plugins",
+      "label": "plugins",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_paths",
+      "label": "paths",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L25",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_paths",
+      "label": "@/*",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_include",
+      "label": "include",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L31",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_exclude",
+      "label": "exclude",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "nextauth_route_get_post",
+      "label": "{ GET, POST }",
+      "file_type": "code",
+      "source_file": "app/api/auth/[...nextauth]/route.ts",
+      "source_location": "L2",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "actions_admin",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/admin.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_admin",
+      "target": "actions_admin_getsystemstats",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/admin.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_form_data",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/form-data.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_form_data",
+      "target": "actions_form_data_getissueformdata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/form-data.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "cache",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "promises",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "path",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_notifications",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_notifications_createnotification",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "lib_auth_auth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_issue_details_savefiles",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_issue_details_addcomment",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_issue_details_getusers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_issue_details_getstatuses",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_issue_details_getissuebyreadableid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L118",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_issue_details_updateissue",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details",
+      "target": "actions_issue_details_addissueattachment",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L223",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details_addcomment",
+      "target": "actions_issue_details_savefiles",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details_addissueattachment",
+      "target": "actions_issue_details_savefiles",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L228",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issues",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issues.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issues",
+      "target": "cache",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issues.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issues",
+      "target": "promises",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issues.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issues",
+      "target": "path",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issues.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issues",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issues.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issues",
+      "target": "lib_auth_auth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issues.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issues",
+      "target": "actions_issues_getissues",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issues.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issues",
+      "target": "actions_issues_createissue",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/issues.ts",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_labels",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/labels.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_labels",
+      "target": "cache",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/labels.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_labels",
+      "target": "actions_labels_addlabeltoissue",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/labels.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_labels",
+      "target": "actions_labels_removelabelfromissue",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/labels.ts",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_labels",
+      "target": "actions_labels_getalllabels",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/labels.ts",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_notifications",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_notifications",
+      "target": "cache",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_notifications",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_notifications",
+      "target": "lib_auth_auth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_notifications",
+      "target": "actions_notifications_createnotification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_notifications",
+      "target": "actions_notifications_getnotifications",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_notifications",
+      "target": "actions_notifications_markasread",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_notifications",
+      "target": "actions_notifications_getunreadcount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/notifications.ts",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_projects",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/projects.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_projects",
+      "target": "cache",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/projects.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_projects",
+      "target": "actions_projects_getprojects",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/projects.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_projects",
+      "target": "actions_projects_createproject",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/projects.ts",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_projects",
+      "target": "actions_projects_updateproject",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/projects.ts",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_search",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/search.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_search",
+      "target": "actions_search_searchissues",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/search.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_settings",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/settings.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_settings",
+      "target": "lib_auth_auth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/settings.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_settings",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/settings.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_settings",
+      "target": "bcryptjs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/settings.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_settings",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/settings.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_settings",
+      "target": "actions_settings_passwordschema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/settings.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_settings",
+      "target": "actions_settings_updatepassword",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/settings.ts",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_sidebar",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/sidebar.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_sidebar",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/sidebar.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_sidebar",
+      "target": "lib_auth_auth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/sidebar.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_sidebar",
+      "target": "actions_sidebar_getsidebardata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/sidebar.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_users",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/users.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_users",
+      "target": "cache",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/users.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_users",
+      "target": "bcryptjs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/users.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_users",
+      "target": "actions_users_getusers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/users.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_users",
+      "target": "actions_users_updateuser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/users.ts",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_users",
+      "target": "actions_users_createuser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/users.ts",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_users",
+      "target": "actions_users_resetpassword",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/users.ts",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_workflow",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_workflow",
+      "target": "cache",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_workflow",
+      "target": "actions_workflow_getworkflowstatuses",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_workflow",
+      "target": "actions_workflow_createstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_workflow",
+      "target": "actions_workflow_updatestatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_workflow",
+      "target": "actions_workflow_deletestatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "actions/workflow.ts",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_layout",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/layout.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_layout",
+      "target": "lib_auth_auth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/layout.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_layout",
+      "target": "navigation",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/layout.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_layout",
+      "target": "admin_layout_adminlayout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/layout.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_page",
+      "target": "users_oleg_projects_bugtrack_app_admin_admin_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_page",
+      "target": "actions_admin",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_page",
+      "target": "actions_admin_getsystemstats",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_page",
+      "target": "admin_page_admindashboard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "users_oleg_projects_bugtrack_app_admin_projects_projects_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "actions_projects",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "actions_projects_getprojects",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "actions_projects_createproject",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "actions_projects_updateproject",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page",
+      "target": "projects_page_projectsadmin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "teams_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/teams/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "teams_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/teams/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "teams_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/teams/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "teams_page",
+      "target": "teams_page_teamsadmin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/teams/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "teams_page",
+      "target": "teams_page_styles",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/teams/page.tsx",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "actions_users",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "actions_users_getusers",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "actions_users_updateuser",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "actions_users_createuser",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "actions_users_resetpassword",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page",
+      "target": "users_page_usersadmin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "users_oleg_projects_bugtrack_app_admin_workflow_workflow_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "actions_form_data",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "actions_form_data_getissueformdata",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "actions_workflow",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "actions_workflow_getworkflowstatuses",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "actions_workflow_createstatus",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "actions_workflow_deletestatus",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "workflow_page_gettypeicon",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page",
+      "target": "workflow_page_workflowadmin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "nextauth_route",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/auth/[...nextauth]/route.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "nextauth_route",
+      "target": "lib_auth_handlers",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/auth/[...nextauth]/route.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "register_route",
+      "target": "server",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/auth/register/route.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "register_route",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/auth/register/route.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "register_route",
+      "target": "bcryptjs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/auth/register/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "register_route",
+      "target": "register_route_post",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/auth/register/route.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "register_page",
+      "target": "register_page_registerforbidden",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/auth/register/page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "actions_issue_details",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "actions_issue_details_getissuebyreadableid",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "actions_issue_details_addcomment",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "actions_issue_details_updateissue",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "actions_issue_details_getusers",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "actions_issue_details_getstatuses",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "actions_issue_details_addissueattachment",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "users_oleg_projects_bugtrack_app_issues_readableid_issuedetails_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page",
+      "target": "readableid_page_issuedetailspage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "next",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "components_authprovider",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "components_layoutcontent",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "components_sidebar",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "components_commandpalette",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "users_oleg_projects_bugtrack_app_globals_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "app_layout_metadata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "lib_auth_auth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "app_layout_rootlayout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "login_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/login/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "login_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/login/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "login_page",
+      "target": "navigation",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/login/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "login_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/login/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "login_page",
+      "target": "login_page_loginpage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/login/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page",
+      "target": "actions_notifications",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page",
+      "target": "actions_notifications_getnotifications",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page",
+      "target": "actions_notifications_markasread",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page",
+      "target": "notifications_page_notificationspage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "dynamic",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "components_issuecard",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "app_page_createissuemodal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "components_board",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "components_filtersbar",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "actions_issues",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "actions_issues_getissues",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "actions_issue_details",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "actions_issue_details_getstatuses",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "actions_issue_details_updateissue",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "app_page_home",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "components_issuecard",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "components_createissuemodal",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "components_board",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "id_page_projectpage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "settings_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "settings_page",
+      "target": "actions_settings",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "settings_page",
+      "target": "actions_settings_updatepassword",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "settings_page",
+      "target": "users_oleg_projects_bugtrack_app_settings_settings_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "settings_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "settings_page",
+      "target": "settings_page_initialstate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "settings_page",
+      "target": "settings_page_settingspage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/settings/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "app_teams_id_page_tsx_id_page",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_teams_id_page_tsx_id_page",
+      "target": "components_issuecard",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_teams_id_page_tsx_id_page",
+      "target": "components_createissuemodal",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_teams_id_page_tsx_id_page",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "app_teams_id_page_tsx_id_page",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "app_teams_id_page_tsx_id_page",
+      "target": "id_page_teampage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "cleanup_statuses",
+      "target": "client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "cleanup_statuses.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "cleanup_statuses",
+      "target": "cleanup_statuses_prismaclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "cleanup_statuses.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "cleanup_statuses",
+      "target": "cleanup_statuses_prisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "cleanup_statuses.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "cleanup_statuses",
+      "target": "cleanup_statuses_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "cleanup_statuses.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_authprovider",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/AuthProvider.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_authprovider",
+      "target": "components_authprovider_authprovider",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/AuthProvider.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "users_oleg_projects_bugtrack_components_board_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "components_issuecard",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "components_board_getstatusicon",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "components_board_column",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "components_board_boardprops",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "components_board_board",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "components_commandpalette",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_commandpalette",
+      "target": "cmdk",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_commandpalette",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_commandpalette",
+      "target": "users_oleg_projects_bugtrack_components_commandpalette_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "components_commandpalette",
+      "target": "actions_search",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "components_commandpalette",
+      "target": "actions_search_searchissues",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "components_commandpalette",
+      "target": "navigation",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "components_commandpalette",
+      "target": "components_commandpalette_commandpalette",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CommandPalette.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "users_oleg_projects_bugtrack_components_createissuemodal_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "components_fileattachment",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "actions_issues",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "actions_issues_createissue",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "actions_issue_details",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "actions_issue_details_updateissue",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "actions_issue_details_addissueattachment",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "actions_form_data",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "actions_form_data_getissueformdata",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "components_createissuemodal_createissuemodalprops",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "components_createissuemodal",
+      "target": "components_createissuemodal_createissuemodal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CreateIssueModal.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "components_fileattachment",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_fileattachment",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_fileattachment",
+      "target": "users_oleg_projects_bugtrack_components_fileattachment_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_fileattachment",
+      "target": "components_fileattachment_fileattachmentprops",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "components_fileattachment",
+      "target": "components_fileattachment_attachmentitem",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "components_fileattachment",
+      "target": "components_fileattachment_fileattachment",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FileAttachment.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "components_filtersbar",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_filtersbar",
+      "target": "users_oleg_projects_bugtrack_components_filtersbar_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_filtersbar",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_filtersbar",
+      "target": "actions_form_data",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "components_filtersbar",
+      "target": "actions_form_data_getissueformdata",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "components_filtersbar",
+      "target": "components_filtersbar_filtersbarprops",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "components_filtersbar",
+      "target": "components_filtersbar_filtersbar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/FiltersBar.tsx",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "components_imagepreviewer",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ImagePreviewer.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_imagepreviewer",
+      "target": "users_oleg_projects_bugtrack_components_imagepreviewer_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ImagePreviewer.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_imagepreviewer",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ImagePreviewer.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_imagepreviewer",
+      "target": "components_imagepreviewer_imagepreviewerprops",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ImagePreviewer.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "components_imagepreviewer",
+      "target": "components_imagepreviewer_imagepreviewer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ImagePreviewer.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "components_issuecard",
+      "target": "users_oleg_projects_bugtrack_components_issuecard_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/IssueCard.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "components_issuecard",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/IssueCard.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "components_issuecard",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/IssueCard.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_issuecard",
+      "target": "components_issuecard_issuecardprops",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/IssueCard.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_issuecard",
+      "target": "components_issuecard_issuecard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/IssueCard.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "components_layoutcontent",
+      "target": "navigation",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/LayoutContent.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_layoutcontent",
+      "target": "components_layoutcontent_layoutcontentprops",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/LayoutContent.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_layoutcontent",
+      "target": "components_layoutcontent_layoutcontent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/LayoutContent.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "users_oleg_projects_bugtrack_components_sidebar_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "actions_sidebar",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "actions_sidebar_getsidebardata",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "components_useraccount",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "lib_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "lib_auth_auth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "components_sidebar_sidebar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "components_useraccount",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/UserAccount.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_useraccount",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/UserAccount.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_useraccount",
+      "target": "users_oleg_projects_bugtrack_components_sidebar_module_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/UserAccount.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_useraccount",
+      "target": "link",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/UserAccount.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "components_useraccount",
+      "target": "components_useraccount_useraccount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/UserAccount.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_bug11",
+      "target": "client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_bug11.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_bug11",
+      "target": "debug_bug11_prismaclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_bug11.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_bug11",
+      "target": "debug_bug11_prisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_bug11.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_bug11",
+      "target": "debug_bug11_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_bug11.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_get_statuses",
+      "target": "client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_get_statuses.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_get_statuses",
+      "target": "debug_get_statuses_prismaclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_get_statuses.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_get_statuses",
+      "target": "debug_get_statuses_prisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_get_statuses.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_get_statuses",
+      "target": "debug_get_statuses_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_get_statuses.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_statuses",
+      "target": "client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_statuses.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_statuses",
+      "target": "debug_statuses_prismaclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_statuses.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_statuses",
+      "target": "debug_statuses_prisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_statuses.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "debug_statuses",
+      "target": "debug_statuses_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "debug_statuses.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "deploy",
+      "target": "users_oleg_projects_bugtrack_deploy_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "deploy.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config",
+      "target": "config",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config",
+      "target": "core_web_vitals",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config",
+      "target": "typescript",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config",
+      "target": "eslint_config_eslintconfig",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "install",
+      "target": "users_oleg_projects_bugtrack_install_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "install.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth_config",
+      "target": "next_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth_config",
+      "target": "lib_auth_config_authorized",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.config.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth",
+      "target": "next_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth",
+      "target": "credentials",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth",
+      "target": "prisma_adapter",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth",
+      "target": "lib_prisma",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth",
+      "target": "bcryptjs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth",
+      "target": "lib_auth_config",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth",
+      "target": "lib_auth_config_authconfig",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_auth",
+      "target": "lib_auth_handlers_auth_signin_signout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/auth.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_prisma",
+      "target": "client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/prisma.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_prisma",
+      "target": "lib_prisma_prismaclientsingleton",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/prisma.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_prisma",
+      "target": "lib_prisma_prismaclientsingleton",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/prisma.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_prisma",
+      "target": "lib_prisma_globalforprisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/prisma.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware",
+      "target": "next_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "middleware.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware",
+      "target": "lib_auth_config",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "middleware.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware",
+      "target": "lib_auth_config_authconfig",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "middleware.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware",
+      "target": "middleware_config",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "middleware.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "migrate_to_global_statuses",
+      "target": "client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "migrate_to_global_statuses.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "migrate_to_global_statuses",
+      "target": "migrate_to_global_statuses_prismaclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "migrate_to_global_statuses.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "migrate_to_global_statuses",
+      "target": "migrate_to_global_statuses_prisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "migrate_to_global_statuses.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "migrate_to_global_statuses",
+      "target": "migrate_to_global_statuses_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "migrate_to_global_statuses.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "next_config",
+      "target": "next",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "next.config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "next_config",
+      "target": "next_config_nextconfig",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "next.config.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "package",
+      "target": "package_name",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "package",
+      "target": "package_version",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "package",
+      "target": "package_private",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "package",
+      "target": "package_scripts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_dev",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_build",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_start",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_lint",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_seed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "package",
+      "target": "package_prisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "package_prisma",
+      "target": "package_prisma_seed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "package",
+      "target": "package_dependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_auth_prisma_adapter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_auth_prisma_adapter",
+      "target": "auth_prisma_adapter",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_dnd_kit_core",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_dnd_kit_core",
+      "target": "dnd_kit_core",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_dnd_kit_sortable",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_dnd_kit_sortable",
+      "target": "dnd_kit_sortable",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_dnd_kit_utilities",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_dnd_kit_utilities",
+      "target": "dnd_kit_utilities",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_supabase_supabase_js",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_supabase_supabase_js",
+      "target": "supabase_supabase_js",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_types_bcryptjs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_types_bcryptjs",
+      "target": "types_bcryptjs",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_bcryptjs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_bcryptjs",
+      "target": "bcryptjs",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_cmdk",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_cmdk",
+      "target": "cmdk",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_install",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_install",
+      "target": "install",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_lucide_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_lucide_react",
+      "target": "lucide_react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_next",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_next",
+      "target": "next",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_next_auth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_next_auth",
+      "target": "next_auth",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_react",
+      "target": "react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_react_dom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_react_dom",
+      "target": "react_dom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_zod",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies_zod",
+      "target": "zod",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package",
+      "target": "package_devdependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_prisma_client",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_prisma_client",
+      "target": "prisma_client",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_node",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_node",
+      "target": "types_node",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_react",
+      "target": "types_react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_react_dom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_types_react_dom",
+      "target": "types_react_dom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_eslint",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_eslint",
+      "target": "eslint",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_eslint_config_next",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_eslint_config_next",
+      "target": "eslint_config_next",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_prisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_prisma",
+      "target": "prisma",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_typescript",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "package_devdependencies_typescript",
+      "target": "typescript",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "prisma_seed",
+      "target": "client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "prisma/seed.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "prisma_seed",
+      "target": "prisma_seed_prismaclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "prisma/seed.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "prisma_seed",
+      "target": "bcryptjs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "prisma/seed.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "prisma_seed",
+      "target": "prisma_seed_bcrypt",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "prisma/seed.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "prisma_seed",
+      "target": "prisma_seed_prisma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "prisma/seed.js",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "prisma_seed",
+      "target": "prisma_seed_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "prisma/seed.js",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "restart",
+      "target": "users_oleg_projects_bugtrack_restart_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "restart.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "setup_server",
+      "target": "users_oleg_projects_bugtrack_setup_server_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "setup_server.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "start",
+      "target": "users_oleg_projects_bugtrack_start_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "start.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "stop",
+      "target": "users_oleg_projects_bugtrack_stop_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "stop.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_deploy_script_test",
+      "target": "strict",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/deploy-script.test.mjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_deploy_script_test",
+      "target": "promises",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/deploy-script.test.mjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "test_deploy_script_test",
+      "target": "node_test",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/deploy-script.test.mjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "test_dev_port_test",
+      "target": "strict",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/dev-port.test.mjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_dev_port_test",
+      "target": "promises",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/dev-port.test.mjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "test_dev_port_test",
+      "target": "node_test",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/dev-port.test.mjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "test_sqlite_deployment_test",
+      "target": "strict",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/sqlite-deployment.test.mjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_sqlite_deployment_test",
+      "target": "promises",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/sqlite-deployment.test.mjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "test_sqlite_deployment_test",
+      "target": "node_test",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "test/sqlite-deployment.test.mjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig",
+      "target": "tsconfig_compileroptions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_target",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_lib",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions_lib",
+      "target": "ref_dom",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig_compileroptions_lib",
+      "target": "ref_dom_iterable",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig_compileroptions_lib",
+      "target": "ref_esnext",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_allowjs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_skiplibcheck",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_strict",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_noemit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_esmoduleinterop",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_module",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_moduleresolution",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_resolvejsonmodule",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_isolatedmodules",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_jsx",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_incremental",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_plugins",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_paths",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_compileroptions_paths",
+      "target": "tsconfig_paths",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_paths",
+      "target": "ref",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig",
+      "target": "tsconfig_include",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_include",
+      "target": "ref_next_env_d_ts",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig_include",
+      "target": "ref_ts",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig_include",
+      "target": "ref_tsx",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig_include",
+      "target": "ref_next_types_ts",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig_include",
+      "target": "ref_next_dev_types_ts",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig_include",
+      "target": "ref_mts",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "tsconfig",
+      "target": "tsconfig_exclude",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "tsconfig_exclude",
+      "target": "ref_node_modules",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "context": "import"
+    },
+    {
+      "source": "nextauth_route",
+      "target": "lib_auth",
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/auth/[...nextauth]/route.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout",
+      "target": "components_authprovider_authprovider",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "components_issuecard_issuecard",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "components_board_board",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page",
+      "target": "components_filtersbar_filtersbar",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "components_issuecard_issuecard",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "components_createissuemodal_createissuemodal",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_projects_id_page_tsx_id_page",
+      "target": "components_board_board",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/projects/[id]/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "app_teams_id_page_tsx_id_page",
+      "target": "components_issuecard_issuecard",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_teams_id_page_tsx_id_page",
+      "target": "components_createissuemodal_createissuemodal",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/teams/[id]/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_board",
+      "target": "components_issuecard_issuecard",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Board.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page_loadprojects",
+      "target": "actions_projects_getprojects",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page_handlesave",
+      "target": "actions_projects_updateproject",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "projects_page_handlesave",
+      "target": "actions_projects_createproject",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/projects/page.tsx",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page_loadusers",
+      "target": "actions_users_getusers",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page_handlesaveedit",
+      "target": "actions_users_updateuser",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page_handlesaveedit",
+      "target": "actions_users_resetpassword",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "users_page_handlecreate",
+      "target": "actions_users_createuser",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/users/page.tsx",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page_handleaddstatus",
+      "target": "actions_workflow_createstatus",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "workflow_page_handledeletestatus",
+      "target": "actions_workflow_deletestatus",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/admin/workflow/page.tsx",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page_handleaddcomment",
+      "target": "actions_issue_details_addcomment",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page_handlefileupload",
+      "target": "actions_issue_details_addissueattachment",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page_handlestatuschange",
+      "target": "actions_issue_details_updateissue",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page_handleassigneechange",
+      "target": "actions_issue_details_updateissue",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "readableid_page_refreshissue",
+      "target": "actions_issue_details_getissuebyreadableid",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/issues/[readableId]/page.tsx",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page_fetchnotifications",
+      "target": "actions_notifications_getnotifications",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "notifications_page_handlemarkasread",
+      "target": "actions_notifications_markasread",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/notifications/page.tsx",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page_fetchissues",
+      "target": "actions_issues_getissues",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page_fetchissues",
+      "target": "actions_issue_details_getstatuses",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page_handlestatuschange",
+      "target": "actions_issue_details_updateissue",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details_addcomment",
+      "target": "actions_notifications_createnotification",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "actions_issue_details_updateissue",
+      "target": "actions_notifications_createnotification",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "actions/issue-details.ts",
+      "source_location": "L187",
+      "weight": 1.0
+    },
+    {
+      "source": "admin_page_admindashboard",
+      "target": "actions_admin_getsystemstats",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app/admin/page.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "components_sidebar_sidebar",
+      "target": "actions_sidebar_getsidebardata",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/Sidebar.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

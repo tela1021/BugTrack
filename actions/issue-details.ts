@@ -2,37 +2,44 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
 import { createNotification } from './notifications';
-import { auth } from '@/lib/auth';
+import { requireAuthenticatedUser, requireIssueAccess, requireTeamRole } from '@/lib/authorization';
+import { createCommentSchema, updateIssueSchema } from '@/lib/validation.mts';
+import { deleteAttachmentFile, saveAttachmentFile, validateAttachmentFiles } from '@/lib/attachment-storage';
 
 async function saveFiles(issueId: number, files: File[], commentId?: string) {
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadDir, { recursive: true });
-
+    validateAttachmentFiles(files);
     const savedAttachments = [];
 
     for (const file of files) {
-        if (file.size > 0) {
-            const buffer = Buffer.from(await file.arrayBuffer());
-            const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-            const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-            const fileName = `${uniqueSuffix}-${cleanName}`;
+        const attachment = await prisma.attachment.create({
+            data: {
+                issueId,
+                commentId: commentId || null,
+                name: file.name,
+                url: '',
+                mimeType: file.type,
+                size: file.size,
+            }
+        });
 
-            await writeFile(join(uploadDir, fileName), buffer);
-
-            const attachment = await prisma.attachment.create({
+        try {
+            const stored = await saveAttachmentFile(attachment.id, file);
+            const updatedAttachment = await prisma.attachment.update({
+                where: { id: attachment.id },
                 data: {
-                    issueId,
-                    commentId: commentId || null,
-                    name: file.name,
-                    url: `/uploads/${fileName}`,
-                    mimeType: file.type,
-                    size: file.size
-                }
+                    url: `/api/attachments/${attachment.id}`,
+                    checksum: stored.checksum,
+                    size: stored.size,
+                },
             });
-            savedAttachments.push(attachment);
+            savedAttachments.push(updatedAttachment);
+        } catch (error) {
+            await Promise.allSettled([
+                deleteAttachmentFile(attachment.id),
+                prisma.attachment.delete({ where: { id: attachment.id } }),
+            ]);
+            throw error;
         }
     }
     return savedAttachments;
@@ -40,22 +47,31 @@ async function saveFiles(issueId: number, files: File[], commentId?: string) {
 
 export async function addComment(issueId: number, formData: FormData) {
     try {
-        const content = formData.get('content') as string;
-        const files = formData.getAll('files') as File[];
+        const content = typeof formData.get('content') === 'string' ? String(formData.get('content')) : '';
+        const files = formData.getAll('files').filter((value): value is File => value instanceof File);
+        if (content.trim()) createCommentSchema.parse({ content });
+        else if (files.length === 0) createCommentSchema.parse({ content });
+        if (files.length > 0) validateAttachmentFiles(files);
 
-        const session = await auth();
-        if (!session?.user?.id) throw new Error('Not authenticated');
+        const { userId } = await requireIssueAccess(issueId, "MEMBER");
 
         const comment = await prisma.comment.create({
             data: {
                 content,
                 issueId,
-                authorId: session.user.id
+                authorId: userId
             }
         });
 
-        if (files.length > 0) {
-            await saveFiles(issueId, files, comment.id);
+        const attachments = files.length > 0 ? await saveFiles(issueId, files, comment.id) : [];
+
+        await prisma.issueHistory.create({
+            data: { issueId, actorId: userId, field: 'comment', newValue: comment.id },
+        });
+        if (attachments.length > 0) {
+            await prisma.issueHistory.createMany({
+                data: attachments.map((attachment) => ({ issueId, actorId: userId, field: 'attachment', newValue: attachment.name })),
+            });
         }
 
         // Notify issue assignee and reporter
@@ -65,11 +81,11 @@ export async function addComment(issueId: number, formData: FormData) {
         });
 
         if (issueData) {
-            const recipients = new Set([issueData.assigneeId, issueData.reporterId].filter(id => id && id !== session.user?.id)) as Set<string>;
-            for (const userId of recipients) {
+            const recipients = new Set([issueData.assigneeId, issueData.reporterId].filter(id => id && id !== userId)) as Set<string>;
+            for (const recipientId of recipients) {
                 await createNotification({
-                    userId,
-                    actorId: session.user.id,
+                    userId: recipientId,
+                    actorId: userId,
                     issueId,
                     commentId: comment.id,
                     type: 'COMMENT'
@@ -83,42 +99,52 @@ export async function addComment(issueId: number, formData: FormData) {
         if (issue) revalidatePath(`/issues/${issue.readableId}`);
 
         return { success: true, data: comment };
-    } catch (error: any) {
-        return { success: false, error: error.message };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unable to add comment' };
     }
 }
 
-export async function getUsers() {
-    return await prisma.user.findMany({
-        orderBy: { name: 'asc' }
+export async function getUsers(teamKey: string) {
+    const team = await prisma.team.findUnique({ where: { key: teamKey } });
+    if (!team) return [];
+
+    await requireTeamRole(team.id, "MEMBER");
+    const members = await prisma.teamMember.findMany({
+        where: { teamId: team.id },
+        include: { user: true },
+        orderBy: { user: { name: 'asc' } },
     });
+
+    return members.map(({ user }) => user);
 }
 
 export async function getStatuses(teamKey?: string) {
-    // Ignore teamKey to provide "One set of statuses for all projects"
-    const statuses = await prisma.workflowStatus.findMany({
-        orderBy: { position: 'asc' }
+    const userId = await requireAuthenticatedUser();
+    const memberships = await prisma.teamMember.findMany({
+        where: { userId },
+        select: { teamId: true },
     });
+    const accessibleTeamIds = memberships.map((membership) => membership.teamId);
+    let where = { teamId: { in: accessibleTeamIds } };
 
-    // Deduplicate by name (case-insensitive for safety)
-    const uniqueMap = new Map();
-    const uniqueStatuses = [];
-
-    for (const status of statuses) {
-        const normalizedName = status.name.trim();
-        if (!uniqueMap.has(normalizedName.toLowerCase())) {
-            uniqueMap.set(normalizedName.toLowerCase(), true);
-            uniqueStatuses.push(status);
-        }
+    if (teamKey && teamKey !== 'All') {
+        const team = await prisma.team.findUnique({ where: { key: teamKey } });
+        if (!team) return [];
+        await requireTeamRole(team.id, "MEMBER");
+        where = { teamId: { in: [team.id] } };
     }
 
-    return uniqueStatuses;
+    return prisma.workflowStatus.findMany({
+        where,
+        orderBy: { position: 'asc' }
+    });
 }
 
 export async function getIssueByReadableId(readableId: string) {
-    return await prisma.issue.findUnique({
-        where: { readableId },
+    const issue = await prisma.issue.findFirst({
+        where: { readableId, deletedAt: null },
         include: {
+            team: true,
             status: true,
             assignee: true,
             reporter: true,
@@ -139,67 +165,129 @@ export async function getIssueByReadableId(readableId: string) {
             }
         }
     });
+
+    if (issue) {
+        await requireIssueAccess(issue.id, "MEMBER");
+    }
+
+    return issue;
 }
 
-export async function updateIssue(id: number, data: any) {
+export async function updateIssue(id: number, data: unknown) {
     try {
-        const session = await auth();
-        if (!session?.user?.id) throw new Error('Not authenticated');
+        const { userId } = await requireIssueAccess(id, "MEMBER");
+        const input = updateIssueSchema.parse(data);
 
         const oldIssue = await prisma.issue.findUnique({ where: { id } });
         if (!oldIssue) throw new Error('Issue not found');
 
+        if (input.statusId) {
+            const status = await prisma.workflowStatus.findFirst({
+                where: { id: input.statusId, teamId: oldIssue.teamId }
+            });
+            if (!status) throw new Error('Status must belong to the issue team');
+        }
+
+        if (input.assigneeId) {
+            const membership = await prisma.teamMember.findUnique({
+                where: { userId_teamId: { userId: input.assigneeId, teamId: oldIssue.teamId } },
+                select: { userId: true },
+            });
+            if (!membership) throw new Error('Assignee must be a member of the issue team');
+        }
+
+        if (input.projectId) {
+            const project = await prisma.project.findFirst({
+                where: { id: input.projectId, teamId: oldIssue.teamId },
+            });
+            if (!project) throw new Error('Project must belong to the issue team');
+        }
+
+        if (input.cycleId) {
+            const cycle = await prisma.cycle.findFirst({
+                where: { id: input.cycleId, teamId: oldIssue.teamId },
+            });
+            if (!cycle) throw new Error('Cycle must belong to the issue team');
+        }
+
         const updatedIssue = await prisma.issue.update({
             where: { id },
-            data
+            data: input
         });
 
-        // Track history for changed fields
+        // Track every changed user-visible field. The records are immutable and
+        // deliberately use display values, so they remain understandable after a
+        // status, project or user is renamed.
         const historyEntries = [];
-        if (data.statusId && data.statusId !== oldIssue.statusId) {
+        if (input.title !== undefined && input.title !== oldIssue.title) {
+            historyEntries.push({ issueId: id, actorId: userId, field: 'title', oldValue: oldIssue.title, newValue: input.title });
+        }
+        if (input.description !== undefined && input.description !== oldIssue.description) {
+            historyEntries.push({ issueId: id, actorId: userId, field: 'description', oldValue: oldIssue.description, newValue: input.description });
+        }
+        if (input.priority !== undefined && input.priority !== oldIssue.priority) {
+            historyEntries.push({ issueId: id, actorId: userId, field: 'priority', oldValue: oldIssue.priority, newValue: input.priority });
+        }
+        if (input.statusId !== undefined && input.statusId !== oldIssue.statusId) {
             // Fetch status names for history
             const oldStatus = await prisma.workflowStatus.findUnique({ where: { id: oldIssue.statusId } });
-            const newStatus = await prisma.workflowStatus.findUnique({ where: { id: data.statusId } });
+            const newStatus = await prisma.workflowStatus.findUnique({ where: { id: input.statusId } });
 
             historyEntries.push({
                 issueId: id,
-                actorId: session.user.id,
+                actorId: userId,
                 field: 'status',
                 oldValue: oldStatus?.name || 'Unknown',
                 newValue: newStatus?.name || 'Unknown'
             });
         }
 
-        if (data.assigneeId && data.assigneeId !== oldIssue.assigneeId) {
+        if (input.assigneeId !== undefined && input.assigneeId !== oldIssue.assigneeId) {
             // Fetch user names for history
             const oldUser = oldIssue.assigneeId ? await prisma.user.findUnique({ where: { id: oldIssue.assigneeId } }) : null;
-            const newUser = await prisma.user.findUnique({ where: { id: data.assigneeId } });
+            const newUser = input.assigneeId ? await prisma.user.findUnique({ where: { id: input.assigneeId } }) : null;
 
             historyEntries.push({
                 issueId: id,
-                actorId: session.user.id,
+                actorId: userId,
                 field: 'assignee',
                 oldValue: oldUser?.name || 'Unassigned',
                 newValue: newUser?.name || 'Unassigned'
             });
 
-            if (data.assigneeId) {
+            if (input.assigneeId) {
                 await createNotification({
-                    userId: data.assigneeId,
-                    actorId: session.user.id,
+                    userId: input.assigneeId,
+                    actorId: userId,
                     issueId: id,
                     type: 'ASSIGNED'
                 });
             }
         }
 
+        if (input.projectId !== undefined && input.projectId !== oldIssue.projectId) {
+            const [oldProject, newProject] = await Promise.all([
+                oldIssue.projectId ? prisma.project.findUnique({ where: { id: oldIssue.projectId }, select: { name: true } }) : null,
+                input.projectId ? prisma.project.findUnique({ where: { id: input.projectId }, select: { name: true } }) : null,
+            ]);
+            historyEntries.push({ issueId: id, actorId: userId, field: 'project', oldValue: oldProject?.name || 'None', newValue: newProject?.name || 'None' });
+        }
+
+        if (input.cycleId !== undefined && input.cycleId !== oldIssue.cycleId) {
+            const [oldCycle, newCycle] = await Promise.all([
+                oldIssue.cycleId ? prisma.cycle.findUnique({ where: { id: oldIssue.cycleId }, select: { name: true } }) : null,
+                input.cycleId ? prisma.cycle.findUnique({ where: { id: input.cycleId }, select: { name: true } }) : null,
+            ]);
+            historyEntries.push({ issueId: id, actorId: userId, field: 'cycle', oldValue: oldCycle?.name || 'None', newValue: newCycle?.name || 'None' });
+        }
+
         // Notify status change
-        if (data.statusId && data.statusId !== oldIssue.statusId) {
-            const recipients = new Set([oldIssue.assigneeId, oldIssue.reporterId].filter(uid => uid && uid !== session.user?.id)) as Set<string>;
-            for (const userId of recipients) {
+        if (input.statusId !== undefined && input.statusId !== oldIssue.statusId) {
+            const recipients = new Set([oldIssue.assigneeId, oldIssue.reporterId].filter(uid => uid && uid !== userId)) as Set<string>;
+            for (const recipientId of recipients) {
                 await createNotification({
-                    userId,
-                    actorId: session.user.id,
+                    userId: recipientId,
+                    actorId: userId,
                     issueId: id,
                     type: 'STATUS_CHANGE'
                 });
@@ -215,17 +303,56 @@ export async function updateIssue(id: number, data: any) {
         revalidatePath('/');
         revalidatePath(`/issues/${updatedIssue.readableId}`);
         return { success: true, data: updatedIssue };
-    } catch (error: any) {
-        return { success: false, error: error.message };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unable to update issue' };
+    }
+}
+
+export async function deleteIssue(issueId: number) {
+    try {
+        const { userId } = await requireIssueAccess(issueId, 'ADMIN');
+        const issue = await prisma.issue.update({
+            where: { id: issueId },
+            data: { deletedAt: new Date(), deletedById: userId },
+        });
+        await prisma.issueHistory.create({ data: { issueId, actorId: userId, field: 'deleted', oldValue: 'active', newValue: 'deleted' } });
+        revalidatePath('/');
+        return { success: true, data: issue };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unable to delete issue' };
+    }
+}
+
+export async function restoreIssue(issueId: number) {
+    try {
+        const { userId } = await requireIssueAccess(issueId, 'ADMIN');
+        const issue = await prisma.issue.findUnique({ where: { id: issueId } });
+        if (!issue?.deletedAt) throw new Error('Issue is not deleted');
+        const restoreDeadline = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        if (issue.deletedAt < restoreDeadline) throw new Error('Issue can only be restored within 30 days');
+
+        const restored = await prisma.issue.update({
+            where: { id: issueId },
+            data: { deletedAt: null, deletedById: null },
+        });
+        await prisma.issueHistory.create({ data: { issueId, actorId: userId, field: 'deleted', oldValue: 'deleted', newValue: 'active' } });
+        revalidatePath('/');
+        return { success: true, data: restored };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unable to restore issue' };
     }
 }
 
 export async function addIssueAttachment(issueId: number, formData: FormData) {
     try {
-        const files = formData.getAll('files') as File[];
+        const files = formData.getAll('files').filter((value): value is File => value instanceof File);
         if (!files || files.length === 0) throw new Error('No files provided');
 
+        const { userId } = await requireIssueAccess(issueId, "MEMBER");
         const savedAttachments = await saveFiles(issueId, files);
+        await prisma.issueHistory.createMany({
+            data: savedAttachments.map((attachment) => ({ issueId, actorId: userId, field: 'attachment', newValue: attachment.name })),
+        });
 
         revalidatePath('/');
         // We need to fetch the issue to get the readableId for revalidation
@@ -233,9 +360,7 @@ export async function addIssueAttachment(issueId: number, formData: FormData) {
         if (issue) revalidatePath(`/issues/${issue.readableId}`);
 
         return { success: true, data: savedAttachments };
-    } catch (error: any) {
-        console.error('Upload Error:', error);
-        return { success: false, error: error.message };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unable to upload attachment' };
     }
 }
-

@@ -3,6 +3,7 @@ import AuthProvider from "@/components/AuthProvider";
 import LayoutContent from "@/components/LayoutContent";
 import Sidebar from "@/components/Sidebar";
 import CommandPalette from "@/components/CommandPalette";
+import { ToastProvider } from "@/components/ToastProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,12 +24,14 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <AuthProvider session={session}>
-          <LayoutContent
-            sidebar={<Sidebar />}
-            commandPalette={<CommandPalette />}
-          >
-            {children}
-          </LayoutContent>
+          <ToastProvider>
+            <LayoutContent
+              sidebar={<Sidebar />}
+              commandPalette={<CommandPalette />}
+            >
+              {children}
+            </LayoutContent>
+          </ToastProvider>
         </AuthProvider>
       </body>
     </html>

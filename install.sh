@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # install.sh
-# Comprehensive installation script for BugTrack project
+# First-time installation script for BugTrack project
 
-set -e
+set -euo pipefail
 
 echo "==========================================="
 echo "   BugTrack Installation Script"
@@ -34,12 +34,11 @@ if [ ! -f ".env" ]; then
     if [ -f ".env.example" ]; then
         echo "   Creating .env from .env.example..."
         cp .env.example .env
-        echo "⚠️  Please update .env with your specific configuration if needed."
+        echo "⚠️  Fill in PostgreSQL and authentication values in .env, then run this script again."
+        exit 1
     else
-        echo "⚠️  No .env or .env.example found. Creating default local .env..."
-        echo 'DATABASE_URL="file:./dev.db"' > .env
-        echo 'NEXTAUTH_SECRET="secret"' >> .env
-        echo 'NEXTAUTH_URL="http://localhost:3000"' >> .env
+        echo "❌ Missing .env.example. Cannot create a secure database configuration."
+        exit 1
     fi
 else
     echo "✅ .env file found."
@@ -51,12 +50,8 @@ echo ">>> 3. Setting up Database..."
 echo "   Generating Prisma Client..."
 npx prisma generate
 
-echo "   Pushing schema to database..."
-# Use push for dev/local setup (creates/updates sqlite db file directly)
-npx prisma db push
-
-echo "   Seeding database..."
-npm run seed || echo "⚠️  Seeding failed or already populated. Continuing..."
+echo "   Applying tracked database migrations..."
+npx prisma migrate deploy
 
 # 5. Build
 echo ""

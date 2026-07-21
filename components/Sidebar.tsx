@@ -15,7 +15,7 @@ import { auth } from "@/lib/auth";
 export default async function Sidebar() {
     const data = await getSidebarData();
     const session = await auth();
-    const isAdmin = (session?.user as any)?.role === "ADMIN";
+    const isAdmin = session?.user?.role === "ADMIN";
 
     const menuItems = [
         { icon: List, label: 'Inbox', count: data.inboxCount, href: '/' },

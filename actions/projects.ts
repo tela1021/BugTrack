@@ -2,76 +2,76 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { requireGlobalAdmin, requireTeamAdminOrGlobal, requireTeamRole } from '@/lib/authorization';
+import { projectSchema } from '@/lib/validation.mts';
 
 export async function getProjects() {
-    const teams = await prisma.team.findMany({
+    await requireGlobalAdmin();
+    const projects = await prisma.project.findMany({
         include: {
-            _count: {
-                select: { issues: true }
-            }
+            team: { select: { id: true, name: true, key: true } },
+            _count: { select: { issues: true } },
         },
-        orderBy: {
-            createdAt: 'desc'
-        }
+        orderBy: { createdAt: 'desc' },
     });
 
-    return teams.map(t => ({
-        id: t.id,
-        name: t.name,
-        key: t.key,
-        issues: t._count.issues,
-        created: t.createdAt.toISOString()
+    return projects.map((project) => ({
+        id: project.id,
+        name: project.name,
+        description: project.description,
+        teamId: project.teamId,
+        teamName: project.team.name,
+        teamKey: project.team.key,
+        issues: project._count.issues,
+        created: project.createdAt.toISOString(),
     }));
 }
 
-export async function createProject(name: string, description?: string) {
+export async function createProject(data: unknown) {
     try {
-        // Generate a simple key from name (first 3 chars, uppercase)
-        // Ensure uniqueness logic would be needed in prod
-        let key = name.replace(/[^a-zA-Z]/g, '').substring(0, 3).toUpperCase();
-        if (key.length < 2) key = 'PRJ';
-
-        // Basic check to avoid duplicates (simplified)
-        const existing = await prisma.team.findUnique({ where: { key } });
-        if (existing) {
-            key = key + Math.floor(Math.random() * 10);
-        }
-
-        const team = await prisma.team.create({
-            data: {
-                name,
-                description,
-                key,
-                statuses: {
-                    create: [
-                        { name: 'Backlog', type: 'BACKLOG', position: 0 },
-                        { name: 'Todo', type: 'TODO', position: 1 },
-                        { name: 'In Progress', type: 'IN_PROGRESS', position: 2 },
-                        { name: 'Done', type: 'DONE', position: 3 },
-                        { name: 'Canceled', type: 'CANCELED', position: 4 }
-                    ]
-                }
-            }
+        const input = projectSchema.parse(data);
+        await requireTeamAdminOrGlobal(input.teamId);
+        const project = await prisma.project.create({
+            data: input,
         });
         revalidatePath('/admin/projects');
-        return { success: true, data: team };
-    } catch (error: any) {
-        return { success: false, error: error.message };
+        return { success: true, data: project };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unable to create project' };
     }
 }
 
-export async function updateProject(id: string, data: { name?: string; description?: string }) {
+export async function updateProject(id: string, data: unknown) {
     try {
-        await prisma.team.update({
+        const input = projectSchema.parse(data);
+        const existingProject = await prisma.project.findUnique({ where: { id }, select: { teamId: true } });
+        if (!existingProject) throw new Error('Project not found');
+        await requireTeamAdminOrGlobal(existingProject.teamId);
+        if (input.teamId !== existingProject.teamId) throw new Error('Project team cannot be changed');
+        await prisma.project.update({
             where: { id },
-            data: {
-                name: data.name,
-                description: data.description
-            }
+            data: input,
         });
         revalidatePath('/admin/projects');
         return { success: true };
-    } catch (error: any) {
-        return { success: false, error: error.message };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unable to update project' };
     }
+}
+
+export async function getProjectById(id: string) {
+    const project = await prisma.project.findUnique({
+        where: { id },
+        include: { team: { select: { id: true, key: true, name: true } } },
+    });
+    if (!project) return null;
+
+    await requireTeamRole(project.teamId, 'MEMBER');
+    return {
+        id: project.id,
+        name: project.name,
+        description: project.description,
+        teamId: project.teamId,
+        team: project.team,
+    };
 }

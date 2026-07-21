@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -22,6 +23,7 @@ model User {
   history           IssueHistory[]
   notifications     Notification[] @relation("UserNotifications")
   sentNotifications Notification[] @relation("ActorNotifications")
+  deletedIssues     Issue[]        @relation("DeletedBy")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -34,12 +36,14 @@ model Team {
   key         String   @unique
   name        String
   description String?
+  issueSequence Int    @default(0)
 
   members  TeamMember[]
   issues   Issue[]
   cycles   Cycle[]
   labels   Label[]
   statuses WorkflowStatus[]
+  projects Project[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,11 +69,13 @@ model WorkflowStatus {
   name     String
   type     String
   position Int
-  teamId   String?
+  teamId   String
 
-  team   Team?   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
   issues Issue[]
 
+  @@unique([teamId, name])
+  @@unique([teamId, position])
   @@map("workflow_statuses")
 }
 
@@ -102,6 +108,10 @@ model Issue {
   parent   Issue?  @relation("ParentChild", fields: [parentId], references: [id])
   children Issue[] @relation("ParentChild")
 
+  deletedAt   DateTime?
+  deletedById String?
+  deletedBy   User? @relation("DeletedBy", fields: [deletedById], references: [id], onDelete: SetNull)
+
   comments      Comment[]
   labels        LabelOnIssue[]
   history       IssueHistory[]
@@ -114,6 +124,7 @@ model Issue {
   @@index([teamId, statusId])
   @@index([assigneeId])
   @@index([cycleId])
+  @@index([deletedAt])
   @@map("issues")
 }
 
@@ -123,6 +134,9 @@ model Project {
   description String?
   startDate   DateTime?
   targetDate  DateTime?
+
+  teamId String
+  team   Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   issues Issue[]
 
@@ -212,6 +226,7 @@ model Attachment {
   url       String
   mimeType  String
   size      Int
+  checksum  String  @default("")
 
   createdAt DateTime @default(now())
 
