@@ -5,6 +5,30 @@ import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
+const issueColumnSchema = z.enum(['id', 'title', 'priority', 'status', 'assignee', 'labels', 'project', 'updatedAt']);
+const issueListPreferencesSchema = z.object({ hiddenColumns: z.array(issueColumnSchema).max(7) });
+export type IssueListPreferences = z.infer<typeof issueListPreferencesSchema>;
+
+export async function getIssueListPreferences(): Promise<IssueListPreferences> {
+    const userId = await requireAuthenticatedUser();
+    const user = await prisma.user.findUnique({ where: { id: userId }, select: { preferences: true } });
+    const value = user?.preferences && typeof user.preferences === 'object' && !Array.isArray(user.preferences) ? (user.preferences as Record<string, unknown>).issueList : undefined;
+    return issueListPreferencesSchema.safeParse(value).data || { hiddenColumns: [] };
+}
+
+export async function saveIssueListPreferences(data: unknown) {
+    try {
+        const userId = await requireAuthenticatedUser();
+        const input = issueListPreferencesSchema.parse(data);
+        const user = await prisma.user.findUnique({ where: { id: userId }, select: { preferences: true } });
+        const current = user?.preferences && typeof user.preferences === 'object' && !Array.isArray(user.preferences) ? user.preferences as Record<string, unknown> : {};
+        await prisma.user.update({ where: { id: userId }, data: { preferences: { ...current, issueList: input } } });
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Не удалось сохранить настройки списка' };
+    }
+}
+
 const passwordSchema = z.object({
     currentPassword: z.string().min(1, "Current password is required"),
     newPassword: z.string().min(12, "New password must be at least 12 characters"),

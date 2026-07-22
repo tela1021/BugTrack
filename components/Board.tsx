@@ -24,6 +24,10 @@ const getStatusIcon = (name: string) => {
     return <Circle size={14} />;
 };
 
+const priorityLabels: Record<string, string> = {
+    URGENT: 'Срочный', HIGH: 'Высокий', MEDIUM: 'Средний', LOW: 'Низкий', NONE: 'Без приоритета',
+};
+
 interface Column {
     id: string;
     name: string;
@@ -32,6 +36,7 @@ interface Column {
 }
 
 type PendingWipMove = { issueId: number; toStatusId: string; toStatusName: string; wipLimit: number };
+type GroupMode = 'none' | 'assignee' | 'priority';
 
 interface BoardProps {
     initialColumns: Column[];
@@ -44,6 +49,7 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
     const [activeIssueId, setActiveIssueId] = useState<number | null>(null);
     const [pendingIssueId, setPendingIssueId] = useState<number | null>(null);
     const [pendingWipMove, setPendingWipMove] = useState<PendingWipMove | null>(null);
+    const [groupMode, setGroupMode] = useState<GroupMode>('none');
 
     // Sync state with props when filters change
     useEffect(() => {
@@ -116,8 +122,26 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
         void moveIssue(issueId, toStatusId);
     };
 
+    const getIssueGroups = (issues: IssueListItem[]) => {
+        if (groupMode === 'none') return [{ label: '', issues }];
+        const groups = new Map<string, IssueListItem[]>();
+        for (const issue of issues) {
+            const label = groupMode === 'assignee' ? issue.assigneeName || 'Не назначен' : priorityLabels[issue.priority.toUpperCase()] || issue.priority;
+            groups.set(label, [...(groups.get(label) || []), issue]);
+        }
+        return [...groups.entries()].map(([label, groupedIssues]) => ({ label, issues: groupedIssues }));
+    };
+
     return (
         <>
+        <label className={styles.groupControl}>
+            <span>Группировка Kanban</span>
+            <select value={groupMode} onChange={(event) => setGroupMode(event.target.value as GroupMode)}>
+                <option value="none">Без группировки</option>
+                <option value="assignee">По исполнителю</option>
+                <option value="priority">По приоритету</option>
+            </select>
+        </label>
         <div className={styles.board}>
             {columns.map((column: Column) => {
                 const isWipExceeded = column.wipLimit !== null && column.wipLimit !== undefined && column.issues.length > column.wipLimit;
@@ -148,17 +172,22 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
                     </header>
 
                     <div className={styles.issueList}>
-                        {column.issues.map((issue) => (
-                            <div
-                                key={issue.id}
-                                className={`${styles.draggableWrapper} ${activeIssueId === parseInt(issue.id) || pendingIssueId === parseInt(issue.id) ? styles.dragging : ''}`}
-                            >
-                                <IssueCard
-                                    {...issue}
-                                    hideStatus
-                                    onDragStart={(e) => handleDragStart(e, parseInt(issue.id))}
-                                />
-                            </div>
+                        {getIssueGroups(column.issues).map((group) => (
+                            <section key={group.label || 'all'} className={styles.issueGroup} aria-label={group.label || undefined}>
+                                {group.label && <h3>{group.label}</h3>}
+                                {group.issues.map((issue) => (
+                                    <div
+                                        key={issue.id}
+                                        className={`${styles.draggableWrapper} ${activeIssueId === parseInt(issue.id) || pendingIssueId === parseInt(issue.id) ? styles.dragging : ''}`}
+                                    >
+                                        <IssueCard
+                                            {...issue}
+                                            hideStatus
+                                            onDragStart={(e) => handleDragStart(e, parseInt(issue.id))}
+                                        />
+                                    </div>
+                                ))}
+                            </section>
                         ))}
                     </div>
                 </div>

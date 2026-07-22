@@ -15,6 +15,7 @@ model User {
   hashedPassword String?
   role           String   @default("MEMBER")
   avatarUrl      String?
+  preferences    Json?
 
   createdIssues     Issue[]        @relation("Reporter")
   assignedIssues    Issue[]        @relation("Assignee")

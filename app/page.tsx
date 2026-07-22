@@ -2,12 +2,14 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import IssueTable from "@/components/IssueTable";
+import type { IssueColumn } from '@/components/IssueTable';
 import Board from "@/components/Board";
 import FiltersBar from "@/components/FiltersBar";
 import { List, Layout } from "lucide-react";
 import { bulkUpdateIssues, getIssues, getIssuesPage } from "@/actions/issues";
 import { getStatuses, updateIssue } from "@/actions/issue-details";
 import { getIssueFormData } from '@/actions/form-data';
+import { getIssueListPreferences, saveIssueListPreferences } from '@/actions/settings';
 import type { IssueListItem, WorkflowStatusOption } from '@/types/view-models';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
@@ -20,6 +22,7 @@ const defaultFilters = {
   team: 'All',
   search: '',
 };
+const issueColumns: { id: IssueColumn; label: string }[] = [{ id: 'id', label: 'ID' }, { id: 'title', label: 'Название' }, { id: 'priority', label: 'Приоритет' }, { id: 'status', label: 'Статус' }, { id: 'assignee', label: 'Исполнитель' }, { id: 'labels', label: 'Метки' }, { id: 'project', label: 'Проект' }, { id: 'updatedAt', label: 'Обновлено' }];
 
 export default function Home() {
   const router = useRouter();
@@ -38,6 +41,7 @@ export default function Home() {
   const [bulkLabelIds, setBulkLabelIds] = useState<string[]>([]);
   const [confirmingLabelReplace, setConfirmingLabelReplace] = useState(false);
   const [bulkUpdating, setBulkUpdating] = useState(false);
+  const [hiddenColumns, setHiddenColumns] = useState<IssueColumn[]>([]);
 
   const fetchIssues = useCallback(async () => {
     setLoading(true);
@@ -62,6 +66,7 @@ export default function Home() {
   useEffect(() => {
     void getIssueFormData().then(setIssueFormData).catch(() => setIssueFormData(null));
   }, []);
+  useEffect(() => { void getIssueListPreferences().then((preferences) => setHiddenColumns(preferences.hiddenColumns)); }, []);
 
   useEffect(() => {
     setCurrentCursor(null);
@@ -138,6 +143,12 @@ export default function Home() {
     setSelectedIssueIds(issueIds);
     setBulkLabelIds([]);
     setConfirmingLabelReplace(false);
+  };
+  const toggleColumn = (column: IssueColumn) => {
+    const next = hiddenColumns.includes(column) ? hiddenColumns.filter((item) => item !== column) : [...hiddenColumns, column];
+    if (next.length === issueColumns.length) return;
+    setHiddenColumns(next);
+    void saveIssueListPreferences({ hiddenColumns: next });
   };
 
   const selectedIssues = issues.filter((issue) => selectedIssueIds.includes(issue.id));
@@ -283,6 +294,12 @@ export default function Home() {
                   <button type="button" className="btn glass" disabled={bulkUpdating} onClick={() => handleSelectedIssueIdsChange([])}>Снять выделение</button>
                 </section>
               )}
+              <details className="glass" style={{ alignSelf: 'flex-end', padding: '8px 12px', borderRadius: '8px' }}>
+                <summary style={{ cursor: 'pointer' }}>Настроить колонки</summary>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+                  {issueColumns.map((column) => <label key={column.id}><input type="checkbox" checked={!hiddenColumns.includes(column.id)} onChange={() => toggleColumn(column.id)} /> {column.label}</label>)}
+                </div>
+              </details>
               <IssueTable
                 issues={issues}
                 sort={filters.sort as Parameters<typeof IssueTable>[0]['sort']}
@@ -294,6 +311,7 @@ export default function Home() {
                 onNextPage={goToNextPage}
                 selectedIssueIds={selectedIssueIds}
                 onSelectedIssueIdsChange={handleSelectedIssueIdsChange}
+                visibleColumns={issueColumns.map((column) => column.id).filter((column) => !hiddenColumns.includes(column))}
               />
             </>
           ) : (

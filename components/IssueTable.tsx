@@ -7,6 +7,7 @@ import type { IssueListItem } from '@/types/view-models';
 import styles from './IssueTable.module.css';
 
 type SortKey = 'newest' | 'oldest' | 'title_asc' | 'title_desc' | 'priority_asc' | 'priority_desc' | 'updated_asc' | 'updated_desc';
+export type IssueColumn = 'id' | 'title' | 'priority' | 'status' | 'assignee' | 'labels' | 'project' | 'updatedAt';
 
 interface IssueTableProps {
     issues: IssueListItem[];
@@ -19,6 +20,7 @@ interface IssueTableProps {
     onNextPage: () => void;
     selectedIssueIds: string[];
     onSelectedIssueIdsChange: (issueIds: string[]) => void;
+    visibleColumns: IssueColumn[];
 }
 
 const priorityLabels: Record<string, string> = {
@@ -40,7 +42,7 @@ function SortButton({ label, currentSort, asc, desc, onSortChange }: {
     );
 }
 
-export default function IssueTable({ issues, sort, onSortChange, page, hasPreviousPage, hasNextPage, onPreviousPage, onNextPage, selectedIssueIds, onSelectedIssueIdsChange }: IssueTableProps) {
+export default function IssueTable({ issues, sort, onSortChange, page, hasPreviousPage, hasNextPage, onPreviousPage, onNextPage, selectedIssueIds, onSelectedIssueIdsChange, visibleColumns }: IssueTableProps) {
     const router = useRouter();
     const selectedIds = new Set(selectedIssueIds);
     const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(null);
@@ -80,32 +82,19 @@ export default function IssueTable({ issues, sort, onSortChange, page, hasPrevio
                     <thead>
                         <tr>
                             <th><input type="checkbox" aria-label="Выбрать все задачи на странице" checked={allOnPageSelected} onChange={(event) => togglePage(event.target.checked)} /></th>
-                            <th>ID</th>
-                            <th><SortButton label="Название" currentSort={sort} asc="title_asc" desc="title_desc" onSortChange={onSortChange} /></th>
-                            <th><SortButton label="Приоритет" currentSort={sort} asc="priority_asc" desc="priority_desc" onSortChange={onSortChange} /></th>
-                            <th>Статус</th>
-                            <th>Исполнитель</th>
-                            <th>Метки</th>
-                            <th>Проект</th>
-                            <th><SortButton label="Обновлено" currentSort={sort} asc="updated_asc" desc="updated_desc" onSortChange={onSortChange} /></th>
+                            {visibleColumns.includes('id') && <th>ID</th>}{visibleColumns.includes('title') && <th><SortButton label="Название" currentSort={sort} asc="title_asc" desc="title_desc" onSortChange={onSortChange} /></th>}{visibleColumns.includes('priority') && <th><SortButton label="Приоритет" currentSort={sort} asc="priority_asc" desc="priority_desc" onSortChange={onSortChange} /></th>}{visibleColumns.includes('status') && <th>Статус</th>}{visibleColumns.includes('assignee') && <th>Исполнитель</th>}{visibleColumns.includes('labels') && <th>Метки</th>}{visibleColumns.includes('project') && <th>Проект</th>}{visibleColumns.includes('updatedAt') && <th><SortButton label="Обновлено" currentSort={sort} asc="updated_asc" desc="updated_desc" onSortChange={onSortChange} /></th>}
                         </tr>
                     </thead>
                     <tbody>
                         {issues.map((issue, index) => (
                             <tr key={issue.id} className={styles.issueRow} tabIndex={0} onClick={() => openIssue(issue.readableId)} onKeyDown={(event) => handleRowKeyDown(event, issue.readableId)}>
                                 <td className={styles.checkboxCell}><input type="checkbox" aria-label={`Выбрать задачу ${issue.readableId}`} checked={selectedIds.has(issue.id)} onClick={(event) => { event.stopPropagation(); shiftKeyRef.current = event.shiftKey; }} onChange={(event) => { toggleIssue(issue.id, index, event.target.checked, shiftKeyRef.current); shiftKeyRef.current = false; }} /></td>
-                                <td><Link className={styles.issueId} href={`/issues/${issue.readableId}`}>{issue.readableId}</Link></td>
-                                <td><Link className={styles.title} href={`/issues/${issue.readableId}`}>{issue.title}</Link></td>
-                                <td><span className={`${styles.priority} ${styles[`priority${issue.priority.toUpperCase()}`] || ''}`}>{priorityLabels[issue.priority.toUpperCase()] || issue.priority}</span></td>
-                                <td><span className={styles.status}>{issue.status}</span></td>
-                                <td>{issue.assigneeName || 'Не назначен'}</td>
-                                <td>
+                                {visibleColumns.includes('id') && <td><Link className={styles.issueId} href={`/issues/${issue.readableId}`}>{issue.readableId}</Link></td>}{visibleColumns.includes('title') && <td><Link className={styles.title} href={`/issues/${issue.readableId}`}>{issue.title}</Link></td>}
+                                {visibleColumns.includes('priority') && <td><span className={`${styles.priority} ${styles[`priority${issue.priority.toUpperCase()}`] || ''}`}>{priorityLabels[issue.priority.toUpperCase()] || issue.priority}</span></td>}{visibleColumns.includes('status') && <td><span className={styles.status}>{issue.status}</span></td>}{visibleColumns.includes('assignee') && <td>{issue.assigneeName || 'Не назначен'}</td>}{visibleColumns.includes('labels') && <td>
                                     <div className={styles.labels}>
                                         {issue.labels.length ? issue.labels.map((label) => <span key={label.id} className={styles.label} style={{ borderColor: label.color }}>{label.name}</span>) : '—'}
                                     </div>
-                                </td>
-                                <td>{issue.projectName || issue.projectKey}</td>
-                                <td><time dateTime={issue.updatedAt}>{new Intl.DateTimeFormat('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(issue.updatedAt))}</time></td>
+                                </td>}{visibleColumns.includes('project') && <td>{issue.projectName || issue.projectKey}</td>}{visibleColumns.includes('updatedAt') && <td><time dateTime={issue.updatedAt}>{new Intl.DateTimeFormat('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(issue.updatedAt))}</time></td>}
                             </tr>
                         ))}
                     </tbody>
