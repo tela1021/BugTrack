@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { requireTeamAdminOrGlobal } from '@/lib/authorization';
+import { workflowStatusUpdateSchema } from '@/lib/validation.mts';
 
 export async function getWorkflowStatuses(teamId: string) {
     await requireTeamAdminOrGlobal(teamId);
@@ -37,17 +38,15 @@ export async function createStatus(data: { name: string; type: string; teamId: s
     }
 }
 
-export async function updateStatus(id: string, data: { name?: string; type?: string }) {
+export async function updateStatus(id: string, data: unknown) {
     try {
         const status = await prisma.workflowStatus.findUnique({ where: { id }, select: { teamId: true } });
         if (!status) throw new Error('Status not found');
         await requireTeamAdminOrGlobal(status.teamId);
+        const input = workflowStatusUpdateSchema.parse(data);
         await prisma.workflowStatus.update({
             where: { id },
-            data: {
-                name: data.name,
-                type: data.type
-            }
+            data: input
         });
         revalidatePath('/admin/workflow');
         return { success: true };

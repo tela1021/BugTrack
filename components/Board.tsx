@@ -27,8 +27,11 @@ const getStatusIcon = (name: string) => {
 interface Column {
     id: string;
     name: string;
+    wipLimit?: number | null;
     issues: IssueListItem[];
 }
+
+type PendingWipMove = { issueId: number; toStatusId: string; toStatusName: string; wipLimit: number };
 
 interface BoardProps {
     initialColumns: Column[];
@@ -40,6 +43,7 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
     const [columns, setColumns] = useState(initialColumns);
     const [activeIssueId, setActiveIssueId] = useState<number | null>(null);
     const [pendingIssueId, setPendingIssueId] = useState<number | null>(null);
+    const [pendingWipMove, setPendingWipMove] = useState<PendingWipMove | null>(null);
 
     // Sync state with props when filters change
     useEffect(() => {
@@ -47,7 +51,7 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
     }, [initialColumns]);
 
     const handleDragStart = (e: React.DragEvent, issueId: number) => {
-        if (pendingIssueId !== null) {
+        if (pendingIssueId !== null || pendingWipMove !== null) {
             e.preventDefault();
             return;
         }
@@ -59,14 +63,7 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
         e.preventDefault(); // Required for drop
     };
 
-    const handleDrop = async (e: React.DragEvent, toStatusId: string) => {
-        e.preventDefault();
-        const issueIdStr = e.dataTransfer.getData('issueId');
-        const issueId = parseInt(issueIdStr);
-        setActiveIssueId(null);
-
-        if (isNaN(issueId)) return;
-
+    const moveIssue = async (issueId: number, toStatusId: string) => {
         // Find where the issue currently is
         let fromColId = '';
         columns.forEach(col => {
@@ -103,12 +100,31 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
         }
     };
 
+    const handleDrop = (e: React.DragEvent, toStatusId: string) => {
+        e.preventDefault();
+        const issueId = Number.parseInt(e.dataTransfer.getData('issueId'), 10);
+        setActiveIssueId(null);
+        if (Number.isNaN(issueId)) return;
+
+        const toColumn = columns.find((column) => column.id === toStatusId);
+        if (!toColumn) return;
+        if (toColumn.issues.some((issue) => issue.id === issueId.toString())) return;
+        if (toColumn.wipLimit !== null && toColumn.wipLimit !== undefined && toColumn.issues.length >= toColumn.wipLimit) {
+            setPendingWipMove({ issueId, toStatusId, toStatusName: toColumn.name, wipLimit: toColumn.wipLimit });
+            return;
+        }
+        void moveIssue(issueId, toStatusId);
+    };
+
     return (
+        <>
         <div className={styles.board}>
-            {columns.map((column: Column) => (
+            {columns.map((column: Column) => {
+                const isWipExceeded = column.wipLimit !== null && column.wipLimit !== undefined && column.issues.length > column.wipLimit;
+                return (
                 <div
                     key={column.id}
-                    className={styles.column}
+                    className={`${styles.column} ${isWipExceeded ? styles.wipExceeded : ''}`}
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, column.id)}
                 >
@@ -119,6 +135,7 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
                             </div>
                             <span className={styles.columnTitle}>{column.name}</span>
                             <span className={styles.count}>{column.issues.length}</span>
+                            {column.wipLimit !== null && column.wipLimit !== undefined && <span className={styles.wipCount} aria-label={`WIP-лимит ${column.wipLimit}`}>WIP {column.issues.length}/{column.wipLimit}</span>}
                         </div>
                         <button
                             className={styles.addBtn}
@@ -145,7 +162,18 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
                         ))}
                     </div>
                 </div>
-            ))}
+            )})}
         </div>
+        {pendingWipMove && (
+            <section className={styles.wipDialog} role="alertdialog" aria-modal="true" aria-label="Превышен WIP-лимит">
+                <strong>Превышен WIP-лимит</strong>
+                <p>В колонке «{pendingWipMove.toStatusName}» уже {pendingWipMove.wipLimit} задач. Перенести ещё одну?</p>
+                <div>
+                    <button type="button" className="btn glass" onClick={() => setPendingWipMove(null)}>Отмена</button>
+                    <button type="button" className="btn btn-primary" onClick={() => { const move = pendingWipMove; setPendingWipMove(null); void moveIssue(move.issueId, move.toStatusId); }}>Подтвердить перенос</button>
+                </div>
+            </section>
+        )}
+        </>
     );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { IssueListItem } from '@/types/view-models';
 import styles from './IssueTable.module.css';
@@ -16,6 +17,8 @@ interface IssueTableProps {
     hasNextPage: boolean;
     onPreviousPage: () => void;
     onNextPage: () => void;
+    selectedIssueIds: string[];
+    onSelectedIssueIdsChange: (issueIds: string[]) => void;
 }
 
 const priorityLabels: Record<string, string> = {
@@ -37,13 +40,37 @@ function SortButton({ label, currentSort, asc, desc, onSortChange }: {
     );
 }
 
-export default function IssueTable({ issues, sort, onSortChange, page, hasPreviousPage, hasNextPage, onPreviousPage, onNextPage }: IssueTableProps) {
+export default function IssueTable({ issues, sort, onSortChange, page, hasPreviousPage, hasNextPage, onPreviousPage, onNextPage, selectedIssueIds, onSelectedIssueIdsChange }: IssueTableProps) {
     const router = useRouter();
+    const selectedIds = new Set(selectedIssueIds);
+    const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(null);
+    const shiftKeyRef = useRef(false);
     const openIssue = (readableId: string) => router.push(`/issues/${readableId}`);
     const handleRowKeyDown = (event: React.KeyboardEvent<HTMLTableRowElement>, readableId: string) => {
+        if (event.target instanceof HTMLElement && event.target.closest('a,button,input,select')) return;
         if (event.key !== 'Enter' && event.key !== ' ') return;
         event.preventDefault();
         openIssue(readableId);
+    };
+    const toggleIssue = (issueId: string, index: number, checked: boolean, shiftKey: boolean) => {
+        const nextSelectedIds = new Set(selectedIssueIds);
+        if (shiftKey && lastSelectedIndex !== null) {
+            const [start, end] = [lastSelectedIndex, index].sort((left, right) => left - right);
+            issues.slice(start, end + 1).forEach((issue) => checked ? nextSelectedIds.add(issue.id) : nextSelectedIds.delete(issue.id));
+        } else if (checked) {
+            nextSelectedIds.add(issueId);
+        } else {
+            nextSelectedIds.delete(issueId);
+        }
+        setLastSelectedIndex(index);
+        onSelectedIssueIdsChange([...nextSelectedIds]);
+    };
+    const allOnPageSelected = issues.length > 0 && issues.every((issue) => selectedIds.has(issue.id));
+    const togglePage = (checked: boolean) => {
+        const nextSelectedIds = new Set(selectedIssueIds);
+        issues.forEach((issue) => checked ? nextSelectedIds.add(issue.id) : nextSelectedIds.delete(issue.id));
+        setLastSelectedIndex(null);
+        onSelectedIssueIdsChange([...nextSelectedIds]);
     };
 
     return (
@@ -52,6 +79,7 @@ export default function IssueTable({ issues, sort, onSortChange, page, hasPrevio
                 <table className={styles.table}>
                     <thead>
                         <tr>
+                            <th><input type="checkbox" aria-label="Выбрать все задачи на странице" checked={allOnPageSelected} onChange={(event) => togglePage(event.target.checked)} /></th>
                             <th>ID</th>
                             <th><SortButton label="Название" currentSort={sort} asc="title_asc" desc="title_desc" onSortChange={onSortChange} /></th>
                             <th><SortButton label="Приоритет" currentSort={sort} asc="priority_asc" desc="priority_desc" onSortChange={onSortChange} /></th>
@@ -63,8 +91,9 @@ export default function IssueTable({ issues, sort, onSortChange, page, hasPrevio
                         </tr>
                     </thead>
                     <tbody>
-                        {issues.map((issue) => (
+                        {issues.map((issue, index) => (
                             <tr key={issue.id} className={styles.issueRow} tabIndex={0} onClick={() => openIssue(issue.readableId)} onKeyDown={(event) => handleRowKeyDown(event, issue.readableId)}>
+                                <td className={styles.checkboxCell}><input type="checkbox" aria-label={`Выбрать задачу ${issue.readableId}`} checked={selectedIds.has(issue.id)} onClick={(event) => { event.stopPropagation(); shiftKeyRef.current = event.shiftKey; }} onChange={(event) => { toggleIssue(issue.id, index, event.target.checked, shiftKeyRef.current); shiftKeyRef.current = false; }} /></td>
                                 <td><Link className={styles.issueId} href={`/issues/${issue.readableId}`}>{issue.readableId}</Link></td>
                                 <td><Link className={styles.title} href={`/issues/${issue.readableId}`}>{issue.title}</Link></td>
                                 <td><span className={`${styles.priority} ${styles[`priority${issue.priority.toUpperCase()}`] || ''}`}>{priorityLabels[issue.priority.toUpperCase()] || issue.priority}</span></td>

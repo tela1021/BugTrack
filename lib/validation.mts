@@ -34,6 +34,36 @@ export const updateIssueSchema = z.object({
   message: "At least one field must be updated.",
 });
 
+export const bulkIssueUpdateSchema = z.object({
+  issueIds: z.array(z.coerce.number().int().positive()).min(1).max(100),
+  statusId: z.string().trim().min(1).max(100).optional(),
+  assigneeId: z.string().trim().min(1).max(100).nullable().optional(),
+  priority: z.preprocess(
+    (value) => typeof value === "string" ? value.trim().toUpperCase() : value,
+    z.enum(["NONE", "LOW", "MEDIUM", "HIGH", "URGENT"]).optional()
+  ),
+  labelIds: z.array(z.string().trim().min(1).max(100)).max(100).optional(),
+}).strict().superRefine((data, context) => {
+  const actionCount = [
+    data.statusId !== undefined,
+    data.assigneeId !== undefined,
+    data.priority !== undefined,
+    data.labelIds !== undefined,
+  ].filter(Boolean).length;
+
+  if (actionCount !== 1) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: 'Choose exactly one bulk update.' });
+  }
+});
+
+export const workflowStatusUpdateSchema = z.object({
+  name: z.string().trim().min(1).max(100).optional(),
+  type: z.string().trim().min(1).max(50).optional(),
+  wipLimit: z.coerce.number().int().min(1).max(999).nullable().optional(),
+}).strict().refine((data) => Object.keys(data).length > 0, {
+  message: 'At least one workflow field must be updated.',
+});
+
 export const createCommentSchema = z.object({
   content: z.string().trim().max(10_000),
 }).refine((data) => data.content.length > 0, {

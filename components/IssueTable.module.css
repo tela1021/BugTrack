@@ -1,11 +1,12 @@
 .section { overflow: hidden; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: var(--shadow-sm); }
 .scrollArea { overflow-x: auto; }
-.table { width: 100%; min-width: 920px; border-collapse: collapse; font-size: 13px; }
+.table { width: 100%; min-width: 970px; border-collapse: collapse; font-size: 13px; }
 .table th { background: var(--surface); color: var(--muted-foreground); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-align: left; text-transform: uppercase; white-space: nowrap; }
 .table th, .table td { border-bottom: 1px solid var(--border); padding: 12px 14px; vertical-align: middle; }
 .table tbody tr:last-child td { border-bottom: 0; }
 .table tbody tr:hover { background: #fcfcfb; }
 .issueRow { cursor: pointer; }.issueRow:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+.checkboxCell { width: 38px; }.checkboxCell input, .table th:first-child input { accent-color: var(--primary); cursor: pointer; }
 .sortButton { border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-weight: inherit; letter-spacing: inherit; text-transform: inherit; }
 .issueId { color: var(--muted-foreground); font-weight: 700; text-decoration: none; white-space: nowrap; }
 .title { color: var(--foreground); font-weight: 600; text-decoration: none; }

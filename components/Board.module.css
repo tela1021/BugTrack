@@ -62,6 +62,9 @@
     color: var(--muted-foreground);
     font-weight: 700;
 }
+.wipCount { border: 1px solid var(--border); border-radius: 6px; color: var(--muted-foreground); font-size: 10px; font-weight: 700; padding: 1px 6px; white-space: nowrap; }
+.wipExceeded { border-color: var(--danger, #dc2626); }.wipExceeded .wipCount { border-color: var(--danger, #dc2626); color: var(--danger, #dc2626); }
+.wipDialog { align-items: center; background: var(--card); border: 1px solid var(--danger, #dc2626); border-radius: 10px; bottom: 24px; box-shadow: var(--shadow-lg); display: flex; flex-wrap: wrap; gap: 10px; left: 50%; max-width: 560px; padding: 16px; position: fixed; transform: translateX(-50%); z-index: 30; }.wipDialog p { color: var(--muted-foreground); flex-basis: 100%; font-size: 14px; }.wipDialog div { display: flex; gap: 8px; }
 
 .addBtn {
     color: var(--muted-foreground);

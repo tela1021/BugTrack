@@ -5,8 +5,9 @@ import IssueTable from "@/components/IssueTable";
 import Board from "@/components/Board";
 import FiltersBar from "@/components/FiltersBar";
 import { List, Layout } from "lucide-react";
-import { getIssues, getIssuesPage } from "@/actions/issues";
+import { bulkUpdateIssues, getIssues, getIssuesPage } from "@/actions/issues";
 import { getStatuses, updateIssue } from "@/actions/issue-details";
+import { getIssueFormData } from '@/actions/form-data';
 import type { IssueListItem, WorkflowStatusOption } from '@/types/view-models';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
@@ -32,6 +33,11 @@ export default function Home() {
   const [currentCursor, setCurrentCursor] = useState<string | null>(null);
   const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [selectedIssueIds, setSelectedIssueIds] = useState<string[]>([]);
+  const [issueFormData, setIssueFormData] = useState<Awaited<ReturnType<typeof getIssueFormData>> | null>(null);
+  const [bulkLabelIds, setBulkLabelIds] = useState<string[]>([]);
+  const [confirmingLabelReplace, setConfirmingLabelReplace] = useState(false);
+  const [bulkUpdating, setBulkUpdating] = useState(false);
 
   const fetchIssues = useCallback(async () => {
     setLoading(true);
@@ -43,6 +49,7 @@ export default function Home() {
       getStatuses(filters.team)
     ]);
     setIssues(issuesData.issues);
+    setSelectedIssueIds([]);
     setNextCursor(issuesData.nextCursor);
     setStatuses(statusesData);
     setLoading(false);
@@ -51,6 +58,10 @@ export default function Home() {
   useEffect(() => {
     void fetchIssues();
   }, [fetchIssues]);
+
+  useEffect(() => {
+    void getIssueFormData().then(setIssueFormData).catch(() => setIssueFormData(null));
+  }, []);
 
   useEffect(() => {
     setCurrentCursor(null);
@@ -123,6 +134,39 @@ export default function Home() {
     return false;
   };
 
+  const handleSelectedIssueIdsChange = (issueIds: string[]) => {
+    setSelectedIssueIds(issueIds);
+    setBulkLabelIds([]);
+    setConfirmingLabelReplace(false);
+  };
+
+  const selectedIssues = issues.filter((issue) => selectedIssueIds.includes(issue.id));
+  const selectedTeamKeys = new Set(selectedIssues.map((issue) => issue.projectKey));
+  const selectedTeam = selectedTeamKeys.size === 1
+    ? issueFormData?.teams.find((team) => team.key === selectedIssues[0]?.projectKey)
+    : undefined;
+  const canBulkUpdate = selectedIssues.length === selectedIssueIds.length && selectedIssues.length > 0 && Boolean(selectedTeam);
+
+  const handleBulkUpdate = async (data: { statusId?: string; assigneeId?: string | null; priority?: string; labelIds?: string[] }) => {
+    if (!canBulkUpdate) {
+      toast.error('Выберите задачи одной команды на текущей странице');
+      return;
+    }
+    setBulkUpdating(true);
+    const result = await bulkUpdateIssues({ issueIds: selectedIssueIds.map(Number), ...data });
+    setBulkUpdating(false);
+    if (!result.success) {
+      toast.error(result.error || 'Не удалось массово изменить задачи');
+      return;
+    }
+    const updatedCount = 'updatedCount' in result ? result.updatedCount ?? 0 : 0;
+    toast.success(updatedCount > 0 ? `Изменено задач: ${updatedCount}` : 'Выбранные задачи уже содержат эти значения');
+    setSelectedIssueIds([]);
+    setBulkLabelIds([]);
+    setConfirmingLabelReplace(false);
+    void fetchIssues();
+  };
+
   // Create columns based on fetched statuses
   const displayStatuses = [...statuses];
 
@@ -140,15 +184,16 @@ export default function Home() {
   const boardColumns = displayStatuses.map(status => ({
     id: status.id,
     name: status.name,
+    wipLimit: status.wipLimit,
     issues: issues.filter(i => i.status?.toLowerCase() === status.name.toLowerCase())
   }));
 
   if (boardColumns.length === 0) {
     // Fallback if no statuses found
     boardColumns.push(
-      { id: 'todo', name: 'Todo', issues: issues.filter(i => i.status === 'Todo') },
-      { id: 'in_progress', name: 'In Progress', issues: issues.filter(i => i.status === 'In Progress') },
-      { id: 'done', name: 'Done', issues: issues.filter(i => i.status === 'Done') }
+      { id: 'todo', name: 'Todo', wipLimit: null, issues: issues.filter(i => i.status === 'Todo') },
+      { id: 'in_progress', name: 'In Progress', wipLimit: null, issues: issues.filter(i => i.status === 'In Progress') },
+      { id: 'done', name: 'Done', wipLimit: null, issues: issues.filter(i => i.status === 'Done') }
     );
   }
 
@@ -204,16 +249,53 @@ export default function Home() {
           {loading ? (
             <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted-foreground)' }}>Loading...</div>
           ) : issues.length > 0 ? (
-            <IssueTable
-              issues={issues}
-              sort={filters.sort as Parameters<typeof IssueTable>[0]['sort']}
-              onSortChange={handleSortChange}
-              page={cursorHistory.length + 1}
-              hasPreviousPage={cursorHistory.length > 0}
-              hasNextPage={Boolean(nextCursor)}
-              onPreviousPage={goToPreviousPage}
-              onNextPage={goToNextPage}
-            />
+            <>
+              {selectedIssueIds.length > 0 && (
+                <section className="glass" aria-label="Массовые действия" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', padding: '10px 12px', borderRadius: '10px' }}>
+                  <strong>{selectedIssueIds.length} выбрано</strong>
+                  {canBulkUpdate && selectedTeam ? (
+                    <>
+                      <select aria-label="Изменить статус выбранных задач" defaultValue="" disabled={bulkUpdating} onChange={(event) => event.target.value && void handleBulkUpdate({ statusId: event.target.value })}>
+                        <option value="" disabled>Изменить статус…</option>
+                        {selectedTeam.statuses.map((status) => <option key={status.id} value={status.id}>{status.name}</option>)}
+                      </select>
+                      <select aria-label="Изменить исполнителя выбранных задач" defaultValue="" disabled={bulkUpdating} onChange={(event) => event.target.value && void handleBulkUpdate({ assigneeId: event.target.value === '__unassigned__' ? null : event.target.value })}>
+                        <option value="" disabled>Изменить исполнителя…</option>
+                        <option value="__unassigned__">Не назначен</option>
+                        {selectedTeam.members.map((member) => <option key={member.id} value={member.id}>{member.name || member.email}</option>)}
+                      </select>
+                      <select aria-label="Изменить приоритет выбранных задач" defaultValue="" disabled={bulkUpdating} onChange={(event) => event.target.value && void handleBulkUpdate({ priority: event.target.value })}>
+                        <option value="" disabled>Изменить приоритет…</option>
+                        <option value="URGENT">Срочный</option><option value="HIGH">Высокий</option><option value="MEDIUM">Средний</option><option value="LOW">Низкий</option><option value="NONE">Без приоритета</option>
+                      </select>
+                      <select aria-label="Метки для выбранных задач" multiple value={bulkLabelIds} disabled={bulkUpdating} onChange={(event) => { setBulkLabelIds(Array.from(event.currentTarget.selectedOptions, (option) => option.value)); setConfirmingLabelReplace(false); }}>
+                        {selectedTeam.labels.map((label) => <option key={label.id} value={label.id}>{label.name}</option>)}
+                      </select>
+                      {confirmingLabelReplace ? (
+                        <>
+                          <span style={{ color: 'var(--muted-foreground)' }}>Заменить метки у {selectedIssueIds.length} задач?</span>
+                          <button type="button" className="btn btn-primary" disabled={bulkUpdating} onClick={() => void handleBulkUpdate({ labelIds: bulkLabelIds })}>Подтвердить замену меток</button>
+                          <button type="button" className="btn glass" disabled={bulkUpdating} onClick={() => setConfirmingLabelReplace(false)}>Отмена</button>
+                        </>
+                      ) : <button type="button" className="btn glass" disabled={bulkUpdating} onClick={() => setConfirmingLabelReplace(true)}>Заменить метки</button>}
+                    </>
+                  ) : <span style={{ color: 'var(--muted-foreground)' }}>Для массового изменения выберите задачи одной команды.</span>}
+                  <button type="button" className="btn glass" disabled={bulkUpdating} onClick={() => handleSelectedIssueIdsChange([])}>Снять выделение</button>
+                </section>
+              )}
+              <IssueTable
+                issues={issues}
+                sort={filters.sort as Parameters<typeof IssueTable>[0]['sort']}
+                onSortChange={handleSortChange}
+                page={cursorHistory.length + 1}
+                hasPreviousPage={cursorHistory.length > 0}
+                hasNextPage={Boolean(nextCursor)}
+                onPreviousPage={goToPreviousPage}
+                onNextPage={goToNextPage}
+                selectedIssueIds={selectedIssueIds}
+                onSelectedIssueIdsChange={handleSelectedIssueIdsChange}
+              />
+            </>
           ) : (
             <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted-foreground)' }}>
               <p>Нет задач по выбранным фильтрам.</p>

@@ -17,7 +17,7 @@ export type IssueListItem = {
   updatedAt: string;
 };
 
-export type WorkflowStatusOption = { id: string; name: string; position: number; type?: string };
+export type WorkflowStatusOption = { id: string; name: string; position: number; type?: string; wipLimit?: number | null };
 export type TeamOption = { id: string; key: string; name: string };
 export type UserOption = { id: string; name: string | null; email: string; role?: string };
 export type ProjectSummary = {

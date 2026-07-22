@@ -11,6 +11,7 @@ export async function getIssueFormData() {
             team: {
                 include: {
                     statuses: { orderBy: { position: 'asc' } },
+                    labels: { orderBy: { name: 'asc' } },
                     members: {
                         include: { user: true },
                         orderBy: { user: { name: 'asc' } },
@@ -29,6 +30,11 @@ export async function getIssueFormData() {
                 id: status.id,
                 name: status.name,
                 type: status.type,
+            })),
+            labels: team.labels.map((label) => ({
+                id: label.id,
+                name: label.name,
+                color: label.color,
             })),
             members: team.members.map(({ user }) => ({
                 id: user.id,

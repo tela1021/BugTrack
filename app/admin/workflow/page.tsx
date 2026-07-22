@@ -13,7 +13,7 @@ import {
 import Link from 'next/link';
 import styles from './Workflow.module.css';
 import { useEffect, useState } from 'react';
-import { getWorkflowStatuses, createStatus, deleteStatus } from '@/actions/workflow';
+import { getWorkflowStatuses, createStatus, deleteStatus, updateStatus } from '@/actions/workflow';
 import { getAdminTeams } from '@/actions/teams';
 import { useToast } from '@/components/ToastProvider';
 
@@ -29,6 +29,7 @@ type WorkflowStatus = {
     type: string;
     position: number;
     teamId: string | null;
+    wipLimit: number | null;
     color?: string | null;
 };
 
@@ -102,6 +103,21 @@ export default function WorkflowAdmin() {
         }
     };
 
+    const handleWipLimitChange = (id: string, value: string) => {
+        const wipLimit = value === '' ? null : Number(value);
+        setStatuses((current) => current.map((status) => status.id === id ? { ...status, wipLimit } : status));
+    };
+
+    const handleWipLimitSave = async (status: WorkflowStatus) => {
+        const result = await updateStatus(status.id, { wipLimit: status.wipLimit });
+        if (result.success) {
+            toast.success('WIP-лимит сохранён');
+        } else {
+            toast.error(result.error || 'Не удалось сохранить WIP-лимит');
+            void getWorkflowStatuses(selectedTeamId).then(setStatuses);
+        }
+    };
+
     return (
         <div className="container">
             <Link href="/admin" className={styles.backLink}>
@@ -150,6 +166,11 @@ export default function WorkflowAdmin() {
                                     <span className={styles.statusName}>{status.name}</span>
                                     <span className={styles.statusType}>{status.type}</span>
                                 </div>
+                                <label className={styles.wipControl}>
+                                    <span>WIP-лимит</span>
+                                    <input type="number" min="1" max="999" inputMode="numeric" aria-label={`WIP-лимит статуса ${status.name}`} value={status.wipLimit ?? ''} onChange={(event) => handleWipLimitChange(status.id, event.target.value)} />
+                                    <button type="button" className="btn glass" onClick={() => void handleWipLimitSave(status)}>Сохранить</button>
+                                </label>
                                 <div className={styles.actions}>
                                     <button
                                         className={styles.deleteBtn}
