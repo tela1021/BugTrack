@@ -25,6 +25,7 @@ model User {
   notifications     Notification[] @relation("UserNotifications")
   sentNotifications Notification[] @relation("ActorNotifications")
   deletedIssues     Issue[]        @relation("DeletedBy")
+  integrationActors TeamIntegration[] @relation("IntegrationActor")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,6 +39,7 @@ model Team {
   name        String
   description String?
   issueSequence Int    @default(0)
+  slaPolicy     Json?
 
   members  TeamMember[]
   issues   Issue[]
@@ -45,6 +47,7 @@ model Team {
   labels   Label[]
   statuses WorkflowStatus[]
   projects Project[]
+  integrations TeamIntegration[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -87,6 +90,7 @@ model Issue {
   title       String
   description String?
   priority    String  @default("NONE")
+  issueType   String  @default("TASK")
 
   statusId String
   status   WorkflowStatus @relation(fields: [statusId], references: [id])
@@ -119,13 +123,19 @@ model Issue {
   history       IssueHistory[]
   attachments   Attachment[]
   notifications Notification[]
+  outgoingLinks IssueLink[] @relation("IssueLinkSource")
+  incomingLinks IssueLink[] @relation("IssueLinkTarget")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([teamId, statusId])
+  @@index([teamId, updatedAt])
+  @@index([assigneeId, statusId])
+  @@index([projectId, updatedAt])
   @@index([assigneeId])
   @@index([cycleId])
+  @@index([issueType])
   @@index([deletedAt])
   @@map("issues")
 }
@@ -146,11 +156,14 @@ model Project {
   updatedAt DateTime @updatedAt
 
   @@map("projects")
+  @@index([teamId, updatedAt])
 }
 
 model Cycle {
   id       String   @id @default(cuid())
   name     String
+  goal     String?
+  status   String   @default("DRAFT")
   startsAt DateTime
   endsAt   DateTime
   teamId   String
@@ -159,6 +172,7 @@ model Cycle {
   issues Issue[]
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([teamId, startsAt])
   @@map("cycles")
@@ -179,6 +193,7 @@ model Comment {
   notifications Notification[]
 
   @@map("comments")
+  @@index([issueId, createdAt])
 }
 
 model Label {
@@ -218,6 +233,7 @@ model IssueHistory {
   createdAt DateTime @default(now())
 
   @@map("issue_history")
+  @@index([issueId, createdAt])
 }
 
 model Attachment {
@@ -253,4 +269,62 @@ model Notification {
   createdAt DateTime @default(now())
 
   @@map("notifications")
+  @@index([userId, read, createdAt])
+}
+
+model TeamIntegration {
+  id             String   @id @default(cuid())
+  teamId         String
+  provider       String
+  repository     String
+  enabled        Boolean  @default(true)
+  actorUserId    String
+  reviewStatusId String?
+  doneStatusId   String?
+
+  team       Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  actor      User              @relation("IntegrationActor", fields: [actorUserId], references: [id])
+  deliveries WebhookDelivery[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, provider, repository])
+  @@index([provider, repository])
+  @@map("team_integrations")
+}
+
+model WebhookDelivery {
+  id            String   @id @default(cuid())
+  integrationId String?
+  provider      String
+  deliveryId    String
+  event         String
+  payloadHash   String
+  status        String   @default("RECEIVED")
+  error         String?
+  processedAt   DateTime?
+  createdAt     DateTime @default(now())
+
+  integration TeamIntegration? @relation(fields: [integrationId], references: [id], onDelete: SetNull)
+
+  @@unique([provider, deliveryId])
+  @@index([integrationId, createdAt])
+  @@map("webhook_deliveries")
+}
+
+model IssueLink {
+  id       String @id @default(cuid())
+  sourceId Int
+  targetId Int
+  relation String
+
+  source Issue @relation("IssueLinkSource", fields: [sourceId], references: [id], onDelete: Cascade)
+  target Issue @relation("IssueLinkTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([sourceId, targetId, relation])
+  @@index([targetId])
+  @@map("issue_links")
 }

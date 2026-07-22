@@ -12,6 +12,8 @@ export async function getIssueFormData() {
                 include: {
                     statuses: { orderBy: { position: 'asc' } },
                     labels: { orderBy: { name: 'asc' } },
+                    projects: { orderBy: { name: 'asc' } },
+                    cycles: { orderBy: { startsAt: 'desc' } },
                     members: {
                         include: { user: true },
                         orderBy: { user: { name: 'asc' } },
@@ -35,6 +37,16 @@ export async function getIssueFormData() {
                 id: label.id,
                 name: label.name,
                 color: label.color,
+            })),
+            projects: team.projects.map((project) => ({
+                id: project.id,
+                name: project.name,
+            })),
+            cycles: team.cycles.map((cycle) => ({
+                id: cycle.id,
+                name: cycle.name,
+                startsAt: cycle.startsAt.toISOString(),
+                endsAt: cycle.endsAt.toISOString(),
             })),
             members: team.members.map(({ user }) => ({
                 id: user.id,

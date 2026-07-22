@@ -1,0 +1,40 @@
+.markdown {
+    color: inherit;
+}
+
+.markdown p,
+.markdown ul {
+    margin: 0 0 12px;
+}
+
+.markdown p:last-child,
+.markdown ul:last-child {
+    margin-bottom: 0;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+    line-height: 1.25;
+    margin: 0 0 12px;
+}
+
+.markdown h1 { font-size: 1.5em; }
+.markdown h2 { font-size: 1.25em; }
+.markdown h3 { font-size: 1.1em; }
+
+.markdown ul {
+    padding-left: 20px;
+}
+
+.markdown code {
+    padding: 1px 4px;
+    border-radius: 4px;
+    background: var(--muted);
+    font-size: 0.9em;
+}
+
+.markdown a {
+    color: var(--primary);
+    text-decoration: underline;
+}

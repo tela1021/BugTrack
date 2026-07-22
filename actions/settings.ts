@@ -5,15 +5,18 @@ import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
-const issueColumnSchema = z.enum(['id', 'title', 'priority', 'status', 'assignee', 'labels', 'project', 'updatedAt']);
-const issueListPreferencesSchema = z.object({ hiddenColumns: z.array(issueColumnSchema).max(7) });
+const issueColumnSchema = z.enum(['id', 'type', 'title', 'priority', 'status', 'assignee', 'labels', 'project', 'cycle', 'updatedAt']);
+const issueListPreferencesSchema = z.object({
+    hiddenColumns: z.array(issueColumnSchema).max(9),
+    columnWidths: z.record(z.string(), z.number().int().min(80).max(600)).default({}),
+});
 export type IssueListPreferences = z.infer<typeof issueListPreferencesSchema>;
 
 export async function getIssueListPreferences(): Promise<IssueListPreferences> {
     const userId = await requireAuthenticatedUser();
     const user = await prisma.user.findUnique({ where: { id: userId }, select: { preferences: true } });
     const value = user?.preferences && typeof user.preferences === 'object' && !Array.isArray(user.preferences) ? (user.preferences as Record<string, unknown>).issueList : undefined;
-    return issueListPreferencesSchema.safeParse(value).data || { hiddenColumns: [] };
+    return issueListPreferencesSchema.safeParse(value).data || { hiddenColumns: [], columnWidths: {} };
 }
 
 export async function saveIssueListPreferences(data: unknown) {
@@ -26,6 +29,33 @@ export async function saveIssueListPreferences(data: unknown) {
         return { success: true };
     } catch (error) {
         return { success: false, error: error instanceof Error ? error.message : 'Не удалось сохранить настройки списка' };
+    }
+}
+
+const themePreferenceSchema = z.enum(['system', 'light', 'dark']);
+export type ThemePreference = z.infer<typeof themePreferenceSchema>;
+
+export async function getThemePreference(): Promise<ThemePreference> {
+    const userId = await requireAuthenticatedUser();
+    const user = await prisma.user.findUnique({ where: { id: userId }, select: { preferences: true } });
+    const preferences = user?.preferences && typeof user.preferences === 'object' && !Array.isArray(user.preferences)
+        ? user.preferences as Record<string, unknown>
+        : {};
+    return themePreferenceSchema.safeParse(preferences.theme).data || 'system';
+}
+
+export async function saveThemePreference(data: unknown) {
+    try {
+        const userId = await requireAuthenticatedUser();
+        const theme = themePreferenceSchema.parse(data);
+        const user = await prisma.user.findUnique({ where: { id: userId }, select: { preferences: true } });
+        const current = user?.preferences && typeof user.preferences === 'object' && !Array.isArray(user.preferences)
+            ? user.preferences as Record<string, unknown>
+            : {};
+        await prisma.user.update({ where: { id: userId }, data: { preferences: { ...current, theme } } });
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Не удалось сохранить тему' };
     }
 }
 

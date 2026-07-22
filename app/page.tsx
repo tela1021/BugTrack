@@ -14,15 +14,22 @@ import type { IssueListItem, WorkflowStatusOption } from '@/types/view-models';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
 import { CREATE_ISSUE_EVENT, ISSUE_CREATED_EVENT } from '@/lib/client-events';
+import { IssueListSkeleton } from '@/components/Skeleton';
 
 const defaultFilters = {
   status: 'All',
   assignee: 'All',
   sort: 'newest',
   team: 'All',
+  projectId: '',
+  cycleId: '',
+  labelId: '',
+  priority: 'All',
+  issueType: 'All',
+  updated: 'All',
   search: '',
 };
-const issueColumns: { id: IssueColumn; label: string }[] = [{ id: 'id', label: 'ID' }, { id: 'title', label: 'Название' }, { id: 'priority', label: 'Приоритет' }, { id: 'status', label: 'Статус' }, { id: 'assignee', label: 'Исполнитель' }, { id: 'labels', label: 'Метки' }, { id: 'project', label: 'Проект' }, { id: 'updatedAt', label: 'Обновлено' }];
+const issueColumns: { id: IssueColumn; label: string }[] = [{ id: 'id', label: 'ID' }, { id: 'type', label: 'Тип' }, { id: 'title', label: 'Название' }, { id: 'priority', label: 'Приоритет' }, { id: 'status', label: 'Статус' }, { id: 'assignee', label: 'Исполнитель' }, { id: 'labels', label: 'Метки' }, { id: 'project', label: 'Проект' }, { id: 'cycle', label: 'Цикл' }, { id: 'updatedAt', label: 'Обновлено' }];
 
 export default function Home() {
   const router = useRouter();
@@ -42,6 +49,7 @@ export default function Home() {
   const [confirmingLabelReplace, setConfirmingLabelReplace] = useState(false);
   const [bulkUpdating, setBulkUpdating] = useState(false);
   const [hiddenColumns, setHiddenColumns] = useState<IssueColumn[]>([]);
+  const [columnWidths, setColumnWidths] = useState<Partial<Record<IssueColumn, number>>>({});
 
   const fetchIssues = useCallback(async () => {
     setLoading(true);
@@ -66,7 +74,7 @@ export default function Home() {
   useEffect(() => {
     void getIssueFormData().then(setIssueFormData).catch(() => setIssueFormData(null));
   }, []);
-  useEffect(() => { void getIssueListPreferences().then((preferences) => setHiddenColumns(preferences.hiddenColumns)); }, []);
+  useEffect(() => { void getIssueListPreferences().then((preferences) => { setHiddenColumns(preferences.hiddenColumns); setColumnWidths(preferences.columnWidths); }); }, []);
 
   useEffect(() => {
     setCurrentCursor(null);
@@ -76,6 +84,12 @@ export default function Home() {
       assignee: searchParams.get('assignee') || defaultFilters.assignee,
       sort: searchParams.get('sort') || defaultFilters.sort,
       team: searchParams.get('team') || defaultFilters.team,
+      projectId: searchParams.get('projectId') || defaultFilters.projectId,
+      cycleId: searchParams.get('cycleId') || defaultFilters.cycleId,
+      labelId: searchParams.get('labelId') || defaultFilters.labelId,
+      priority: searchParams.get('priority') || defaultFilters.priority,
+      issueType: searchParams.get('issueType') || defaultFilters.issueType,
+      updated: searchParams.get('updated') || defaultFilters.updated,
       search: searchParams.get('search') || defaultFilters.search,
     });
   }, [searchParams]);
@@ -148,7 +162,15 @@ export default function Home() {
     const next = hiddenColumns.includes(column) ? hiddenColumns.filter((item) => item !== column) : [...hiddenColumns, column];
     if (next.length === issueColumns.length) return;
     setHiddenColumns(next);
-    void saveIssueListPreferences({ hiddenColumns: next });
+    void saveIssueListPreferences({ hiddenColumns: next, columnWidths });
+  };
+  const setColumnWidth = (column: IssueColumn, rawValue: string) => {
+    const value = Number(rawValue);
+    const next = { ...columnWidths };
+    if (Number.isInteger(value) && value >= 80 && value <= 600) next[column] = value;
+    else delete next[column];
+    setColumnWidths(next);
+    void saveIssueListPreferences({ hiddenColumns, columnWidths: next });
   };
 
   const selectedIssues = issues.filter((issue) => selectedIssueIds.includes(issue.id));
@@ -258,7 +280,7 @@ export default function Home() {
       {view === 'list' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {loading ? (
-            <div style={{ padding: '40px', textAlign: 'center', color: 'var(--muted-foreground)' }}>Loading...</div>
+            <IssueListSkeleton />
           ) : issues.length > 0 ? (
             <>
               {selectedIssueIds.length > 0 && (
@@ -298,6 +320,7 @@ export default function Home() {
                 <summary style={{ cursor: 'pointer' }}>Настроить колонки</summary>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
                   {issueColumns.map((column) => <label key={column.id}><input type="checkbox" checked={!hiddenColumns.includes(column.id)} onChange={() => toggleColumn(column.id)} /> {column.label}</label>)}
+                  {issueColumns.map((column) => <label key={`${column.id}-width`}>Ширина колонки {column.label}: <input aria-label={`Ширина колонки ${column.label}`} type="number" min="80" max="600" step="10" defaultValue={columnWidths[column.id] || ''} onBlur={(event) => setColumnWidth(column.id, event.target.value)} /> px</label>)}
                 </div>
               </details>
               <IssueTable
@@ -312,6 +335,7 @@ export default function Home() {
                 selectedIssueIds={selectedIssueIds}
                 onSelectedIssueIdsChange={handleSelectedIssueIdsChange}
                 visibleColumns={issueColumns.map((column) => column.id).filter((column) => !hiddenColumns.includes(column))}
+                columnWidths={columnWidths}
               />
             </>
           ) : (

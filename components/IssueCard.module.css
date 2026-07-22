@@ -47,6 +47,7 @@
     line-height: 1.5;
     color: var(--foreground);
 }
+.labels { display: flex; flex-wrap: wrap; gap: 4px; }.labels span { border: 1px solid var(--border); border-radius: 999px; color: var(--muted-foreground); font-size: 10px; padding: 2px 6px; }.assignee { align-items: center; background: var(--accent); border-radius: 50%; color: var(--foreground); display: inline-flex; font-size: 10px; font-weight: 700; height: 20px; justify-content: center; width: 20px; }
 
 .footer {
     display: flex;

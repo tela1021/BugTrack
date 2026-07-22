@@ -1,6 +1,7 @@
 .container {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 32px;
     padding: 8px;
@@ -87,4 +88,12 @@
     height: 18px;
     background-color: var(--border);
     margin: 0 8px;
+}
+
+@media (max-width: 767px) {
+    .container { align-items: stretch; margin-bottom: 20px; }
+    .filterItem { flex: 1 1 150px; }
+    .searchInput, .select { width: 100%; min-width: 0; }
+    .searchInput:focus { width: 100%; }
+    .separator { display: none; }
 }

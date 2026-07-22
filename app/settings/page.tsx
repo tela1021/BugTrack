@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { updatePassword, type PasswordActionState } from "@/actions/settings";
 import styles from "./Settings.module.css";
 import { KeyRound, ShieldCheck, AlertCircle } from "lucide-react";
+import ThemePreference from '@/components/ThemePreference';
 
 const initialState: PasswordActionState = { fieldErrors: {} };
 
@@ -104,6 +105,15 @@ export default function SettingsPage() {
                         </button>
                     </div>
                 </form>
+            </div>
+            <div className={styles.section} style={{ marginTop: '24px' }}>
+                <div className={styles.sectionHeader}>
+                    <div>
+                        <h2 className={styles.sectionTitle}>Внешний вид</h2>
+                        <p className={styles.sectionSubtext}>Выберите тему интерфейса. Системная тема следует настройкам устройства.</p>
+                    </div>
+                </div>
+                <ThemePreference />
             </div>
         </div>
     );

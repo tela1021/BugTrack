@@ -7,8 +7,9 @@ import { bulkIssueUpdateSchema, createIssueSchema } from '@/lib/validation.mts';
 import { deleteAttachmentFile, saveAttachmentFile, validateAttachmentFiles } from '@/lib/attachment-storage';
 import type { Prisma } from '@prisma/client';
 import type { IssueListItem } from '@/types/view-models';
+import { ZodError } from 'zod';
 
-export type IssueFilters = { status?: string; assignee?: string; sort?: string; team?: string; projectId?: string; search?: string };
+export type IssueFilters = { status?: string; assignee?: string; sort?: string; team?: string; projectId?: string; cycleId?: string; labelId?: string; priority?: string; issueType?: string; updated?: string; search?: string };
 
 const issueListInclude = {
     status: true,
@@ -17,6 +18,7 @@ const issueListInclude = {
     attachments: true,
     team: true,
     project: true,
+    cycle: true,
     labels: { include: { label: true } },
 } satisfies Prisma.IssueInclude;
 
@@ -32,13 +34,16 @@ function toIssueListItem(issue: IssueWithListData): IssueListItem {
         assigneeName: issue.assignee?.name || issue.assignee?.email || null,
         projectKey: issue.team.key,
         projectName: issue.project?.name || null,
+        cycleName: issue.cycle?.name || null,
         labels: issue.labels.map(({ label }) => ({ id: label.id, name: label.name, color: label.color })),
         number: Number.parseInt(issue.readableId.split('-')[1] || '0', 10),
         status: issue.status.name,
         priority: issue.priority,
+        issueType: issue.issueType,
         commentCount: issue.comments.length,
         attachmentCount: issue.attachments.length,
         createdAt: issue.createdAt.toISOString(),
+        ageDays: Math.max(0, Math.floor((Date.now() - issue.createdAt.getTime()) / 86_400_000)),
         updatedAt: issue.updatedAt.toISOString(),
     };
 }
@@ -89,16 +94,43 @@ async function getIssueWhere(filters?: IssueFilters) {
     if (filters?.projectId) {
         where.projectId = filters.projectId;
     }
+    if (filters?.cycleId) {
+        where.cycleId = filters.cycleId;
+    }
+    if (filters?.labelId) {
+        where.labels = { some: { labelId: filters.labelId } };
+    }
+    if (filters?.priority && filters.priority !== 'All') where.priority = filters.priority;
+    if (filters?.issueType && filters.issueType !== 'All') where.issueType = filters.issueType;
+    if (filters?.updated && filters.updated !== 'All') {
+        const daysByPeriod: Record<string, number> = { '1d': 1, '7d': 7, '30d': 30 };
+        const days = daysByPeriod[filters.updated];
+        if (days) where.updatedAt = { gte: new Date(Date.now() - days * 86_400_000) };
+    }
 
     return { where };
 }
 
 function getIssueOrderBy(sort?: string): Prisma.IssueOrderByWithRelationInput[] {
     switch (sort) {
+        case 'id_asc': return [{ id: 'asc' }];
+        case 'id_desc': return [{ id: 'desc' }];
+        case 'type_asc': return [{ issueType: 'asc' }, { id: 'asc' }];
+        case 'type_desc': return [{ issueType: 'desc' }, { id: 'desc' }];
         case 'title_asc': return [{ title: 'asc' }, { id: 'asc' }];
         case 'title_desc': return [{ title: 'desc' }, { id: 'desc' }];
         case 'priority_asc': return [{ priority: 'asc' }, { id: 'asc' }];
         case 'priority_desc': return [{ priority: 'desc' }, { id: 'desc' }];
+        case 'status_asc': return [{ status: { name: 'asc' } }, { id: 'asc' }];
+        case 'status_desc': return [{ status: { name: 'desc' } }, { id: 'desc' }];
+        case 'assignee_asc': return [{ assignee: { name: 'asc' } }, { id: 'asc' }];
+        case 'assignee_desc': return [{ assignee: { name: 'desc' } }, { id: 'desc' }];
+        case 'labels_asc': return [{ labels: { _count: 'asc' } }, { id: 'asc' }];
+        case 'labels_desc': return [{ labels: { _count: 'desc' } }, { id: 'desc' }];
+        case 'project_asc': return [{ project: { name: 'asc' } }, { id: 'asc' }];
+        case 'project_desc': return [{ project: { name: 'desc' } }, { id: 'desc' }];
+        case 'cycle_asc': return [{ cycle: { name: 'asc' } }, { id: 'asc' }];
+        case 'cycle_desc': return [{ cycle: { name: 'desc' } }, { id: 'desc' }];
         case 'updated_asc': return [{ updatedAt: 'asc' }, { id: 'asc' }];
         case 'updated_desc': return [{ updatedAt: 'desc' }, { id: 'desc' }];
         case 'oldest': return [{ createdAt: 'asc' }, { id: 'asc' }];
@@ -253,6 +285,7 @@ export async function createIssue(formData: FormData) {
             title: formData.get('title'),
             description: formData.get('description') || undefined,
             priority: formData.get('priority'),
+            issueType: formData.get('issueType'),
             status: formData.get('status'),
             teamKey: formData.get('teamKey'),
             assigneeId: formData.get('assigneeId') || undefined,
@@ -269,6 +302,15 @@ export async function createIssue(formData: FormData) {
         });
 
         if (!status) throw new Error(`Invalid status '${input.status}'`);
+        if (input.issueType === 'BUG' && status.type.toUpperCase() === 'TODO') {
+            const description = input.description || '';
+            const hasSteps = /(?:^|\n)#{1,3}\s*(?:шаги воспроизведения|steps to reproduce)/im.test(description);
+            const hasExpected = /(?:^|\n)#{1,3}\s*(?:ожидаемый результат|expected result)/im.test(description);
+            const hasActual = /(?:^|\n)#{1,3}\s*(?:фактический результат|actual result)/im.test(description);
+            if (!hasSteps || !hasExpected || !hasActual) {
+                throw new Error('Bug template must include steps, expected result and actual result before Todo.');
+            }
+        }
 
         if (input.assigneeId) {
             const membership = await prisma.teamMember.findUnique({
@@ -291,6 +333,7 @@ export async function createIssue(formData: FormData) {
                     title: input.title,
                     description: input.description,
                     priority: input.priority,
+                    issueType: input.issueType,
                     readableId,
                     statusId: status.id,
                     teamId: team.id,
@@ -336,6 +379,13 @@ export async function createIssue(formData: FormData) {
         return { success: true, data: issue };
 
     } catch (error) {
+        if (error instanceof ZodError) {
+            const field = error.issues[0]?.path[0];
+            if (field === 'title') return { success: false, error: 'Введите название задачи.' };
+            if (field === 'teamKey') return { success: false, error: 'Выберите команду.' };
+            if (field === 'status') return { success: false, error: 'Выберите статус задачи.' };
+            return { success: false, error: 'Заполните обязательные поля задачи.' };
+        }
         return { success: false, error: error instanceof Error ? error.message : 'Unable to create issue' };
     }
 }

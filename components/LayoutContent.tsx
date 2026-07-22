@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CREATE_ISSUE_EVENT, ISSUE_CREATED_EVENT } from "@/lib/client-events";
+import { Menu, X } from 'lucide-react';
+import styles from './LayoutContent.module.css';
 
 const CreateIssueModal = dynamic(() => import("@/components/CreateIssueModal"), { ssr: false });
 
@@ -16,6 +18,7 @@ interface LayoutContentProps {
 export default function LayoutContent({ children, sidebar, commandPalette }: LayoutContentProps) {
     const pathname = usePathname();
     const [isCreateIssueOpen, setIsCreateIssueOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const isAuthPage = pathname?.startsWith("/auth") || pathname?.startsWith("/login");
 
     useEffect(() => {
@@ -25,13 +28,18 @@ export default function LayoutContent({ children, sidebar, commandPalette }: Lay
     }, []);
 
     if (isAuthPage) {
-        return <main style={{ width: "100%", height: "100vh" }}>{children}</main>;
+        return <main id="main-content" style={{ width: "100%", height: "100vh" }}>{children}</main>;
     }
 
     return (
-        <div style={{ display: 'flex' }}>
-            {sidebar}
-            <main style={{ flex: 1, height: "100vh", overflowY: "auto" }}>
+        <div className={styles.shell}>
+            <button type="button" className={styles.mobileMenu} onClick={() => setDrawerOpen(true)} aria-label="Открыть навигацию" aria-expanded={drawerOpen}><Menu size={18} /></button>
+            {drawerOpen && <button type="button" className={styles.backdrop} aria-label="Закрыть навигацию" onClick={() => setDrawerOpen(false)} />}
+            <div className={`${styles.sidebarWrap} ${drawerOpen ? styles.sidebarWrapOpen : ''}`}>
+                <button type="button" className={styles.drawerClose} onClick={() => setDrawerOpen(false)} aria-label="Закрыть навигацию"><X size={16} /></button>
+                {sidebar}
+            </div>
+            <main id="main-content" className={styles.main}>
                 {children}
             </main>
             {commandPalette}

@@ -14,10 +14,18 @@ import {
 } from 'lucide-react';
 import styles from './IssueDetails.module.css';
 import { useToast } from '@/components/ToastProvider';
+import { addLabelToIssue, getAllLabels, removeLabelFromIssue } from '@/actions/labels';
+import { getIssueFormData } from '@/actions/form-data';
+import MarkdownPreview from '@/components/MarkdownPreview';
+import { getIssues } from '@/actions/issues';
+import type { IssueListItem } from '@/types/view-models';
+import { addIssueLink, removeIssueLink } from '@/actions/issue-links';
+import { IssueDetailSkeleton } from '@/components/Skeleton';
 
 type IssueDetail = NonNullable<Awaited<ReturnType<typeof getIssueByReadableId>>>;
 type IssueMember = Awaited<ReturnType<typeof getUsers>>[number];
 type IssueStatus = Awaited<ReturnType<typeof getStatuses>>[number];
+const fieldLabels: Record<string, string> = { created: 'создал задачу', title: 'название', description: 'описание', priority: 'приоритет', type: 'тип', status: 'статус', assignee: 'исполнителя', project: 'проект', cycle: 'цикл', parent: 'родительскую задачу', link: 'связь', comment: 'комментарий', attachment: 'вложение', deleted: 'состояние удаления' };
 
 export default function IssueDetailsPage({ params }: { params: Promise<{ readableId: string }> }) {
     const toast = useToast();
@@ -25,8 +33,14 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
     const [issue, setIssue] = useState<IssueDetail | null>(null);
     const [users, setUsers] = useState<IssueMember[]>([]);
     const [statuses, setStatuses] = useState<IssueStatus[]>([]);
+    const [availableLabels, setAvailableLabels] = useState<Awaited<ReturnType<typeof getAllLabels>>>([]);
+    const [formData, setFormData] = useState<Awaited<ReturnType<typeof getIssueFormData>> | null>(null);
+    const [teamIssues, setTeamIssues] = useState<IssueListItem[]>([]);
     const [commentText, setCommentText] = useState('');
     const [commentFiles, setCommentFiles] = useState<File[]>([]);
+    const [editingDescription, setEditingDescription] = useState(false);
+    const [descriptionDraft, setDescriptionDraft] = useState('');
+    const [titleDraft, setTitleDraft] = useState('');
     const [loading, setLoading] = useState(true);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const commentFileInputRef = useRef<HTMLInputElement>(null);
@@ -35,19 +49,26 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
         getIssueByReadableId(readableId).then(async (issueData) => {
             if (issueData) {
                 setIssue(issueData);
-                const [usersData, statusesData] = await Promise.all([
+                setDescriptionDraft(issueData.description || '');
+                setTitleDraft(issueData.title);
+                const [usersData, statusesData, labelsData, formDataResult, teamIssuesData] = await Promise.all([
                     getUsers(issueData.team.key),
                     getStatuses(issueData.team.key),
+                    getAllLabels(issueData.team.id),
+                    getIssueFormData(),
+                    getIssues({ team: issueData.team.key }),
                 ]);
                 setUsers(usersData);
                 setStatuses(statusesData);
+                setAvailableLabels(labelsData);
+                setFormData(formDataResult);
+                setTeamIssues(teamIssuesData);
             }
             setLoading(false);
         });
     }, [readableId]);
 
-    const handleAddComment = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const submitComment = async () => {
         if (!commentText.trim() && commentFiles.length === 0) return;
         if (!issue) return;
 
@@ -61,6 +82,14 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
             setCommentFiles([]);
             refreshIssue();
         }
+    };
+    const handleAddComment = async (e: React.FormEvent) => { e.preventDefault(); await submitComment(); };
+
+    const handleIssueUpdate = async (data: { title?: string; description?: string; priority?: string; issueType?: string; projectId?: string | null; cycleId?: string | null; parentId?: number | null }) => {
+        if (!issue) return;
+        const result = await updateIssue(issue.id, data);
+        if (result.success) { toast.success('Задача обновлена'); setEditingDescription(false); await refreshIssue(); }
+        else toast.error(result.error || 'Не удалось обновить задачу');
     };
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,14 +127,35 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
             refreshIssue();
         } else toast.error(res.error || 'Не удалось обновить исполнителя');
     };
+    const handleLabelAdd = async (labelId: string) => {
+        if (!issue || !labelId) return;
+        const result = await addLabelToIssue(issue.id, labelId);
+        if (result.success) { toast.success('Метка добавлена'); await refreshIssue(); }
+        else toast.error(result.error || 'Не удалось добавить метку');
+    };
+    const handleLabelRemove = async (labelId: string) => {
+        if (!issue) return;
+        const result = await removeLabelFromIssue(issue.id, labelId);
+        if (result.success) { toast.success('Метка удалена'); await refreshIssue(); }
+        else toast.error(result.error || 'Не удалось удалить метку');
+    };
+    const handleLinkAdd = async (targetId: string, relation: string) => {
+        if (!issue || !targetId) return;
+        const result = await addIssueLink(issue.id, { targetId: Number(targetId), relation });
+        if (result.success) { toast.success('Связь добавлена'); await refreshIssue(); } else toast.error(result.error || 'Не удалось добавить связь');
+    };
+    const handleLinkRemove = async (linkId: string) => { const result = await removeIssueLink(linkId); if (result.success) { toast.success('Связь удалена'); await refreshIssue(); } else toast.error(result.error || 'Не удалось удалить связь'); };
 
     const refreshIssue = async () => {
         const updated = await getIssueByReadableId(readableId);
         setIssue(updated);
     };
 
-    if (loading) return <div className="container" style={{ padding: '40px', textAlign: 'center' }}>Loading...</div>;
+    if (loading) return <div className="container"><IssueDetailSkeleton /></div>;
     if (!issue) return <div className="container" style={{ padding: '40px', textAlign: 'center' }}>Issue not found</div>;
+
+    const issueTeam = formData?.teams.find((team) => team.id === issue.teamId);
+    const completedSubtasks = issue.children.filter((child) => child.status.type === 'DONE' || child.status.type === 'CANCELED').length;
 
     return (
         <div className="container">
@@ -131,14 +181,12 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
                                 <ChevronDown size={12} className={styles.statusChevron} />
                             </div>
                         </div>
-                        <h1 className={styles.title}>{issue.title}</h1>
+                        <input className={styles.title} aria-label="Название задачи" value={titleDraft} onChange={(event) => setTitleDraft(event.target.value)} onBlur={() => titleDraft.trim() && titleDraft !== issue.title && void handleIssueUpdate({ title: titleDraft })} />
                     </header>
 
                     <section className={styles.section}>
-                        <h3 className={styles.sectionTitle}>Description</h3>
-                        <div className={styles.description}>
-                            {issue.description || <span className={styles.empty}>No description provided.</span>}
-                        </div>
+                        <h3 className={styles.sectionTitle}>Description <button type="button" className="btn glass" onClick={() => setEditingDescription(!editingDescription)}>Редактировать описание</button></h3>
+                        {editingDescription ? <div><textarea className={styles.description} value={descriptionDraft} onChange={(event) => setDescriptionDraft(event.target.value)} /><button type="button" className="btn btn-primary" onClick={() => void handleIssueUpdate({ description: descriptionDraft })}>Сохранить</button></div> : issue.description ? <MarkdownPreview content={issue.description} className={styles.description} /> : <div className={styles.description}><span className={styles.empty}>No description provided.</span></div>}
                     </section>
 
                     <section className={styles.section}>
@@ -198,7 +246,7 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
                                         <span className={styles.author}>{comment.author.name}</span>
                                         <span className={styles.date}>{new Date(comment.createdAt).toLocaleDateString()} {new Date(comment.createdAt).toLocaleTimeString()}</span>
                                     </div>
-                                    <div className={styles.commentContent}>{comment.content}</div>
+                                    <MarkdownPreview content={comment.content} className={styles.commentContent} />
 
                                     {comment.attachments && comment.attachments.length > 0 && (
                                         <div className={styles.commentAttachments}>
@@ -218,7 +266,9 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
                                 placeholder="Add a comment..."
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
+                                onKeyDown={(event) => { if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') { event.preventDefault(); void submitComment(); } }}
                             />
+                            <small className={styles.empty}>Ctrl+Enter / Cmd+Enter — отправить</small>
 
                             {commentFiles.length > 0 && (
                                 <div className={styles.previewStrip}>
@@ -282,7 +332,57 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
 
                         <div className={styles.detailItem}>
                             <label>Priority</label>
-                            <span className={styles.priorityLabel}>{issue.priority}</span>
+                            <select className={styles.sidebarSelect} value={issue.priority} onChange={(event) => void handleIssueUpdate({ priority: event.target.value })}>
+                                <option value="URGENT">Срочный</option><option value="HIGH">Высокий</option><option value="MEDIUM">Средний</option><option value="LOW">Низкий</option><option value="NONE">Без приоритета</option>
+                            </select>
+                        </div>
+                        <div className={styles.detailItem}>
+                            <label>Тип</label>
+                            <select className={styles.sidebarSelect} value={issue.issueType} onChange={(event) => void handleIssueUpdate({ issueType: event.target.value })}>
+                                <option value="TASK">Задача</option><option value="BUG">Ошибка</option><option value="FEATURE">Функция</option><option value="IMPROVEMENT">Улучшение</option>
+                            </select>
+                        </div>
+                        <div className={styles.detailItem}>
+                            <label>Проект</label>
+                            <select className={styles.sidebarSelect} value={issue.projectId || ''} onChange={(event) => void handleIssueUpdate({ projectId: event.target.value || null })}>
+                                <option value="">Без проекта</option>
+                                {issueTeam?.projects.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}
+                            </select>
+                        </div>
+                        <div className={styles.detailItem}>
+                            <label>Цикл</label>
+                            <select className={styles.sidebarSelect} value={issue.cycleId || ''} onChange={(event) => void handleIssueUpdate({ cycleId: event.target.value || null })}>
+                                <option value="">Без цикла</option>
+                                {issueTeam?.cycles.map((cycle) => <option key={cycle.id} value={cycle.id}>{cycle.name}</option>)}
+                            </select>
+                        </div>
+                        <div className={styles.detailItem}>
+                            <label>Метки</label>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                {issue.labels.map(({ label }) => <button type="button" className="btn glass" key={label.id} onClick={() => void handleLabelRemove(label.id)} title="Удалить метку">{label.name} ×</button>)}
+                            </div>
+                            <select className={styles.sidebarSelect} defaultValue="" aria-label="Добавить метку" onChange={(event) => { void handleLabelAdd(event.target.value); event.currentTarget.value = ''; }}>
+                                <option value="">Добавить метку…</option>
+                                {availableLabels.filter((label) => !issue.labels.some(({ label: current }) => current.id === label.id)).map((label) => <option key={label.id} value={label.id}>{label.name}</option>)}
+                            </select>
+                        </div>
+                        <div className={styles.detailItem}>
+                            <label>Родительская задача</label>
+                            <select className={styles.sidebarSelect} value={issue.parentId || ''} onChange={(event) => void handleIssueUpdate({ parentId: event.target.value ? Number(event.target.value) : null })}>
+                                <option value="">Нет родительской задачи</option>
+                                {teamIssues.filter((candidate) => candidate.id !== issue.id.toString()).map((candidate) => <option key={candidate.id} value={candidate.id}>{candidate.readableId}: {candidate.title}</option>)}
+                            </select>
+                            {issue.parent && <Link href={`/issues/${issue.parent.readableId}`}>{issue.parent.readableId}: {issue.parent.title}</Link>}
+                        </div>
+                        <div className={styles.detailItem}>
+                            <label>Подзадачи</label>
+                            {issue.children.length > 0 && <span>Прогресс подзадач: {completedSubtasks}/{issue.children.length}</span>}
+                            {issue.children.length ? issue.children.map((child) => <Link key={child.id} href={`/issues/${child.readableId}`}>{child.readableId}: {child.title} · {child.status.name}</Link>) : <span className={styles.empty}>Подзадач пока нет.</span>}
+                        </div>
+                        <div className={styles.detailItem}>
+                            <label>Связи задач</label>
+                            {[...issue.outgoingLinks.map((link) => ({ id: link.id, relation: link.relation, readableId: link.target.readableId, title: link.target.title })), ...issue.incomingLinks.map((link) => ({ id: link.id, relation: `${link.relation} (входящая)`, readableId: link.source.readableId, title: link.source.title }))].map((link) => <div key={link.id}><button type="button" className="btn glass" title="Удалить связь" onClick={() => void handleLinkRemove(link.id)}>{link.relation} · {link.readableId} ×</button> {link.title}</div>)}
+                            <div style={{ display: 'flex', gap: '4px', marginTop: '4px' }}><select className={styles.sidebarSelect} defaultValue="" aria-label="Связать с задачей" onChange={(event) => { const [targetId, relation] = event.target.value.split(':'); void handleLinkAdd(targetId, relation); event.currentTarget.value = ''; }}><option value="">Добавить связь…</option>{(['BLOCKS', 'BLOCKED_BY', 'DUPLICATES', 'RELATES_TO'] as const).flatMap((relation) => teamIssues.filter((candidate) => candidate.id !== issue.id.toString()).map((candidate) => <option key={`${relation}-${candidate.id}`} value={`${candidate.id}:${relation}`}>{relation}: {candidate.readableId}</option>))}</select></div>
                         </div>
                         <div className={styles.detailItem}>
                             <label>Created</label>
@@ -297,9 +397,7 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
                         <div className={styles.historyList}>
                             {issue.history.map((h) => (
                                 <div key={h.id} className={styles.historyItem}>
-                                    <p>
-                                        <strong>{h.actor.name}</strong> changed <strong>{h.field}</strong> from <span>{h.oldValue}</span> to <span>{h.newValue}</span>
-                                    </p>
+                                    <p><strong>{h.actor.name}</strong> {h.field === 'created' ? 'создал(а) задачу' : h.field === 'comment' ? 'добавил(а) комментарий' : h.field === 'attachment' ? `добавил(а) вложение «${h.newValue}»` : <>изменил(а) {fieldLabels[h.field] || h.field}: <span>{h.oldValue || '—'}</span> → <span>{h.newValue || '—'}</span></>}</p>
                                     <span className={styles.date}>{new Date(h.createdAt).toLocaleTimeString()} {new Date(h.createdAt).toLocaleDateString()}</span>
                                 </div>
                             ))}

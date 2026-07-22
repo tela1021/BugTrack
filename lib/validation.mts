@@ -14,6 +14,10 @@ export const createIssueSchema = z.object({
     (value) => typeof value === "string" ? value.trim().toUpperCase() : value,
     z.enum(["NONE", "LOW", "MEDIUM", "HIGH", "URGENT"])
   ),
+  issueType: z.preprocess(
+    (value) => typeof value === "string" ? value.trim().toUpperCase() : value,
+    z.enum(["TASK", "BUG", "FEATURE", "IMPROVEMENT"])
+  ),
   status: z.string().trim().min(1).max(100),
   teamKey: z.string().trim().min(2).max(20),
   assigneeId: z.string().trim().min(1).max(100).optional(),
@@ -26,10 +30,15 @@ export const updateIssueSchema = z.object({
     (value) => typeof value === "string" ? value.trim().toUpperCase() : value,
     z.enum(["NONE", "LOW", "MEDIUM", "HIGH", "URGENT"]).optional()
   ),
+  issueType: z.preprocess(
+    (value) => typeof value === "string" ? value.trim().toUpperCase() : value,
+    z.enum(["TASK", "BUG", "FEATURE", "IMPROVEMENT"]).optional()
+  ),
   statusId: z.string().trim().min(1).max(100).optional(),
   assigneeId: z.string().trim().min(1).max(100).nullable().optional(),
   projectId: z.string().trim().min(1).max(100).nullable().optional(),
   cycleId: z.string().trim().min(1).max(100).nullable().optional(),
+  parentId: z.coerce.number().int().positive().nullable().optional(),
 }).strict().refine((data) => Object.keys(data).length > 0, {
   message: "At least one field must be updated.",
 });
@@ -89,3 +98,20 @@ export const teamMemberSchema = z.object({
   userId: z.string().trim().min(1).max(100),
   role: z.enum(['OWNER', 'ADMIN', 'MEMBER']),
 });
+
+const cycleStatusSchema = z.enum(['DRAFT', 'ACTIVE', 'COMPLETED']);
+export const createCycleSchema = z.object({
+  name: z.string().trim().min(1).max(150),
+  goal: z.string().trim().max(5_000).nullable().optional(),
+  startsAt: z.coerce.date(),
+  endsAt: z.coerce.date(),
+  status: cycleStatusSchema.default('DRAFT'),
+}).refine((data) => data.endsAt > data.startsAt, { message: 'Cycle end must be after its start date.' });
+
+export const updateCycleSchema = z.object({
+  name: z.string().trim().min(1).max(150).optional(),
+  goal: z.string().trim().max(5_000).nullable().optional(),
+  startsAt: z.coerce.date().optional(),
+  endsAt: z.coerce.date().optional(),
+  status: cycleStatusSchema.optional(),
+}).strict().refine((data) => Object.keys(data).length > 0, { message: 'At least one cycle field must be updated.' });

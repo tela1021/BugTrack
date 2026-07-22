@@ -23,6 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <a className="skipLink" href="#main-content">Перейти к содержимому</a>
         <AuthProvider session={session}>
           <ToastProvider>
             <LayoutContent

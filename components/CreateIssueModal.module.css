@@ -126,3 +126,9 @@
     justify-content: flex-end;
     gap: 12px;
 }
+
+.formError {
+    margin: 0;
+    color: var(--destructive, #b42318);
+    font-size: 13px;
+}

@@ -7,6 +7,13 @@ import { requireAuthenticatedUser, requireIssueAccess, requireTeamRole } from '@
 import { createCommentSchema, updateIssueSchema } from '@/lib/validation.mts';
 import { deleteAttachmentFile, saveAttachmentFile, validateAttachmentFiles } from '@/lib/attachment-storage';
 
+function hasBugTemplate(description: string | null | undefined) {
+    const value = description || '';
+    return /(?:^|\n)#{1,3}\s*(?:шаги воспроизведения|steps to reproduce)/im.test(value)
+        && /(?:^|\n)#{1,3}\s*(?:ожидаемый результат|expected result)/im.test(value)
+        && /(?:^|\n)#{1,3}\s*(?:фактический результат|actual result)/im.test(value);
+}
+
 async function saveFiles(issueId: number, files: File[], commentId?: string) {
     validateAttachmentFiles(files);
     const savedAttachments = [];
@@ -148,21 +155,29 @@ export async function getIssueByReadableId(readableId: string) {
             status: true,
             assignee: true,
             reporter: true,
+            parent: { select: { id: true, readableId: true, title: true } },
+            children: {
+                where: { deletedAt: null },
+                select: { id: true, readableId: true, title: true, status: { select: { name: true, type: true } } },
+                orderBy: { createdAt: 'asc' },
+            },
             comments: {
                 include: {
                     author: true,
                     attachments: true
                 },
-                orderBy: { createdAt: 'desc' }
+                orderBy: { createdAt: 'asc' }
             },
             attachments: true,
             history: {
                 include: { actor: true },
-                orderBy: { createdAt: 'desc' }
+                orderBy: { createdAt: 'asc' }
             },
             labels: {
                 include: { label: true }
-            }
+            },
+            outgoingLinks: { include: { target: { select: { readableId: true, title: true } } } },
+            incomingLinks: { include: { source: { select: { readableId: true, title: true } } } },
         }
     });
 
@@ -210,6 +225,24 @@ export async function updateIssue(id: number, data: unknown) {
             if (!cycle) throw new Error('Cycle must belong to the issue team');
         }
 
+        if (input.parentId !== undefined) {
+            if (input.parentId === id) throw new Error('An issue cannot be its own parent');
+            if (input.parentId) {
+                const parent = await prisma.issue.findFirst({
+                    where: { id: input.parentId, teamId: oldIssue.teamId, deletedAt: null },
+                    select: { id: true },
+                });
+                if (!parent) throw new Error('Parent issue must belong to the issue team');
+            }
+        }
+
+        const nextStatus = await prisma.workflowStatus.findUnique({ where: { id: input.statusId || oldIssue.statusId } });
+        const nextIssueType = input.issueType || oldIssue.issueType;
+        const nextDescription = input.description !== undefined ? input.description : oldIssue.description;
+        if (nextIssueType === 'BUG' && nextStatus?.type.toUpperCase() === 'TODO' && !hasBugTemplate(nextDescription)) {
+            throw new Error('Bug template must include steps, expected result and actual result before Todo.');
+        }
+
         const updatedIssue = await prisma.issue.update({
             where: { id },
             data: input
@@ -227,6 +260,9 @@ export async function updateIssue(id: number, data: unknown) {
         }
         if (input.priority !== undefined && input.priority !== oldIssue.priority) {
             historyEntries.push({ issueId: id, actorId: userId, field: 'priority', oldValue: oldIssue.priority, newValue: input.priority });
+        }
+        if (input.issueType !== undefined && input.issueType !== oldIssue.issueType) {
+            historyEntries.push({ issueId: id, actorId: userId, field: 'type', oldValue: oldIssue.issueType, newValue: input.issueType });
         }
         if (input.statusId !== undefined && input.statusId !== oldIssue.statusId) {
             // Fetch status names for history
@@ -279,6 +315,14 @@ export async function updateIssue(id: number, data: unknown) {
                 input.cycleId ? prisma.cycle.findUnique({ where: { id: input.cycleId }, select: { name: true } }) : null,
             ]);
             historyEntries.push({ issueId: id, actorId: userId, field: 'cycle', oldValue: oldCycle?.name || 'None', newValue: newCycle?.name || 'None' });
+        }
+
+        if (input.parentId !== undefined && input.parentId !== oldIssue.parentId) {
+            const [oldParent, newParent] = await Promise.all([
+                oldIssue.parentId ? prisma.issue.findUnique({ where: { id: oldIssue.parentId }, select: { readableId: true } }) : null,
+                input.parentId ? prisma.issue.findUnique({ where: { id: input.parentId }, select: { readableId: true } }) : null,
+            ]);
+            historyEntries.push({ issueId: id, actorId: userId, field: 'parent', oldValue: oldParent?.readableId || 'None', newValue: newParent?.readableId || 'None' });
         }
 
         // Notify status change

@@ -106,12 +106,7 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
         }
     };
 
-    const handleDrop = (e: React.DragEvent, toStatusId: string) => {
-        e.preventDefault();
-        const issueId = Number.parseInt(e.dataTransfer.getData('issueId'), 10);
-        setActiveIssueId(null);
-        if (Number.isNaN(issueId)) return;
-
+    const requestMove = (issueId: number, toStatusId: string) => {
         const toColumn = columns.find((column) => column.id === toStatusId);
         if (!toColumn) return;
         if (toColumn.issues.some((issue) => issue.id === issueId.toString())) return;
@@ -120,6 +115,14 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
             return;
         }
         void moveIssue(issueId, toStatusId);
+    };
+
+    const handleDrop = (e: React.DragEvent, toStatusId: string) => {
+        e.preventDefault();
+        const issueId = Number.parseInt(e.dataTransfer.getData('issueId'), 10);
+        setActiveIssueId(null);
+        if (Number.isNaN(issueId)) return;
+        requestMove(issueId, toStatusId);
     };
 
     const getIssueGroups = (issues: IssueListItem[]) => {
@@ -185,6 +188,20 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
                                             hideStatus
                                             onDragStart={(e) => handleDragStart(e, parseInt(issue.id))}
                                         />
+                                        <select
+                                            className={styles.moveSelect}
+                                            aria-label={`Переместить задачу ${issue.readableId}`}
+                                            defaultValue=""
+                                            disabled={pendingIssueId === parseInt(issue.id) || pendingWipMove !== null}
+                                            onChange={(event) => {
+                                                const toStatusId = event.target.value;
+                                                event.currentTarget.value = '';
+                                                if (toStatusId) requestMove(parseInt(issue.id), toStatusId);
+                                            }}
+                                        >
+                                            <option value="" disabled>Переместить в…</option>
+                                            {columns.filter((target) => target.id !== column.id).map((target) => <option key={target.id} value={target.id}>{target.name}</option>)}
+                                        </select>
                                     </div>
                                 ))}
                             </section>

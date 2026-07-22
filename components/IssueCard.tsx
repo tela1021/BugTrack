@@ -9,6 +9,11 @@ interface IssueCardProps {
     number: number;
     status: string;
     priority: string;
+    issueType: string;
+    assigneeName?: string | null;
+    labels?: { id: string; name: string; color: string }[];
+    createdAt?: string;
+    ageDays?: number;
     commentCount?: number;
     attachmentCount?: number;
     hideStatus?: boolean;
@@ -21,6 +26,10 @@ export default function IssueCard({
     number,
     status,
     priority,
+    issueType,
+    assigneeName,
+    labels = [],
+    ageDays,
     commentCount = 0,
     attachmentCount = 0,
     hideStatus = false,
@@ -47,15 +56,19 @@ export default function IssueCard({
             >
                 <div className={styles.header}>
                     <span className={styles.issueId}>{projectKey}-{number}</span>
+                    <span className={styles.status}>{issueType === 'BUG' ? 'Ошибка' : issueType === 'FEATURE' ? 'Функция' : issueType === 'IMPROVEMENT' ? 'Улучшение' : 'Задача'}</span>
                     {!hideStatus && <span className={styles.status}>{status}</span>}
                 </div>
                 <h4 className={styles.title}>{title}</h4>
+                {labels.length > 0 && <div className={styles.labels}>{labels.slice(0, 3).map((label) => <span key={label.id} style={{ borderColor: label.color }}>{label.name}</span>)}</div>}
                 <div className={styles.footer}>
                     <div className={styles.left}>
                         <BadgeAlert size={14} color={getPriorityColor(priority)} />
                         <span className={styles.priority}>{priority}</span>
                     </div>
                     <div className={styles.right}>
+                        {assigneeName && <span className={styles.assignee} title={assigneeName}>{assigneeName.slice(0, 1).toUpperCase()}</span>}
+                        {ageDays !== undefined && <span className={styles.meta} aria-label={`Возраст задачи: ${ageDays} дн.`}>{ageDays} дн.</span>}
                         {attachmentCount > 0 && (
                             <div className={styles.meta}>
                                 <Paperclip size={14} />

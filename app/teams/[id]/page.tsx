@@ -8,6 +8,10 @@ import Link from 'next/link';
 import { getTeamById } from '@/actions/teams';
 import { getIssues } from '@/actions/issues';
 import type { IssueListItem } from '@/types/view-models';
+import CycleManager from '@/components/CycleManager';
+import TeamAnalytics from '@/components/TeamAnalytics';
+import SlaPanel from '@/components/SlaPanel';
+import GitHubIntegrationSettings from '@/components/GitHubIntegrationSettings';
 
 type TeamData = {
     id: string;
@@ -55,6 +59,11 @@ export default function TeamPage({ params }: { params: Promise<{ id: string }> }
                     <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>+ New Issue</button>
                 </div>
             </header>
+
+            <CycleManager teamId={team.id} />
+            <TeamAnalytics teamId={team.id} />
+            <SlaPanel teamId={team.id} />
+            <GitHubIntegrationSettings teamId={team.id} />
 
             {issues.length > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

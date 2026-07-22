@@ -7,13 +7,16 @@ export type IssueListItem = {
   assigneeName?: string | null;
   projectKey: string;
   projectName?: string | null;
+  cycleName?: string | null;
   labels: { id: string; name: string; color: string }[];
   number: number;
   status: string;
   priority: string;
+  issueType: string;
   commentCount: number;
   attachmentCount: number;
   createdAt: string;
+  ageDays?: number;
   updatedAt: string;
 };
 
