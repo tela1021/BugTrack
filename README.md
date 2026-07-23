@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BugTrack
 
-## Getting Started
+Локальное веб-приложение для отслеживания задач. Стек: Next.js, NextAuth, Prisma и PostgreSQL.
 
-First, run the development server:
+## Быстрый запуск
+
+### 1. Подготовьте зависимости
+
+Нужны Node.js (проверено на Node.js 24), npm и доступная PostgreSQL-база. После клонирования репозитория установите зависимости:
+
+```bash
+npm ci
+```
+
+### 2. Создайте базу PostgreSQL
+
+Создайте пустую базу и роль, которая является её владельцем. Для локальной разработки можно использовать одну и ту же роль для приложения и миграций:
+
+```sql
+CREATE ROLE bugtrack_app LOGIN PASSWORD 'replace-with-a-local-password';
+CREATE DATABASE bugtrack OWNER bugtrack_app;
+```
+
+В production для `DIRECT_URL` лучше использовать отдельную роль с правами на миграции.
+
+### 3. Настройте переменные окружения
+
+Создайте `.env` из примера:
+
+```bash
+cp .env.example .env
+```
+
+Замените все `CHANGE_ME` и тестовые значения. Минимальная конфигурация для локального запуска:
+
+```dotenv
+DATABASE_URL="postgresql://bugtrack_app:<password>@127.0.0.1:5432/bugtrack?schema=public"
+DIRECT_URL="postgresql://bugtrack_app:<password>@127.0.0.1:5432/bugtrack?schema=public"
+NEXTAUTH_SECRET="<строка не короче 32 символов>"
+NEXTAUTH_URL="http://localhost:3008"
+AUTH_TRUST_HOST="true"
+SEED_ADMIN_PASSWORD="<локальный пароль не короче 12 символов>"
+```
+
+Секрет для `NEXTAUTH_SECRET` можно сгенерировать так:
+
+```bash
+openssl rand -base64 48
+```
+
+`GITHUB_WEBHOOK_SECRET` и `GITLAB_WEBHOOK_TOKEN` нужны только при настройке соответствующих вебхуков; они не требуются для первого локального запуска. Не добавляйте `.env` в Git.
+
+### 4. Примените схему и создайте тестовые данные
+
+```bash
+npx prisma generate
+npm run db:validate
+npm run db:migrate
+npm run seed
+```
+
+Миграции применяются к пустой PostgreSQL-базе, а `seed` можно запускать повторно: он создаёт или обновляет пользователей, команду `BUG` и статусы workflow.
+
+### 5. Запустите приложение
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3008](http://localhost:3008) with your browser to see the result.
+Откройте [http://localhost:3008](http://localhost:3008). После seed войдите с одним из адресов:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `admin@bugzero.local` — администратор;
+- `member@bugzero.local` — участник команды.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Пароль в обоих случаях — значение `SEED_ADMIN_PASSWORD` из `.env`.
 
-## Learn More
+## Альтернативный порт для E2E
 
-To learn more about Next.js, take a look at the following resources:
+Для изолированного запуска на порту 3009 используйте:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev:bugtrack
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Перед этим измените `NEXTAUTH_URL` в `.env` на `http://localhost:3009`, затем откройте [http://localhost:3009](http://localhost:3009). Этот порт использует и команда `npm run test:e2e`.
 
-## Deploy on Vercel
+## Проверка установки
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+После запуска можно выполнить основные проверки:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm test
+npm run typecheck
+npm run lint
+npm run build
+```
+
+## Частые проблемы
+
+- **`Missing required environment variable`** — проверьте, что `.env` существует и содержит `DATABASE_URL`, `NEXTAUTH_SECRET` и `NEXTAUTH_URL`.
+- **Ошибка подключения Prisma** — убедитесь, что PostgreSQL запущен, база существует, а строки `DATABASE_URL` и `DIRECT_URL` содержат корректный пароль и порт.
+- **Пустой список команд или статусов** — выполните `npm run seed`, выйдите из аккаунта и войдите снова: JWT-сессия могла быть создана до заполнения базы.
+- **Ошибка при seed о пароле** — задайте `SEED_ADMIN_PASSWORD` длиной не менее 12 символов.
