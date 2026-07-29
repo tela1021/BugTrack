@@ -42,6 +42,7 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
     const [descriptionDraft, setDescriptionDraft] = useState('');
     const [titleDraft, setTitleDraft] = useState('');
     const [loading, setLoading] = useState(true);
+    const [projectSaving, setProjectSaving] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const commentFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -145,6 +146,24 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
         if (result.success) { toast.success('Связь добавлена'); await refreshIssue(); } else toast.error(result.error || 'Не удалось добавить связь');
     };
     const handleLinkRemove = async (linkId: string) => { const result = await removeIssueLink(linkId); if (result.success) { toast.success('Связь удалена'); await refreshIssue(); } else toast.error(result.error || 'Не удалось удалить связь'); };
+
+    const handleProjectChange = async (projectId: string) => {
+        if (!issue || projectSaving) return;
+        setProjectSaving(true);
+        try {
+            const result = await updateIssue(issue.id, { projectId: projectId || null });
+            if (result.success) {
+                toast.success('Проект задачи обновлён');
+                await refreshIssue();
+            } else {
+                toast.error(result.error || 'Не удалось изменить проект задачи');
+            }
+        } catch {
+            toast.error('Не удалось изменить проект задачи');
+        } finally {
+            setProjectSaving(false);
+        }
+    };
 
     const refreshIssue = async () => {
         const updated = await getIssueByReadableId(readableId);
@@ -344,10 +363,24 @@ export default function IssueDetailsPage({ params }: { params: Promise<{ readabl
                         </div>
                         <div className={styles.detailItem}>
                             <label>Проект</label>
-                            <select className={styles.sidebarSelect} value={issue.projectId || ''} onChange={(event) => void handleIssueUpdate({ projectId: event.target.value || null })}>
+                            <select
+                                className={styles.sidebarSelect}
+                                value={issue.projectId || ''}
+                                disabled={projectSaving || !issueTeam}
+                                aria-label="Проект задачи"
+                                aria-describedby="project-save-status"
+                                onChange={(event) => void handleProjectChange(event.target.value)}
+                            >
                                 <option value="">Без проекта</option>
                                 {issueTeam?.projects.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}
                             </select>
+                            <span id="project-save-status" className={styles.saveStatus} aria-live="polite">
+                                {projectSaving
+                                    ? 'Сохраняем проект…'
+                                    : issueTeam?.projects.length === 0
+                                        ? 'В этой команде пока нет проектов.'
+                                        : ''}
+                            </span>
                         </div>
                         <div className={styles.detailItem}>
                             <label>Цикл</label>

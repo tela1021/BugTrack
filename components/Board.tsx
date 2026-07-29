@@ -136,16 +136,24 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
     };
 
     return (
-        <>
-        <label className={styles.groupControl}>
-            <span>Группировка Kanban</span>
-            <select value={groupMode} onChange={(event) => setGroupMode(event.target.value as GroupMode)}>
-                <option value="none">Без группировки</option>
-                <option value="assignee">По исполнителю</option>
-                <option value="priority">По приоритету</option>
-            </select>
-        </label>
-        <div className={styles.board}>
+        <section className={styles.boardArea}>
+        <div className={styles.boardControls}>
+            <span className={styles.scrollHint}>Прокрутка: колесо — вниз, Shift + колесо — вбок</span>
+            <label className={styles.groupControl}>
+                <span>Группировка Kanban</span>
+                <select value={groupMode} onChange={(event) => setGroupMode(event.target.value as GroupMode)}>
+                    <option value="none">Без группировки</option>
+                    <option value="assignee">По исполнителю</option>
+                    <option value="priority">По приоритету</option>
+                </select>
+            </label>
+        </div>
+        <div
+            className={styles.board}
+            role="region"
+            tabIndex={0}
+            aria-label="Доска задач, прокрутка по горизонтали и вертикали"
+        >
             {columns.map((column: Column) => {
                 const isWipExceeded = column.wipLimit !== null && column.wipLimit !== undefined && column.issues.length > column.wipLimit;
                 return (
@@ -220,6 +228,6 @@ export default function Board({ initialColumns, onStatusChange, onCreateIssue }:
                 </div>
             </section>
         )}
-        </>
+        </section>
     );
 }

@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
 import { CREATE_ISSUE_EVENT, ISSUE_CREATED_EVENT } from '@/lib/client-events';
 import { IssueListSkeleton } from '@/components/Skeleton';
+import styles from './Dashboard.module.css';
 
 const defaultFilters = {
   status: 'All',
@@ -231,8 +232,8 @@ export default function Home() {
   }
 
   return (
-    <div className="container">
-      <header style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+    <div className={`${styles.dashboardPage} container`}>
+      <header className={styles.dashboardHeader}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--foreground)' }}>{view === 'list' ? 'Inbox' : 'Board'}</h1>
           <p style={{ color: 'var(--muted-foreground)', fontSize: '14px' }}>
@@ -277,6 +278,7 @@ export default function Home() {
         statuses={displayStatuses}
       />
 
+      <div className={styles.dashboardContent}>
       {view === 'list' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {loading ? (
@@ -352,6 +354,7 @@ export default function Home() {
           onCreateIssue={openCreateIssue}
         />
       )}
+      </div>
     </div>
   );
 }

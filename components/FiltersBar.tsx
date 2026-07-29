@@ -75,8 +75,9 @@ export default function FiltersBar({ onFilterChange, activeFilters, statuses = [
                     className={styles.select}
                     value={activeFilters.team || 'All'}
                     onChange={(e) => handleChange('team', e.target.value)}
+                    aria-label="Команда"
                 >
-                    <option value="All">All Projects</option>
+                    <option value="All">Все команды</option>
                     {teams.map(t => (
                         <option key={t.id} value={t.key}>{t.name} ({t.key})</option>
                     ))}
