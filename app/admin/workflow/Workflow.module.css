@@ -71,6 +71,12 @@
     gap: 12px;
 }
 
+.sortableList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .statusItem {
     display: flex;
     align-items: center;
@@ -86,9 +92,46 @@
     border-color: var(--ring);
 }
 
+.statusItemDragging {
+    position: relative;
+    z-index: 2;
+    border-color: var(--ring);
+    box-shadow: 0 12px 28px rgb(0 0 0 / 14%);
+    opacity: 0.88;
+}
+
 .dragHandle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
     color: var(--muted-foreground);
     cursor: grab;
+    touch-action: none;
+}
+
+.dragHandle:hover {
+    color: var(--foreground);
+    background: var(--accent);
+}
+
+.dragHandle:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
+.dragHandle:active {
+    cursor: grabbing;
+}
+
+.dragHandle:disabled {
+    cursor: wait;
+    opacity: 0.45;
 }
 
 .statusIcon {
@@ -119,6 +162,13 @@
 .wipControl { display: flex; align-items: center; gap: 6px; color: var(--muted-foreground); font-size: 12px; white-space: nowrap; }
 .wipControl input { width: 60px; border: 1px solid var(--border); border-radius: 6px; background: var(--background); color: var(--foreground); padding: 6px; }
 .wipControl button { padding: 6px 8px; font-size: 12px; }
+
+.reorderStatus {
+    min-height: 18px;
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 12px;
+}
 
 .actions {
     display: flex;

@@ -73,6 +73,13 @@ export const workflowStatusUpdateSchema = z.object({
   message: 'At least one workflow field must be updated.',
 });
 
+export const workflowStatusOrderSchema = z.array(
+  z.string().trim().min(1).max(100)
+).min(1).max(100).refine(
+  (statusIds) => new Set(statusIds).size === statusIds.length,
+  { message: 'Workflow status order cannot contain duplicates.' }
+);
+
 export const createCommentSchema = z.object({
   content: z.string().trim().max(10_000),
 }).refine((data) => data.content.length > 0, {

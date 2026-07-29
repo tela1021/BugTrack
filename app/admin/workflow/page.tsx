@@ -13,7 +13,24 @@ import {
 import Link from 'next/link';
 import styles from './Workflow.module.css';
 import { useEffect, useState } from 'react';
-import { getWorkflowStatuses, createStatus, deleteStatus, updateStatus } from '@/actions/workflow';
+import {
+    closestCenter,
+    DndContext,
+    type DragEndEvent,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { getWorkflowStatuses, createStatus, deleteStatus, reorderWorkflowStatuses, updateStatus } from '@/actions/workflow';
 import { getAdminTeams } from '@/actions/teams';
 import { useToast } from '@/components/ToastProvider';
 
@@ -43,13 +60,75 @@ const getTypeIcon = (type: string) => {
     }
 };
 
+type SortableStatusItemProps = {
+    status: WorkflowStatus;
+    disabled: boolean;
+    onDelete: (id: string) => void;
+    onWipLimitChange: (id: string, value: string) => void;
+    onWipLimitSave: (status: WorkflowStatus) => void;
+};
+
+function SortableStatusItem({ status, disabled, onDelete, onWipLimitChange, onWipLimitSave }: SortableStatusItemProps) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+        id: status.id,
+        disabled
+    });
+
+    return (
+        <div
+            ref={setNodeRef}
+            className={`${styles.statusItem} ${isDragging ? styles.statusItemDragging : ''}`}
+            style={{ transform: CSS.Transform.toString(transform), transition }}
+            role="listitem"
+        >
+            <button
+                type="button"
+                className={styles.dragHandle}
+                disabled={disabled}
+                {...attributes}
+                {...listeners}
+                aria-label={`Изменить порядок статуса ${status.name}`}
+            >
+                <GripVertical size={16} />
+            </button>
+            <div className={styles.statusIcon} style={{ color: status.color || '#454542' }}>
+                {getTypeIcon(status.type)}
+            </div>
+            <div className={styles.statusInfo}>
+                <span className={styles.statusName}>{status.name}</span>
+                <span className={styles.statusType}>{status.type}</span>
+            </div>
+            <label className={styles.wipControl}>
+                <span>WIP-лимит</span>
+                <input type="number" min="1" max="999" inputMode="numeric" aria-label={`WIP-лимит статуса ${status.name}`} value={status.wipLimit ?? ''} onChange={(event) => onWipLimitChange(status.id, event.target.value)} />
+                <button type="button" className="btn glass" onClick={() => onWipLimitSave(status)}>Сохранить</button>
+            </label>
+            <div className={styles.actions}>
+                <button
+                    type="button"
+                    className={styles.deleteBtn}
+                    onClick={() => onDelete(status.id)}
+                    aria-label={`Удалить статус ${status.name}`}
+                >
+                    <Trash2 size={16} />
+                </button>
+            </div>
+        </div>
+    );
+}
+
 export default function WorkflowAdmin() {
     const toast = useToast();
     const [teams, setTeams] = useState<TeamOption[]>([]);
     const [selectedTeamId, setSelectedTeamId] = useState('');
     const [statuses, setStatuses] = useState<WorkflowStatus[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isReordering, setIsReordering] = useState(false);
     const [newStatusName, setNewStatusName] = useState('');
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    );
 
     useEffect(() => {
         getAdminTeams().then(data => {
@@ -118,6 +197,37 @@ export default function WorkflowAdmin() {
         }
     };
 
+    const handleDragEnd = async ({ active, over }: DragEndEvent) => {
+        if (!over || active.id === over.id || isReordering) return;
+
+        const previousStatuses = statuses;
+        const oldIndex = previousStatuses.findIndex((status) => status.id === active.id);
+        const newIndex = previousStatuses.findIndex((status) => status.id === over.id);
+        if (oldIndex < 0 || newIndex < 0) return;
+
+        const reorderedStatuses = arrayMove(previousStatuses, oldIndex, newIndex).map((status, index) => ({
+            ...status,
+            position: index
+        }));
+        setStatuses(reorderedStatuses);
+        setIsReordering(true);
+
+        try {
+            const result = await reorderWorkflowStatuses(selectedTeamId, reorderedStatuses.map((status) => status.id));
+            if (result.success) {
+                toast.success('Порядок статусов сохранён');
+            } else {
+                setStatuses(previousStatuses);
+                toast.error(result.error || 'Не удалось сохранить порядок статусов');
+            }
+        } catch {
+            setStatuses(previousStatuses);
+            toast.error('Не удалось сохранить порядок статусов');
+        } finally {
+            setIsReordering(false);
+        }
+    };
+
     return (
         <div className="container">
             <Link href="/admin" className={styles.backLink}>
@@ -136,7 +246,7 @@ export default function WorkflowAdmin() {
                         className={styles.select}
                         value={selectedTeamId}
                         onChange={(event) => setSelectedTeamId(event.target.value)}
-                        disabled={teams.length === 0}
+                        disabled={teams.length === 0 || isReordering}
                     >
                         {teams.length === 0 ? (
                             <option value="">No teams available</option>
@@ -154,34 +264,27 @@ export default function WorkflowAdmin() {
                     {loading ? (
                         <div className={styles.loading}>Loading statuses...</div>
                     ) : (
-                        statuses.map((status) => (
-                            <div key={status.id} className={styles.statusItem}>
-                                <div className={styles.dragHandle}>
-                                    <GripVertical size={16} />
+                        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(event) => void handleDragEnd(event)}>
+                            <SortableContext items={statuses.map((status) => status.id)} strategy={verticalListSortingStrategy}>
+                                <div className={styles.sortableList} role="list" aria-label="Порядок статусов">
+                                    {statuses.map((status) => (
+                                        <SortableStatusItem
+                                            key={status.id}
+                                            status={status}
+                                            disabled={isReordering}
+                                            onDelete={(id) => void handleDeleteStatus(id)}
+                                            onWipLimitChange={handleWipLimitChange}
+                                            onWipLimitSave={(item) => void handleWipLimitSave(item)}
+                                        />
+                                    ))}
                                 </div>
-                                <div className={styles.statusIcon} style={{ color: status.color || '#454542' }}>
-                                    {getTypeIcon(status.type)}
-                                </div>
-                                <div className={styles.statusInfo}>
-                                    <span className={styles.statusName}>{status.name}</span>
-                                    <span className={styles.statusType}>{status.type}</span>
-                                </div>
-                                <label className={styles.wipControl}>
-                                    <span>WIP-лимит</span>
-                                    <input type="number" min="1" max="999" inputMode="numeric" aria-label={`WIP-лимит статуса ${status.name}`} value={status.wipLimit ?? ''} onChange={(event) => handleWipLimitChange(status.id, event.target.value)} />
-                                    <button type="button" className="btn glass" onClick={() => void handleWipLimitSave(status)}>Сохранить</button>
-                                </label>
-                                <div className={styles.actions}>
-                                    <button
-                                        className={styles.deleteBtn}
-                                        onClick={() => handleDeleteStatus(status.id)}
-                                    >
-                                        <Trash2 size={16} />
-                                    </button>
-                                </div>
-                            </div>
-                        ))
+                            </SortableContext>
+                        </DndContext>
                     )}
+
+                    <p className={styles.reorderStatus} aria-live="polite">
+                        {isReordering ? 'Сохраняем порядок…' : ''}
+                    </p>
 
                     <form className={styles.addForm} onSubmit={handleAddStatus}>
                         <div className={styles.addInputWrapper}>

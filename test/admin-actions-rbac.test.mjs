@@ -8,7 +8,7 @@ test("workflow and project administration permit team admins or workspace admins
     readFile("actions/projects.ts", "utf8"),
   ]);
 
-  assert.equal((workflow.match(/await requireTeamAdminOrGlobal\(/g) ?? []).length, 4);
+  assert.equal((workflow.match(/await requireTeamAdminOrGlobal\(/g) ?? []).length, 5);
   assert.equal((projects.match(/await requireTeamAdminOrGlobal\(/g) ?? []).length, 2);
   assert.match(projects, /await requireGlobalAdmin\(\)/);
 });

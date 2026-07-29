@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { requireTeamAdminOrGlobal } from '@/lib/authorization';
-import { workflowStatusUpdateSchema } from '@/lib/validation.mts';
+import { workflowStatusOrderSchema, workflowStatusUpdateSchema } from '@/lib/validation.mts';
 
 export async function getWorkflowStatuses(teamId: string) {
     await requireTeamAdminOrGlobal(teamId);
@@ -52,6 +52,43 @@ export async function updateStatus(id: string, data: unknown) {
         return { success: true };
     } catch (error) {
         return { success: false, error: error instanceof Error ? error.message : 'Unable to update status' };
+    }
+}
+
+export async function reorderWorkflowStatuses(teamId: string, orderedStatusIds: unknown) {
+    try {
+        await requireTeamAdminOrGlobal(teamId);
+        const statusIds = workflowStatusOrderSchema.parse(orderedStatusIds);
+        const teamStatuses = await prisma.workflowStatus.findMany({
+            where: { teamId },
+            select: { id: true }
+        });
+        const teamStatusIds = new Set(teamStatuses.map((status) => status.id));
+
+        if (teamStatuses.length !== statusIds.length || statusIds.some((id) => !teamStatusIds.has(id))) {
+            throw new Error("Submitted status order does not match the team's workflow.");
+        }
+
+        await prisma.$transaction(async (transaction) => {
+            for (const [index, id] of statusIds.entries()) {
+                await transaction.workflowStatus.update({
+                    where: { id },
+                    data: { position: -(index + 1) }
+                });
+            }
+            for (const [index, id] of statusIds.entries()) {
+                await transaction.workflowStatus.update({
+                    where: { id },
+                    data: { position: index }
+                });
+            }
+        });
+
+        revalidatePath('/admin/workflow');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Не удалось сохранить порядок статусов' };
     }
 }
 
